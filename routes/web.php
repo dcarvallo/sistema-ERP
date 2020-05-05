@@ -21,16 +21,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('plantilla', function(){
-    return view('admin.plantilla');
-});
+//general
+Route::get('contactos', 'UserController@contactos');
 
+//admin
 Route::get('admin', function(){
     return view('admin.index');
 });
 
 
 //usuarios
-Route::get('usuarios', function(){
-    return view('usuarios.index');
-});
+Route::resource('usuarios', 'UserController');
