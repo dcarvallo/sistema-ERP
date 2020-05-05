@@ -28,3 +28,9 @@ Route::get('plantilla', function(){
 Route::get('admin', function(){
     return view('admin.index');
 });
+
+
+//usuarios
+Route::get('usuarios', function(){
+    return view('usuarios.index');
+});
