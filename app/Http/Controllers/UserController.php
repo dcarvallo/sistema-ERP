@@ -12,9 +12,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $usuarios = User::paginate(9);
+        $usuarios = User::all();
         return view('usuarios.index',compact('usuarios'));
     }
 
