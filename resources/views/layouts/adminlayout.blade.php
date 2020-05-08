@@ -13,7 +13,7 @@
   {{-- <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
   <!-- Theme style -->
   <link rel="stylesheet" href="css/adminlte.min.css">
- 
+ <link rel="stylesheet" href="css/app.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   @yield('css-head')
@@ -186,7 +186,16 @@ to get the desired effect
           <img src="img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-        <a href="#" class="d-block">{{Auth::user()->name}}</a>
+          @auth
+            <a href="#" class="d-block">{{Auth::user()->name}}</a>
+          @else
+              <a href="{{ route('login') }}">Login</a>
+
+              @if (Route::has('register'))
+                  <a href="{{ route('register') }}">Register</a>
+              @endif
+          @endauth
+        
         </div>
       </div>
 
@@ -763,9 +772,9 @@ to get the desired effect
 <!-- Bootstrap -->
 <script src="js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
+<script src="{{asset('js/app.js')}}"> </script>
 <script src="js/adminlte.js"></script>
 
-<script src="{{asset('js/app.js')}}"> </script>
 
 <!-- OPTIONAL SCRIPTS -->
 <script src="js/Chart.min.js"></script>

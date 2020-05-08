@@ -31,4 +31,7 @@ Route::get('admin', function(){
 
 
 //usuarios
+Route::get('obtenerusuarios', 'UserController@obtenerusuarios');
 Route::resource('usuarios', 'UserController');
+Route::put('importardatousuario/{id}', 'UserController@importardatousuario');
+// Route::get('importardatousuario/{id}', 'UserController@importardatousuario');

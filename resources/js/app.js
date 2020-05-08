@@ -22,6 +22,8 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('contactos', require('./components/contactosComponent.vue').default);
 Vue.component('usuarios', require('./components/usuariosComponent.vue').default);
+Vue.component('pagination', require('./components/Pagination.vue').default);
+Vue.component('datatable', require('./components/ColumUserdatabase.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -8,7 +8,6 @@
 
 <script>
  export default {
-    el:'#otro',
     data() {
       return {
         // Our data object that holds the Laravel paginator data

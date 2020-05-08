@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Artisan;
+use DB;
 
 class UserController extends Controller
 {
@@ -20,8 +22,29 @@ class UserController extends Controller
 
     public function index()
     {
-        $usuarios = User::all();
-        return view('usuarios.index',compact('usuarios'));
+        return view('usuarios.index');
+    }
+
+    public function obtenerusuarios(Request $request)
+    {
+        $columns = ['name', 'username', 'email', 'activo'];
+
+        $length = $request->input('length');
+        $column = $request->input('column');
+        $dir = $request->input('dir');
+        $searchValue = $request->input('search');
+
+        $query = User::select('id', 'name', 'username', 'email', 'activo')->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $query->where(function($query) use ($searchValue) {
+                $query->where('name', 'like', '%' . $searchValue . '%')
+                ->orWhere('username', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $usuarios = $query->paginate($length);
+        return ['data' => $usuarios, 'draw' => $request->input('draw')];
     }
 
     /**
@@ -94,5 +117,26 @@ class UserController extends Controller
     {
         $usuarios = User::paginate(9);
         return view('contactos',compact('usuarios'));
+    }
+
+    public function importardatousuario(Request $request, $id)
+    {
+
+        $usuario = User::find($id);
+        $usuario->activo = 0;
+        $usuario->save();
+
+        $uno = "ldap";
+        $dos = $usuario->username;
+        //colocar comando de importacion de active directory
+        // Artisan::call('ldap:import', ['ldap', $usuario->username] );
+        // Artisan::call('route:list');
+        $usuarios = DB::table('users')->orderBy('name', 'asc')->paginate(10);
+       
+        
+
+
+
+        return [$usuarios, $request];
     }
 }
