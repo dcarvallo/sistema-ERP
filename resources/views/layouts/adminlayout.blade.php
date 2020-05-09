@@ -8,12 +8,12 @@
   <title>Panel Administrador</title>
 
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="css/all.min.css">
+  <link rel="stylesheet" href="/css/all.min.css">
   <!-- IonIcons -->
   {{-- <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
   <!-- Theme style -->
-  <link rel="stylesheet" href="css/adminlte.min.css">
- <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="/css/adminlte.min.css">
+ <link rel="stylesheet" href="/css/app.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   @yield('css-head')
@@ -70,7 +70,7 @@ to get the desired effect
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src="/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   <p>Pepe rillo</p>
@@ -86,7 +86,7 @@ to get the desired effect
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src="/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Otro brad
@@ -102,7 +102,7 @@ to get the desired effect
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src=" img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   John connor
@@ -118,7 +118,7 @@ to get the desired effect
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Nora Silvester
@@ -173,7 +173,7 @@ to get the desired effect
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/admin" class="brand-link">
-      <img src="img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Sistema ERP</span>
     </a>
@@ -183,7 +183,7 @@ to get the desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           @auth
@@ -215,7 +215,7 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="usuarios" class="nav-link">
+                <a href="/usuarios" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Usuarios</p>
                 </a>
@@ -227,7 +227,7 @@ to get the desired effect
                 </a>
               </li>
               <li class="nav-item">
-                <a href="contactos" class="nav-link">
+                <a href="/contactos" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Contactos</p>
                 </a>
@@ -768,16 +768,16 @@ to get the desired effect
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- Bootstrap -->
-<script src="js/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="{{asset('js/app.js')}}"> </script>
-<script src="js/adminlte.js"></script>
+<script src="/js/adminlte.js"></script>
 
 
 <!-- OPTIONAL SCRIPTS -->
-<script src="js/Chart.min.js"></script>
+<script src="/js/Chart.min.js"></script>
 {{-- <script src="js/demo.js"></script> --}}
 {{-- <script src="js/dashboard3.js"></script> --}}
 

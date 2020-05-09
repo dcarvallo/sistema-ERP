@@ -87,7 +87,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $usuario = User::find($id);
+        return view('usuarios.edit', compact('usuario'));
     }
 
     /**
@@ -122,21 +123,22 @@ class UserController extends Controller
     public function importardatousuario(Request $request, $id)
     {
 
-        $usuario = User::find($id);
-        $usuario->activo = 0;
-        $usuario->save();
-
-        $uno = "ldap";
-        $dos = $usuario->username;
-        //colocar comando de importacion de active directory
-        // Artisan::call('ldap:import', ['ldap', $usuario->username] );
-        // Artisan::call('route:list');
-        $usuarios = DB::table('users')->orderBy('name', 'asc')->paginate(10);
-       
+        try {
+            $usuario = User::find($id);
+            $usuario->activo = 1;
+            $usuario->save();
+            //colocar comando de importacion de active directory
+            // $uno = "ldap";
+            // $dos = $usuario->username;
+            // Artisan::call('ldap:import', ['ldap', $usuario->username] );
+            // Artisan::call('route:list');
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         
+        // $usuarios = DB::table('users')->orderBy('name', 'asc')->paginate(10);
+       
 
-
-
-        return [$usuarios, $request];
     }
 }

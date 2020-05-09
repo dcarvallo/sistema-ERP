@@ -6,5 +6,4 @@
   <usuarios></usuarios>
 </div>
 
-
 @endsection

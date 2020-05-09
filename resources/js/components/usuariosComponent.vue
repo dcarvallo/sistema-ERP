@@ -2,16 +2,19 @@
 
    <div class="usuarios content-wrapper">
      <div class="container-fluid">
-        <div class="tableFilters">
-            <input class="input form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
-                   @input="getUsuarios()">
-
-            <div class="control">
-                <div class="select">
-                    <select v-model="tableData.length" @change="getUsuarios()">
-                        <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
-                    </select>
+        <div class="tableFilters my-1">
+            <div class="d-flex justify-content-between">
+                <div class="control">
+                    <div>
+                        <select class="form-control" v-model="tableData.length" @change="getUsuarios()">
+                            <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
+                        </select>
+                    </div>
                 </div>
+
+                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
+                    @input="getUsuarios()">
+
             </div>
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
@@ -26,7 +29,7 @@
                       <form @submit.prevent>
                         <a class="btn btn-warning mx-2" @click="importardatousuario(usuario)">Importar de Dominio</a>
                       </form>
-                        <a class="btn btn-danger" href="">Editar</a>
+                        <a class="btn btn-danger" :href="'usuarios/'+usuario.id+'/edit'">Editar</a>
                     </td>
                 </tr>
             </tbody>
@@ -50,6 +53,7 @@ import Pagination from './Pagination.vue';
 export default {
     components: { datatable: Datatable, pagination: Pagination },
     created() {
+        
         this.getUsuarios();
     },
     data() {
@@ -70,7 +74,7 @@ export default {
             columns: columns,
             sortKey: 'name',
             sortOrders: sortOrders,
-            perPage: ['10', '20', '30'],
+            perPage: ['10', '20', '50'],
             tableData: {
                 draw: 0,
                 length: 10,
@@ -97,7 +101,6 @@ export default {
                 .then(response => {
                     let data = response.data;
                     this.parametrostabla = data;
-                    console.log(data.data);
                     if (this.tableData.draw == data.draw) {
                         this.usuarios = data.data.data;
                         this.configPagination(data.data);
@@ -130,16 +133,16 @@ export default {
 
         importardatousuario(usuariosel){
             let par = this.parametrostabla;
-          axios.put('importardatousuario/'+usuariosel.id, this.parametrostabla)
+          axios.put('importardatousuario/'+usuariosel.id)
           .then(res => {
-            let datos = res.data;
-            this.usuarios = datos[0].data;
-            this.configPagination(this.parametrostabla.data);
-            console.log(datos[1]);
+            this.getUsuarios('/obtenerusuarios');
+            toast.fire({
+                icon: 'success',
+                title: 'Datos importados correctamente'
+            })
           })
           .catch(err => {
             location.reload();
-            console.error(err + ", fallo en la importacion"); 
           })
         }
     }

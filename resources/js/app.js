@@ -8,6 +8,17 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import swal from 'sweetalert2';
+window.swal = swal;
+
+const toast = swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+})
+
+window.toast = toast;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -24,6 +35,7 @@ Vue.component('contactos', require('./components/contactosComponent.vue').defaul
 Vue.component('usuarios', require('./components/usuariosComponent.vue').default);
 Vue.component('pagination', require('./components/Pagination.vue').default);
 Vue.component('datatable', require('./components/ColumUserdatabase.vue').default);
+Vue.component('usuariosedit', require('./components/usuarioseditComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
