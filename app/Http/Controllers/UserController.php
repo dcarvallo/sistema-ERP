@@ -130,7 +130,6 @@ class UserController extends Controller
             //colocar comando de importacion de active directory
             // $uno = "ldap";
             // $dos = $usuario->username;
-            // Artisan::call('ldap:import', ['ldap', $usuario->username] );
             // Artisan::call('route:list');
             
         } catch (\Throwable $th) {

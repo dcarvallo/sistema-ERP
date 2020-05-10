@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'ldap',
+            'provider' => 'users',
         ],
 
         'api' => [
@@ -70,19 +70,19 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
-        'ldap' => [
-            'driver' => 'ldap',
-            'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'database' => [
-                'model' => App\User::class,
-                'sync_passwords' => false,
-                'sync_attributes' => [
-                    'name' => 'cn',
-                    'email' => 'mail',
-                    'username' => 'samaccountname',
-                ],
-            ],
-        ],
+        // 'ldap' => [
+        //     'driver' => 'ldap',
+        //     'model' => LdapRecord\Models\ActiveDirectory\User::class,
+        //     'database' => [
+        //         'model' => App\User::class,
+        //         'sync_passwords' => false,
+        //         'sync_attributes' => [
+        //             'name' => 'cn',
+        //             'email' => 'mail',
+        //             'username' => 'samaccountname',
+        //         ],
+        //     ],
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',

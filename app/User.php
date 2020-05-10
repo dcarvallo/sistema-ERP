@@ -5,12 +5,12 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
-use LdapRecord\Laravel\Auth\LdapAuthenticatable;
+// use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+// use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, AuthenticatesWithLdap;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'nombres', 'apellidos', 'password',
     ];
 
     /**

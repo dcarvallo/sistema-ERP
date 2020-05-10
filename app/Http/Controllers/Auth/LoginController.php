@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use App\Ldap\User;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -40,7 +40,6 @@ class LoginController extends Controller
     {
         // $users = User::get();
         // dd($users);
-        // return view('ldap.users.index', ['users' => $users]);
         $this->middleware('guest')->except('logout');
     }
 
@@ -51,11 +50,11 @@ class LoginController extends Controller
     }
 
 
-    protected function credentials(Request $request)
-    {
-        return [
-            'samaccountname' => $request->get('username'),
-            'password' => $request->get('password'),
-        ];
-    }
+    // protected function credentials(Request $request)
+    // {
+    //     return [
+    //         'samaccountname' => $request->get('username'),
+    //         'password' => $request->get('password'),
+    //     ];
+    // }
 }
