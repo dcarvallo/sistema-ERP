@@ -18,9 +18,12 @@ Route::get('admin', function(){
     return view('admin.index');
 });
 
-
 //usuarios
 Route::get('obtenerusuarios', 'UserController@obtenerusuarios');
 Route::resource('usuarios', 'UserController');
 Route::put('importardatousuario/{id}', 'UserController@importardatousuario');
 // Route::get('importardatousuario/{id}', 'UserController@importardatousuario');
+
+//Recursos humanos
+Route::resource('rrhh', 'RecursoshumanoController');
+Route::get('empleados', 'RecursoshumanoController@listaEmpleados');

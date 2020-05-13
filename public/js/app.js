@@ -41401,9 +41401,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "table",
-    { staticClass: "table table-bordered data-table" },
+    { staticClass: "table table-bordered table-striped data-table" },
     [
-      _c("thead", [
+      _c("thead", { staticClass: "table-dark" }, [
         _c(
           "tr",
           { staticClass: "text-center", staticStyle: { cursor: "pointer" } },

@@ -1,7 +1,7 @@
 
 <template>
-    <table class="table table-bordered data-table">
-        <thead>
+    <table class="table table-bordered table-striped data-table">
+        <thead class="table-dark">
             <tr style="cursor:pointer"  class="text-center">
                 <th v-for="column in columns" :key="column.name" @click="$emit('sort', column.name)"
                     :class="sortKey === column.name ? (sortOrders[column.name] > 0 ? 'sorting_asc' : 'sorting_desc') : 'sorting'">
