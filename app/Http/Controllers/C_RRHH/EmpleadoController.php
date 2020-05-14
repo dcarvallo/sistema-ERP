@@ -1,17 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\ControllersC_RRHH;
 
-use App\Area;
+use App\Http\Controllers\Controller;
+use App\Empleado;
 use Illuminate\Http\Request;
 
-class AreaController extends Controller
+class EmpleadoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
@@ -41,10 +48,10 @@ class AreaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Area  $area
+     * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function show(Area $area)
+    public function show(Empleado $empleado)
     {
         //
     }
@@ -52,10 +59,10 @@ class AreaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Area  $area
+     * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function edit(Area $area)
+    public function edit(Empleado $empleado)
     {
         //
     }
@@ -64,10 +71,10 @@ class AreaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Area  $area
+     * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area)
+    public function update(Request $request, Empleado $empleado)
     {
         //
     }
@@ -75,10 +82,10 @@ class AreaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Area  $area
+     * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Area $area)
+    public function destroy(Empleado $empleado)
     {
         //
     }

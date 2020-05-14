@@ -1,19 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\ControllersC_Empresa;
 
+use App\Http\Controllers\Controller;
+use App\Cargo;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class CargoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        return view('admin.index');
+        //
     }
 
     /**
@@ -40,10 +48,10 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cargo $cargo)
     {
         //
     }
@@ -51,10 +59,10 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Cargo $cargo)
     {
         //
     }
@@ -63,10 +71,10 @@ class AdminController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Cargo $cargo)
     {
         //
     }
@@ -74,10 +82,10 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Cargo $cargo)
     {
         //
     }

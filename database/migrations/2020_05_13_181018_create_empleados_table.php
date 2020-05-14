@@ -20,7 +20,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('apellidos', 100);
             $table->string('ci', 20)->nullable();
             $table->string('direccion', 100)->nullable();
-            $table->date('fecha_nac')();
+            $table->date('fecha_nac');
             $table->string('lugar_nac', 255)->nullable();
             $table->tinyInteger('sexo')->nullable();
             $table->string('estado_civil', 50)->nullable();
@@ -32,9 +32,9 @@ class CreateEmpleadosTable extends Migration
             $table->string('tipo_sangre', 10)->nullable();
             $table->string('fotografia', 255)->nullable();
             $table->date('fecha_contrato')->nullable();
-            $table->bigInteger('departamento_id');
-            $table->bigInteger('area_id');
-            $table->bigInteger('cargo_id');
+            $table->unsignedBigInteger('departamento_id');
+            $table->unsignedBigInteger('area_id');
+            $table->unsignedBigInteger('cargo_id');
             $table->string('telefono_int', 50)->nullable();
             $table->foreign('departamento_id')->references('id')->on('departamentos');
             $table->foreign('area_id')->references('id')->on('areas');

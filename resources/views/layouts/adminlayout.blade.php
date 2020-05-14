@@ -293,6 +293,64 @@ to get the desired effect
               </a>
             </li>
             </ul>
+            
+          </li>
+
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-friends"></i>
+              <p>
+                Gestion Empresa
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Empresa</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ubicaciones</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/empleados" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Departamentos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Areas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cargos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Asistencia </p>
+                </a>
+              </li>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Entrevistas </p>
+              </a>
+            </li>
+            </ul>
+            
           </li>
           {{-- <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">

@@ -1,17 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\C_Empresa;
 
-use App\Cargo;
+use App\Http\Controllers\Controller;
+use App\Departamento;
 use Illuminate\Http\Request;
 
-class CargoController extends Controller
+class DepartamentoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
@@ -41,10 +48,10 @@ class CargoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Cargo  $cargo
+     * @param  \App\Departamento  $departamento
      * @return \Illuminate\Http\Response
      */
-    public function show(Cargo $cargo)
+    public function show(Departamento $departamento)
     {
         //
     }
@@ -52,10 +59,10 @@ class CargoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Cargo  $cargo
+     * @param  \App\Departamento  $departamento
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cargo $cargo)
+    public function edit(Departamento $departamento)
     {
         //
     }
@@ -64,10 +71,10 @@ class CargoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cargo  $cargo
+     * @param  \App\Departamento  $departamento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cargo $cargo)
+    public function update(Request $request, Departamento $departamento)
     {
         //
     }
@@ -75,10 +82,10 @@ class CargoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Cargo  $cargo
+     * @param  \App\Departamento  $departamento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cargo $cargo)
+    public function destroy(Departamento $departamento)
     {
         //
     }

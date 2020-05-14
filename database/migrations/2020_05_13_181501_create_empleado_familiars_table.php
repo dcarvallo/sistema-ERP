@@ -24,7 +24,7 @@ class CreateEmpleadoFamiliarsTable extends Migration
             $table->string('apellidos_padre',100)->nullable();
             $table->string('nombres_madre',100)->nullable();
             $table->string('apellidos_madre',100)->nullable();
-            $table->bigInteger('empleado_id');
+            $table->unsignedBigInteger('empleado_id');
             $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->timestamps();
         });
@@ -37,6 +37,6 @@ class CreateEmpleadoFamiliarsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('empleado_familiars');
+        Schema::dropIfExists('empleado_familiares');
     }
 }

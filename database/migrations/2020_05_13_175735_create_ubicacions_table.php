@@ -18,7 +18,7 @@ class CreateUbicacionsTable extends Migration
             $table->string('nombre', 255);
             $table->text('descripcion');
             $table->string('locacion',255);
-            $table->bigInteger('empresa_id');
+            $table->unsignedBigInteger('empresa_id');
             $table->foreign('empresa_id')->references('id')->on('empresas');
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ class CreateUbicacionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ubicacions');
+        Schema::dropIfExists('ubicaciones');
     }
 }

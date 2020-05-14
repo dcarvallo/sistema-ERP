@@ -27,3 +27,7 @@ Route::put('importardatousuario/{id}', 'UserController@importardatousuario');
 //Recursos humanos
 Route::resource('rrhh', 'RecursoshumanoController');
 Route::get('empleados', 'RecursoshumanoController@listaEmpleados');
+
+
+//gestion empresa
+Route::resource('empresa', 'C_Empresa\EmpresaController');

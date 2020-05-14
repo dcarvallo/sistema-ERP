@@ -1,20 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\C_RRHH;
 
-use App\Empleado;
+use App\Http\Controllers\Controller;
+use App\Recursoshumano;
 use Illuminate\Http\Request;
 
-class EmpleadoController extends Controller
+class RecursoshumanoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -41,10 +48,10 @@ class EmpleadoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Empleado  $empleado
+     * @param  \App\Recursoshumano  $recursoshumano
      * @return \Illuminate\Http\Response
      */
-    public function show(Empleado $empleado)
+    public function show(Recursoshumano $recursoshumano)
     {
         //
     }
@@ -52,10 +59,10 @@ class EmpleadoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Empleado  $empleado
+     * @param  \App\Recursoshumano  $recursoshumano
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empleado $empleado)
+    public function edit(Recursoshumano $recursoshumano)
     {
         //
     }
@@ -64,10 +71,10 @@ class EmpleadoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Empleado  $empleado
+     * @param  \App\Recursoshumano  $recursoshumano
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empleado $empleado)
+    public function update(Request $request, Recursoshumano $recursoshumano)
     {
         //
     }
@@ -75,11 +82,17 @@ class EmpleadoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Empleado  $empleado
+     * @param  \App\Recursoshumano  $recursoshumano
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empleado $empleado)
+    public function destroy(Recursoshumano $recursoshumano)
     {
         //
+    }
+
+    public function listaEmpleados()
+    {
+        
+        return view('rrhh.empleados.index');
     }
 }

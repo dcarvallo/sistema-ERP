@@ -17,7 +17,7 @@ class CreateCargosTable extends Migration
             $table->id();
             $table->string('nombre', 255);
             $table->text('descripcion');
-            $table->bigInteger('area_id');
+            $table->unsignedBigInteger('area_id');
             $table->foreign('area_id')->references('id')->on('areas');
             $table->timestamps();
         });

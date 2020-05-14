@@ -18,7 +18,7 @@ class CreateAreasTable extends Migration
             $table->string('nombre', 255);
             $table->text('descripcion');
             $table->bigInteger('encargado_id')->nullable();
-            $table->bigInteger('departamento_id');
+            $table->unsignedBigInteger('departamento_id');
             $table->foreign('departamento_id')->references('id')->on('departamentos');
             $table->timestamps();
         });

@@ -1,20 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\ControllersC_Admin;
 
-use App\Ubicacion;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class UbicacionController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+        return view('admin.index');
     }
 
     /**
@@ -41,10 +47,10 @@ class UbicacionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Ubicacion  $ubicacion
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Ubicacion $ubicacion)
+    public function show($id)
     {
         //
     }
@@ -52,10 +58,10 @@ class UbicacionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Ubicacion  $ubicacion
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Ubicacion $ubicacion)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +70,10 @@ class UbicacionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Ubicacion  $ubicacion
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ubicacion $ubicacion)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +81,10 @@ class UbicacionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Ubicacion  $ubicacion
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ubicacion $ubicacion)
+    public function destroy($id)
     {
         //
     }

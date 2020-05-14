@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\C_RRHH;
 
+use App\Http\Controllers\Controller;
 use App\Empleado_familiar;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,12 @@ class EmpleadoFamiliarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
