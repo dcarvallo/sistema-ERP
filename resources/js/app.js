@@ -30,12 +30,11 @@ window.toast = toast;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('contactos', require('./components/contactosComponent.vue').default);
-Vue.component('usuarios', require('./components/usuariosComponent.vue').default);
+Vue.component('contactos', require('./components/RRHH/contactosComponent.vue').default);
+Vue.component('usuarios', require('./components/Admin/usuariosComponent.vue').default);
 Vue.component('pagination', require('./components/Pagination.vue').default);
 Vue.component('datatable', require('./components/ColumUserdatabase.vue').default);
-Vue.component('usuariosedit', require('./components/usuarioseditComponent.vue').default);
+Vue.component('empleadoedit', require('./components/RRHH/empleadoeditComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

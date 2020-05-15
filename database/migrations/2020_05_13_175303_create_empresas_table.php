@@ -20,6 +20,9 @@ class CreateEmpresasTable extends Migration
             $table->string('rubro', 255);
             $table->text('mision')->nullable();
             $table->text('vision')->nullable();
+            $table->string('direccion', 200)->nullable();
+            $table->string('telefono', 100)->nullable();
+            $table->string('email', 100)->nullable();
             $table->date('fecha_creacion');
             $table->timestamps();
         });

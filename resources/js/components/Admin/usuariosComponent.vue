@@ -48,8 +48,8 @@
 
 <script>
 
-import Datatable from './ColumUserdatabase.vue';
-import Pagination from './Pagination.vue';
+import Datatable from '../ColumUserdatabase.vue';
+import Pagination from '../Pagination.vue';
 export default {
     components: { datatable: Datatable, pagination: Pagination },
     created() {

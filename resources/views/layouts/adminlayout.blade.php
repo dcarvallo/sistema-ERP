@@ -14,6 +14,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/adminlte.min.css">
  <link rel="stylesheet" href="/css/app.css">
+ 
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   @yield('css-head')
@@ -307,7 +308,7 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('empresa.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Empresa</p>
                 </a>
@@ -453,10 +454,10 @@ to get the desired effect
 <!-- Bootstrap -->
 <script src="/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
-<script src="{{asset('js/app.js')}}"> </script>
+
 <script src="/js/adminlte.js"></script>
 
-
+<script src="{{asset('js/app.js')}}"> </script>
 <!-- OPTIONAL SCRIPTS -->
 <script src="/js/Chart.min.js"></script>
 {{-- <script src="js/demo.js"></script> --}}

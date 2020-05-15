@@ -118,7 +118,7 @@ class UserController extends Controller
     public function contactos()
     {
         $usuarios = User::paginate(9);
-        return view('contactos',compact('usuarios'));
+        return view('rrhh.contactos',compact('usuarios'));
     }
 
     public function importardatousuario(Request $request, $id)
