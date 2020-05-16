@@ -1,24 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\C_Empresa;
+namespace App\Http\Controllers\C_Admin;
 
-use App\Http\Controllers\Controller;
-use App\Cargo;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class CargoController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         //
@@ -48,10 +41,10 @@ class CargoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Cargo  $cargo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Cargo $cargo)
+    public function show($id)
     {
         //
     }
@@ -59,10 +52,10 @@ class CargoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Cargo  $cargo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cargo $cargo)
+    public function edit($id)
     {
         //
     }
@@ -71,10 +64,10 @@ class CargoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cargo  $cargo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cargo $cargo)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -82,10 +75,10 @@ class CargoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Cargo  $cargo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cargo $cargo)
+    public function destroy($id)
     {
         //
     }

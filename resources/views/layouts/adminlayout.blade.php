@@ -162,11 +162,33 @@ to get the desired effect
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
-            class="fas fa-th-large"></i></a>
-      </li>
     </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <!-- Authentication Links -->
+      @guest
+          <li><a class="" href="{{ route('login') }}">Login</a></li>
+      @else
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                  {{ Auth::user()->name }} <span class="caret"></span>
+              </a>
+
+              <ul class="dropdown-menu">
+                  <li>
+                      <a href="{{ route('logout') }}"
+                          onclick="event.preventDefault();
+                                   document.getElementById('logout-form').submit();">
+                          Logout
+                      </a>
+
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                          {{ csrf_field() }}
+                      </form>
+                  </li>
+              </ul>
+          </li>
+      @endguest
+  </ul>
   </nav>
   <!-- /.navbar -->
 
@@ -215,12 +237,14 @@ to get the desired effect
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('users.index')
               <li class="nav-item">
-                <a href="/usuarios" class="nav-link">
+                <a href="{{route('users.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Usuarios</p>
                 </a>
               </li>
+              @endcan
               <li class="nav-item">
                 <a href="./index2.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -300,19 +324,21 @@ to get the desired effect
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-friends"></i>
+              <i class="nav-icon fas fa-building"></i>
               <p>
                 Gestion Empresa
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('empresas.index')
               <li class="nav-item">
-                <a href="{{route('empresa.index')}}" class="nav-link">
+                <a href="{{route('empresas.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Empresa</p>
                 </a>
               </li>
+              @endcan
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -427,7 +453,6 @@ to get the desired effect
   <!-- Content Wrapper. Contains page content -->
   
    @yield('content')
-   <contactos />
   <!-- /.content-wrapper -->
 
   <!-- Control Sidebar -->
@@ -438,8 +463,8 @@ to get the desired effect
 
   <!-- Main Footer -->
   <footer class="main-footer mb-4">
-    <strong>Copyright &copy; 2020 <a href="#">test</a>.</strong>
-    All rights reserved.
+    <strong>Copyright &copy; 2020 <a href="#">Daniel Carvallo</a></strong>
+    Todos los derechos reservados.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 1.0.0
     </div>
@@ -452,7 +477,7 @@ to get the desired effect
 <!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
 <!-- Bootstrap -->
-<script src="/js/bootstrap.bundle.min.js"></script>
+{{-- <script src="/js/bootstrap.bundle.min.js"></script> --}}
 <!-- AdminLTE -->
 
 <script src="/js/adminlte.js"></script>

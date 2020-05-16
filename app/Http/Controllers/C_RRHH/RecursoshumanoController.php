@@ -89,10 +89,4 @@ class RecursoshumanoController extends Controller
     {
         //
     }
-
-    public function listaEmpleados()
-    {
-        
-        return view('rrhh.empleados.index');
-    }
 }

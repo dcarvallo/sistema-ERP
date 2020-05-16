@@ -21,8 +21,8 @@ class EmpresaController extends Controller
 
     public function index()
     {
-        $empresa = Empresa::all();
-        return view('empresa.index', compact('empresa'));
+        $empresa = Empresa::first();
+        return view('empresa.empresa.index', compact('empresa'));
     }
 
     /**
@@ -32,7 +32,7 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        //
+        return view('empresa.empresa.create');
     }
 
     /**
@@ -43,7 +43,29 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'nombre' => 'required|string',
+            'descripcion' => 'required|string',
+            'rubro' => 'required|string',
+            'direccion' => 'required|string',
+            'fecha_creacion' => 'required',
+        ]);
+
+        $empresa = new Empresa();
+        $empresa->nombre = $request->nombre;
+        $empresa->descripcion = $request->descripcion;
+        $empresa->rubro = $request->rubro;
+        $empresa->mision = $request->mision;
+        $empresa->vision = $request->vision;
+        $empresa->direccion = $request->direccion;
+        $empresa->telefono = $request->telefono;
+        $empresa->email = $request->email;
+        $empresa->fecha_creacion = $request->fecha_creacion;
+        $empresa->save();
+
+        // return response()->json(null, 200);
+
+        return $empresa;
     }
 
     /**

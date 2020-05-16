@@ -29,7 +29,7 @@
                       <form @submit.prevent>
                         <a class="btn btn-warning mx-2" @click="importardatousuario(usuario)">Importar de Dominio</a>
                       </form>
-                        <a class="btn btn-danger" :href="'usuarios/'+usuario.id+'/edit'">Editar</a>
+                        <a class="btn btn-danger" :href="'/users/'+usuario.id+'/edit'">Editar</a>
                     </td>
                 </tr>
             </tbody>
@@ -53,7 +53,6 @@ import Pagination from '../Pagination.vue';
 export default {
     components: { datatable: Datatable, pagination: Pagination },
     created() {
-        
         this.getUsuarios();
     },
     data() {
@@ -133,7 +132,7 @@ export default {
 
         importardatousuario(usuariosel){
             let par = this.parametrostabla;
-          axios.put('importardatousuario/'+usuariosel.id)
+          axios.put('/importardatousuario/'+usuariosel.id)
           .then(res => {
             this.getUsuarios('/obtenerusuarios');
             toast.fire({
@@ -142,6 +141,10 @@ export default {
             })
           })
           .catch(err => {
+              toast.fire({
+                icon: 'error',
+                title: 'Error'
+            })
             location.reload();
           })
         }

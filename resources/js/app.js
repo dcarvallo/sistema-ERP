@@ -35,6 +35,7 @@ Vue.component('usuarios', require('./components/Admin/usuariosComponent.vue').de
 Vue.component('pagination', require('./components/Pagination.vue').default);
 Vue.component('datatable', require('./components/ColumUserdatabase.vue').default);
 Vue.component('empleadoedit', require('./components/RRHH/empleadoeditComponent.vue').default);
+Vue.component('empresacreate', require('./components/Empresa/empresacreateComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

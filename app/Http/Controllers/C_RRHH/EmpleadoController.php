@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\ControllersC_RRHH;
+namespace App\Http\Controllers\C_RRHH;
 
 use App\Http\Controllers\Controller;
 use App\Empleado;
@@ -21,7 +21,7 @@ class EmpleadoController extends Controller
 
     public function index()
     {
-        //
+        return view('rrhh.empleados.index');
     }
 
     /**
