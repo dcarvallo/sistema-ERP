@@ -56,7 +56,12 @@
         <input type="date" class="form-control" name="fecha_creacion" v-model="fecha_creacion">
         <span v-if="errors.fecha_creacion" class="text-danger">{{errors.fecha_creacion[0]}}</span>
       </div>
+      <div class="form-group col-md-5 px-0">
+        <label for="fecha_creacion">Imagen de la Empresa</label>
+        <input type="file" class="form-control" @change="imagene($event)" name="imagen_empresa">
       </div>
+      </div>
+      
 
     </div>
        </div>
@@ -79,6 +84,7 @@ export default {
       telefono: '',
       email: '',
       fecha_creacion: '',
+      imagen_empresa: '',
       errors: [],
       
     }
@@ -97,7 +103,8 @@ export default {
           direccion: this.direccion,
           telefono: this.telefono,
           email: this.email,
-          fecha_creacion: this.fecha_creacion
+          fecha_creacion: this.fecha_creacion,
+          imagen_empresa: this.imagen_empresa
         }
         )
         .then(response => {
@@ -107,15 +114,31 @@ export default {
                 icon: 'success',
                 title: 'Empresa creada: '+datos.nombre
             }),
-         
+         console.log(datos);
          window.location.href = '/empresas';
-          // window.location.replace = '/empresas/index';
+         
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
             console.log(this.errors);
           }
         });
+    },
+    // imagene(event) {
+    //   this.imagen_empresa = event.target.files[0]
+    //   console.log(this.imagen_empresa);
+    // }
+
+    imagene(e) {
+      console.log(e.target.files[0]);
+      let fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0])
+      fileReader.onload = (e) => {
+        this.imagen_empresa = e.target.result
+      }
+
+    console.log(this.imagen_empresa);
+
     },
   },
 }

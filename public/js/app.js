@@ -2189,6 +2189,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2201,6 +2206,7 @@ __webpack_require__.r(__webpack_exports__);
       telefono: '',
       email: '',
       fecha_creacion: '',
+      imagen_empresa: '',
       errors: []
     };
   },
@@ -2217,19 +2223,38 @@ __webpack_require__.r(__webpack_exports__);
         direccion: this.direccion,
         telefono: this.telefono,
         email: this.email,
-        fecha_creacion: this.fecha_creacion
+        fecha_creacion: this.fecha_creacion,
+        imagen_empresa: this.imagen_empresa
       }).then(function (response) {
         var datos = response.data;
         toast.fire({
           icon: 'success',
           title: 'Empresa creada: ' + datos.nombre
-        }), window.location.href = '/empresas'; // window.location.replace = '/empresas/index';
+        }), console.log(datos);
+        window.location.href = '/empresas';
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this.errors = error.response.data.errors;
           console.log(_this.errors);
         }
       });
+    },
+    // imagene(event) {
+    //   this.imagen_empresa = event.target.files[0]
+    //   console.log(this.imagen_empresa);
+    // }
+    imagene: function imagene(e) {
+      var _this2 = this;
+
+      console.log(e.target.files[0]);
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0]);
+
+      fileReader.onload = function (e) {
+        _this2.imagen_empresa = e.target.result;
+      };
+
+      console.log(this.imagen_empresa);
     }
   }
 });
@@ -42058,6 +42083,22 @@ var render = function() {
                   _vm._v(_vm._s(_vm.errors.fecha_creacion[0]))
                 ])
               : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group col-md-5 px-0" }, [
+            _c("label", { attrs: { for: "fecha_creacion" } }, [
+              _vm._v("Imagen de la Empresa")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "file", name: "imagen_empresa" },
+              on: {
+                change: function($event) {
+                  return _vm.imagene($event)
+                }
+              }
+            })
           ])
         ])
       ])
@@ -55328,6 +55369,7 @@ try {
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+window.swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; //por si acaso para cargar csrf en la ventana
 // window.axios.defaults.headers.common = {
 //     'X-CSRF-TOKEN': window.Laravel.csrfToken,

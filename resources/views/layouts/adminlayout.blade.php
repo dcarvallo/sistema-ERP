@@ -44,6 +44,11 @@ to get the desired effect
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contacto</a>
       </li>
+      @can('admin.archivos')
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/filemanager"  class="nav-link">Administrar Archivos</a>
+      </li>
+      @endcan
     </ul>
 
     <!-- SEARCH FORM -->

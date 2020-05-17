@@ -7,8 +7,16 @@
 
 @section('content')
 
-  <div class="content-wrapper">
+{{-- @if(session('toast_success'))
+  <div class="alert alert-success">
+      {{session('toast_success')}}
+  </div>
+@endif --}}
 
+  <div class="content-wrapper">
+<div>
+
+</div>
        <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
@@ -33,17 +41,21 @@
   @if($empresa != null)
     <section class="content" id="app">
         <!-- Default box -->
-        <div class="row d-flex justify-content-lg-center">
+        <div class="row d-flex justify-content-center">
           <div class="col-md-12">
-        <div class="card  card-solid">
+        <div class="card">
           <div class="card-body">
-            <div class="texto text-center contentempresa row">
-              <div class="col-md-8 d-flex flex-column justify-content-center">
-                <h1 class="mb-4" id="nombre">{{$empresa->nombre}}</h1><br>
-                <p id="descripcion">{{$empresa->descripcion}}</p>
-              </div>
-              <div class="col-md-4 text-center my-3">
-                <img src="/img/logo.png"  class="img img-fluid animate__animated animate__fadeInDownBig align-middle" alt="">
+            <div class="card"> 
+              <div class="card-body container-fluid text-center contentempresa row mx-0 py-4">
+                  <div class="col-md-8 d-flex flex-column justify-content-center">
+                    <h1 class="mb-4" id="nombre">{{$empresa->nombre}}</h1><br>
+                    <p id="descripcion">{{$empresa->descripcion}}</p>
+                  </div>
+                  @if($empresa->imagen_empresa)
+                  <div class="col-md-4 text-center my-3" >
+                    <img src="{{ asset('storage/'.$empresa->imagen_empresa)}}" class="rounded img-fluid animate__animated animate__fadeIn animate__slower align-middle" style="height: 300px">
+                  </div>
+                  @endif
               </div>
             </div>
             <div class="card my-3">
@@ -51,39 +63,46 @@
               <div class="row">
               <div class="col-md-6">
                 <div>
-                  <h4 class="bold">Rubro</h4>
-                  <p>{{$empresa->rubro}}</p>
+                  <p class="mb-0"> {{$empresa->rubro}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">Rubro</p>
                 </div>
-                <hr>
+                <br>
                 <div >
-                  <h4 class="bold">Mision</h4>
-                  <p >{{$empresa->mision}}</p>
+                  <p class="mb-0">{{$empresa->mision}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">Misión</p>
                 </div>
-                <hr>
+                <br>
                 <div >
-                  <h4 class="bold">Vision</h4>
-                  <p >{{$empresa->vision}}</p>
+                  <p class="mb-0">{{$empresa->vision}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">Visión</p>
                 </div>
               </div>
               <div class="col-md-6">
                 <div>
-                  <h4 class="bold">Telefono</h4>
-                  <p>{{$empresa->telefono}}</p>
+                  <p  class="mb-0">{{$empresa->telefono}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">Télefono</p>
                 </div>
-                <hr>
+                <br>
                 <div>
-                  <h4 class="bold">Direccion</h4>
-                  <p>Calle: {{$empresa->direccion}}</p>
+                  <p class="mb-0">Calle: {{$empresa->direccion}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">Dirección</p>
                 </div>
-                <hr>
+                <br>
                 <div>
-                  <h4 class="bold">Email</h4>
-                  <p>{{$empresa->email}}</p>
+                  <p class="mb-0">{{$empresa->email}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">Email</p>
                 </div>
-                <hr>
+                <br>
                 <div>
-                  <h4 class="bold">Fecha de Creación</h4>
-                  <p>{{$empresa->fecha_creacion}}</p>
+                  <p class="mb-0">{{$empresa->fecha_creacion}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">Fecha de Creación</p>
                 </div>
                 
               </div>
@@ -98,7 +117,22 @@
       </div>
       </section>
       @endif
+      {{-- @include('sweetalert::alert') --}}
 
   </div>
 
+@endsection
+
+@section('js-footer')
+<script>
+  var variable = '{{ Session::get('toast') }}';
+  if(variable != '')
+  {
+
+    toast.fire({
+      icon: 'success',
+      title: 'Empresa creada: '+variable
+    });
+  }
+</script>
 @endsection

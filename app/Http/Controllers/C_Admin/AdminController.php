@@ -88,4 +88,9 @@ class AdminController extends Controller
     {
         //
     }
+
+    public function gestionararchivos()
+    {
+        return view('/filemanager');
+    }
 }

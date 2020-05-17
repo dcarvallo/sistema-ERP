@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\M_Empresa\Empresa;
 
+use Illuminate\Support\Facades\Storage;
+
+use File;
+use Log;
+
 class EmpresaController extends Controller
 {
     /**
@@ -47,10 +52,13 @@ class EmpresaController extends Controller
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
             'rubro' => 'required|string',
+            'email' => 'email|string',
             'direccion' => 'required|string',
             'fecha_creacion' => 'required',
         ]);
 
+        Log::info($request->imagen_empresa);
+        // dd($request);
         $empresa = new Empresa();
         $empresa->nombre = $request->nombre;
         $empresa->descripcion = $request->descripcion;
@@ -60,12 +68,38 @@ class EmpresaController extends Controller
         $empresa->direccion = $request->direccion;
         $empresa->telefono = $request->telefono;
         $empresa->email = $request->email;
+        if($request->imagen_empresa)
+        {
+
+            //con componentes
+            // $exploded = explode(',', $request->imagen_empresa);
+            // $decoded = base64_decode($exploded[1]);
+            // if(str_contains($exploded[0], 'jpg'))
+            // $extension = 'jpg';
+            // else if (str_contains($exploded[0], 'png'))
+            // $extension = 'png';
+            // else
+            // $extension = 'jpeg';
+            
+            // $fileName = str_random().'.'.$extension;
+            
+            // Storage::disk('local')->put('public/archivos/empresa/'.$fileName, $decoded);
+
+            // $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
+            // $ext = pathinfo($request->imagen_empresa, PATHINFO_EXTENSION);
+            $ext = $request->imagen_empresa->getClientOriginalExtension();
+            $fileName = str_random().'.'.$ext;
+            // Storage::put('archivos/empresa/', $request->imagen_empresa);
+            $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
+            // $request->imagen_empresa->storeAs('public/archivos/empresa/', $fileName);
+            $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
+
+        }
         $empresa->fecha_creacion = $request->fecha_creacion;
+        
         $empresa->save();
 
-        // return response()->json(null, 200);
-
-        return $empresa;
+        return redirect('/empresas')->with('toast', 'exito al crear');
     }
 
     /**

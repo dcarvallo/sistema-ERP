@@ -15,6 +15,10 @@ Route::middleware(['auth'])->group(function () {
 	// Route::resource('usuarios', 'C_Admin\UserController');
 	
 	Route::get('obtenerusuarios', 'C_Admin\UserController@obtenerusuarios');
+
+	Route::get('filemanager', 'C_Admin\AdminController@gestionararchivos')->name('admins.archivos')
+		->middleware('can:admins.archivo');
+
 	Route::put('importardatousuario/{id}', 'C_Admin\UserController@importardatousuario');
 	
 	//Roles
