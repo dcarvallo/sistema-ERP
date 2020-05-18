@@ -243,7 +243,7 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               @can('users.index')
-              <li class="nav-item">
+              <li class="nav-item  {{ request()->is("route('users.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('users.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Usuarios</p>
@@ -256,7 +256,7 @@ to get the desired effect
                   <p>Empleados</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item {{ request()->is('contactos') ? 'bg-blue' : ''}}">
                 <a href="/contactos" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Contactos</p>
