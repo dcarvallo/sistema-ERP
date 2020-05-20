@@ -21,14 +21,14 @@
             </div>
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
-            <tbody>
+            <tbody class="text-center">
                 <tr v-for="usuario in usuarios" :key="usuario.id">
                     <td>{{usuario.name}}</td>
                     <td>{{usuario.username}}</td>
                     <td>{{usuario.email}}</td>
                     <td v-if="usuario.activo">SI</td>
                     <td v-else>NO</td>
-                    <td class="d-flex">
+                    <td style="width: 10px">
                       <!-- <form @submit.prevent>
                         <a class="btn btn-warning mx-2" @click="importardatousuario(usuario)">Importar de Dominio</a>
                       </form> -->

@@ -58,11 +58,14 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="password">Password*</label>
+                  <label for="password">Passwoddddddddasdfasdfsadfsrd*</label>
                   <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="password">
                   @error('password')<div class="alert alert-danger">{{ $message }}</div> @enderror
                 </div>
-                
+                <div class="form-group col-md-12 px-0">
+                  <label for="fotografia">Fotografia de usuario</label>
+                  <input type="file" class="form-control" @error('fotografia') is-invalid @enderror name="fotografia" value="{{ old('fotografia') }}">
+                </div>
                {{-- @endif --}}
 
              </div>

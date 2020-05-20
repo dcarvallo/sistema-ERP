@@ -41793,6 +41793,7 @@ var render = function() {
           [
             _c(
               "tbody",
+              { staticClass: "text-center" },
               _vm._l(_vm.usuarios, function(usuario) {
                 return _c("tr", { key: usuario.id }, [
                   _c("td", [_vm._v(_vm._s(usuario.name))]),
@@ -41805,7 +41806,7 @@ var render = function() {
                     ? _c("td", [_vm._v("SI")])
                     : _c("td", [_vm._v("NO")]),
                   _vm._v(" "),
-                  _c("td", { staticClass: "d-flex" }, [
+                  _c("td", { staticStyle: { width: "10px" } }, [
                     _c(
                       "a",
                       {
@@ -56263,8 +56264,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/sistema-erp/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/sistema-erp/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/desarrollo-sistema-erp/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/desarrollo-sistema-erp/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

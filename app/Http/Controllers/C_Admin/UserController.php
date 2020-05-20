@@ -57,6 +57,7 @@ class UserController extends Controller
      */
     public function create()
     {
+      dd("testfs.inotify.max_user_watches=524288");
         return view('usuarios.create');
     }
 
@@ -82,6 +83,13 @@ class UserController extends Controller
             $usuario->email = $request->email;
             $usuario->activo = $request->activo;
             $usuario->password = Hash::make($request->password);
+            if($request->fotografia)
+            {
+                $ext = $request->fotografia->getClientOriginalExtension();
+                $fileName = str_random().'.'.$ext;
+                $request->fotografia->storeAs('usuarios/', $fileName);
+                $empresa->fotografia = 'usuarios/'.$fileName;
+            }
             $usuario->save();
             
             $toast = array(
