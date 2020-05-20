@@ -1,6 +1,6 @@
 
 <template>
-    <table class="table table-bordered table-striped data-table">
+    <table class="table table-bordered table-responsive-sm  data-table my-2">
         <thead class="table-dark">
             <tr style="cursor:pointer"  class="text-center">
                 <th v-for="column in columns" :key="column.name" @click="$emit('sort', column.name)"

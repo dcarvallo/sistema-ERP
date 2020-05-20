@@ -7,12 +7,6 @@
 
 @section('content')
 
-{{-- @if(session('toast_success'))
-  <div class="alert alert-success">
-      {{session('toast_success')}}
-  </div>
-@endif --}}
-
   <div class="content-wrapper">
 <div>
 
@@ -24,25 +18,25 @@
         <div class="col-sm-6">
           <h1>Datos de Empresa</h1>
         </div>
-        @can('empresa.create')
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              @if($empresa == null)
-              <li class="breadcrumb-item"><a class="btn btn-primary text-white" href="{{route('empresas.create')}}">Crear Empresa</a></li>
-              @else
-              <li class="breadcrumb-item"><a class="btn btn-warning text-secondary" >Editar</a></li>
-              @endif
-            </ol>
-          </div>
-        @endcan
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            @if($empresa == null)
+              @can('empresa.create')
+                <li class="breadcrumb-item"><a class="btn btn-primary text-white" href="{{route('empresas.create')}}">Crear Empresa</a></li>
+              @endcan
+            @else
+              @can('empresa.edit')
+                <li class="breadcrumb-item"><a class="btn btn-warning text-darker" href="{{route('empresas.edit', [$empresa->id])}}" >Editar</a></li>
+              @endcan
+            @endif
+          </ol>
+        </div>
       </div>
     </div><!-- /.container-fluid -->
   </section>
   @if($empresa != null)
     <section class="content" id="app">
         <!-- Default box -->
-        <div class="row d-flex justify-content-center">
-          <div class="col-md-12">
         <div class="card">
           <div class="card-body">
             <div class="card"> 
@@ -53,7 +47,7 @@
                   </div>
                   @if($empresa->imagen_empresa)
                   <div class="col-md-4 text-center my-3" >
-                    <img src="{{ asset('storage/'.$empresa->imagen_empresa)}}" class="rounded img-fluid animate__animated animate__fadeIn animate__slower align-middle" style="height: 300px">
+                    <img src="{{ asset('storage/'.$empresa->imagen_empresa)}}" class="rounded img-fluid animate__animated animate__fadeIn animate__slower align-middle" style="max-height: 300px">
                   </div>
                   @endif
               </div>
@@ -112,8 +106,6 @@
             
           </div>
 
-          </div>
-        </div>
       </div>
       </section>
       @endif
@@ -124,15 +116,13 @@
 @endsection
 
 @section('js-footer')
+@if(Session::has('message'))
 <script>
-  var variable = '{{ Session::get('toast') }}';
-  if(variable != '')
-  {
-
+  var variable = '{{ Session::get('message') }}';
     toast.fire({
       icon: 'success',
-      title: 'Empresa creada: '+variable
+      title: variable
     });
-  }
-</script>
+  </script>
+  @endif
 @endsection

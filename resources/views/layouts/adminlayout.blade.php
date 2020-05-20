@@ -345,7 +345,7 @@ to get the desired effect
               </li>
               @endcan
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('ubicaciones.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Ubicaciones</p>
                 </a>

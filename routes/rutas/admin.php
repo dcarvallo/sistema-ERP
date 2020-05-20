@@ -45,6 +45,9 @@ Route::middleware(['auth'])->group(function () {
 
 
 	//Users
+	Route::get('users/create', 'C_Admin\UserController@create')->name('users.create')
+		->middleware('can:users.create');
+
 	Route::get('users/index', 'C_Admin\UserController@index')->name('users.index')
 		->middleware('can:users.index');
 
@@ -59,5 +62,10 @@ Route::middleware(['auth'])->group(function () {
 
 	Route::get('users/{user}/edit', 'C_Admin\UserController@edit')->name('users.edit')
 		->middleware('can:users.edit');
+
+	Route::post('users/store', 'C_Admin\UserController@store')->name('users.store')
+		->middleware('can:users.store');
 	
+
+
 });

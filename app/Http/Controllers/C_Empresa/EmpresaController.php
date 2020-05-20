@@ -57,7 +57,7 @@ class EmpresaController extends Controller
             'fecha_creacion' => 'required',
         ]);
 
-        Log::info($request->imagen_empresa);
+        // Log::info($request->imagen_empresa);
         // dd($request);
         $empresa = new Empresa();
         $empresa->nombre = $request->nombre;
@@ -99,7 +99,7 @@ class EmpresaController extends Controller
         
         $empresa->save();
 
-        return redirect('/empresas')->with('toast', 'exito al crear');
+        return redirect('/empresas')->with('toast', $empresa->nombre.': Empresa creada');
     }
 
     /**
@@ -121,7 +121,8 @@ class EmpresaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $empresa = Empresa::find($id);
+        return view('empresa.empresa.edit', compact('empresa'));
     }
 
     /**
@@ -133,7 +134,37 @@ class EmpresaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'nombre' => 'required|string',
+            'descripcion' => 'required|string',
+            'rubro' => 'required|string',
+            'email' => 'email|string',
+            'direccion' => 'required|string',
+            'fecha_creacion' => 'required',
+        ]);
+
+        $empresa = Empresa::find($id);
+        $empresa->nombre = $request->nombre;
+        $empresa->descripcion = $request->descripcion;
+        $empresa->rubro = $request->rubro;
+        $empresa->mision = $request->mision;
+        $empresa->vision = $request->vision;
+        $empresa->direccion = $request->direccion;
+        $empresa->telefono = $request->telefono;
+        $empresa->email = $request->email;
+        if($request->imagen_empresa)
+        {
+            $ext = $request->imagen_empresa->getClientOriginalExtension();
+            $fileName = str_random().'.'.$ext;
+            $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
+            $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
+
+        }
+        $empresa->fecha_creacion = $request->fecha_creacion;
+        
+        $empresa->save();
+
+        return redirect('/empresas')->with('toast', $empresa->nombre.': Informacion modificada');
     }
 
     /**

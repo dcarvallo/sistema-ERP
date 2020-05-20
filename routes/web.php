@@ -8,6 +8,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Route::get('users/create', function(){
+// 	return 'test';
+// });
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 

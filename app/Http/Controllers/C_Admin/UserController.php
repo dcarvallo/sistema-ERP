@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use DB;
+use Log;
 
 class UserController extends Controller
 {
@@ -55,7 +57,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('usuarios.create');
     }
 
     /**
@@ -66,7 +68,41 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string',
+            'username' => 'required|string',
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:6'
+        ]);
+            
+        try {
+            $usuario = new User();
+            $usuario->name = $request->name;
+            $usuario->username = $request->username;
+            $usuario->email = $request->email;
+            $usuario->activo = $request->activo;
+            $usuario->password = Hash::make($request->password);
+            $usuario->save();
+            
+            $toast = array(
+                'title'   => 'Usuario creado: ',
+                'message' => $usuario->username,
+                'type'    => 'success'
+            );
+
+            return redirect('/users/index')->with('mensaje', $toast);
+
+        } catch (\Throwable $th) {
+            $toast = array(
+                'title'   => 'Usuario no creado: ',
+                'message' => $usuario->username,
+                'type'    => 'error'
+            );
+            return redirect('/users/index')->with('mensaje', $toast);
+        }
+
+            
+        
     }
 
     /**

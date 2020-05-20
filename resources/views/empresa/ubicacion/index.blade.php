@@ -1,10 +1,9 @@
 @extends('layouts.adminlayout')
-
 @section('content')
 
-<div>
-  <usuarios></usuarios>
-</div>
+    <div>
+        <ubicaciones/>
+    </div>
 
 @endsection
 @section('js-footer')
@@ -16,7 +15,6 @@
       '{{ Session::get('mensaje.message') }}',
       '{{ Session::get('mensaje.title') }}'
     ];
-
     toast.fire({
       icon: tipo[0],
       text: tipo[1],

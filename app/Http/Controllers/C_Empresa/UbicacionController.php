@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\C_Empresa;
 
 use App\Http\Controllers\Controller;
-use App\Ubicacion;
+use App\Models\M_Empresa\Empresa;
+use App\Models\M_Empresa\Ubicacion;
 use Illuminate\Http\Request;
+use DB;
 
 class UbicacionController extends Controller
 {
@@ -21,7 +23,30 @@ class UbicacionController extends Controller
 
     public function index()
     {
-        //
+        return view('empresa.ubicacion.index');
+    }
+
+    public function obtenerubicaciones(Request $request)
+    {
+        $columns = ['nombre', 'descripcion', 'locacion', 'empresa','editar', 'eliminar'];
+
+        $length = $request->input('length');
+        $column = $request->input('column');
+        $dir = $request->input('dir');
+        $searchValue = $request->input('search');
+
+        $query = Ubicacion::select('id', 'nombre', 'descripcion', 'locacion', 'empresa_id')->with('Empresa')->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $query->where(function($query) use ($searchValue) {
+                $query->where('nombre', 'like', '%' . $searchValue . '%')
+                ->orWhere('descripcion', 'like', '%' . $searchValue . '%')
+                ->orWhere('locacion', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $ubicaciones = $query->paginate($length);
+        return ['data' => $ubicaciones, 'draw' => $request->input('draw')];
     }
 
     /**
@@ -31,7 +56,7 @@ class UbicacionController extends Controller
      */
     public function create()
     {
-        //
+        return view('empresa.ubicacion.create');
     }
 
     /**
@@ -42,7 +67,44 @@ class UbicacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request, [
+            'nombre' => 'required|string',
+            'descripcion' => 'required|string',
+            'locacion' => 'required|string'
+        ]);
+
+        $empresa = Empresa::first('id');
+
+        // dd($empresa);
+
+        if($empresa != null)
+        {   
+            $ubicacion = new Ubicacion();
+            $ubicacion->nombre = $request->nombre;
+            $ubicacion->descripcion = $request->descripcion;
+            $ubicacion->locacion = $request->locacion;
+            $ubicacion->empresa_id = $empresa->id;
+            $ubicacion->save();
+            
+            $toast = array(
+                'title'   => 'Ubicacion creada: ',
+                'message' => $ubicacion->nombre,
+                'type'    => 'success'
+            );
+
+            return redirect('/ubicaciones')->with('mensaje', $toast);
+        }
+        else
+        {
+            $toast = array(
+                'title'   => 'error',
+                'message' => 'empresa no creada',
+                'type'    => 'error'
+            );
+            return redirect('/ubicaciones')->with('mensaje', $toast);
+        }
+
     }
 
     /**
