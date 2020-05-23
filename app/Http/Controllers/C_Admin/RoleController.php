@@ -4,6 +4,8 @@ namespace App\Http\Controllers\C_Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Caffeinated\Shinobi\Models\Role;
+use Log;
 
 class RoleController extends Controller
 {
@@ -14,7 +16,30 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.roles.index');
+    }
+
+    public function obtenerroles(Request $request)
+    {
+        $columns = ['name', 'description', 'ver', 'editar', 'eliminar'];
+
+        $length = $request->input('length');
+        $column = $request->input('column');
+        $dir = $request->input('dir');
+        $searchValue = $request->input('search');
+
+        $query = Role::select('id', 'name', 'description')->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $query->where(function($query) use ($searchValue) {
+                $query->where('name', 'like', '%' . $searchValue . '%')
+                ->orWhere('description', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $roles = $query->paginate($length);
+        Log::info($roles);
+        return ['data' => $roles, 'draw' => $request->input('draw')];
     }
 
     /**

@@ -211,7 +211,11 @@ to get the desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          @if(Auth::user()->fotografia)
+          <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img h-100" alt="User Image">
+          @else
+          <img src="/img/avatar5.png" class="img h-100" alt="User Image">
+          @endif
         </div>
         <div class="info">
           @auth
@@ -247,6 +251,14 @@ to get the desired effect
                 <a href="{{route('users.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Usuarios</p>
+                </a>
+              </li>
+              @endcan
+              @can('users.index')
+              <li class="nav-item  {{ request()->is("route('roles.index')") ? 'bg-blue' : ''}}">
+                <a href="{{route('roles.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Roles</p>
                 </a>
               </li>
               @endcan
@@ -481,8 +493,6 @@ to get the desired effect
 
 <!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
-<!-- Bootstrap -->
-{{-- <script src="/js/bootstrap.bundle.min.js"></script> --}}
 <!-- AdminLTE -->
 
 <script src="/js/adminlte.js"></script>

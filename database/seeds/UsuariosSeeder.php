@@ -12,10 +12,12 @@ class UsuariosSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'name' => 'Administrador',
             'username' => 'admin',
             'email' => Str::random(10).'@gmail.com',
             'password' => Hash::make('admin'),
+            'activo' => 1,
+            'fotografia' => 'usuariodef/avatar.png',
         ]);
     }
 }

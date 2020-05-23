@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Caffeinated\Shinobi\Models\Role;
 use DB;
 use Log;
 
@@ -57,8 +58,8 @@ class UserController extends Controller
      */
     public function create()
     {
-      dd("testfs.inotify.max_user_watches=524288");
-        return view('usuarios.create');
+        $roles = Role::all();
+        return view('usuarios.create', compact('roles'));
     }
 
     /**
@@ -70,44 +71,55 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string',
+            'nombres' => 'required|string',
+            'apellidos' => 'required|string',
             'username' => 'required|string',
             'email' => 'required|string|email',
             'password' => 'required|string|min:6'
         ]);
-            
         try {
-            $usuario = new User();
-            $usuario->name = $request->name;
-            $usuario->username = $request->username;
-            $usuario->email = $request->email;
-            $usuario->activo = $request->activo;
-            $usuario->password = Hash::make($request->password);
-            if($request->fotografia)
-            {
-                $ext = $request->fotografia->getClientOriginalExtension();
-                $fileName = str_random().'.'.$ext;
-                $request->fotografia->storeAs('usuarios/', $fileName);
-                $empresa->fotografia = 'usuarios/'.$fileName;
-            }
-            $usuario->save();
-            
-            $toast = array(
-                'title'   => 'Usuario creado: ',
-                'message' => $usuario->username,
-                'type'    => 'success'
-            );
+          $usuario = new User();
+          $usuario->nombres = $request->nombres;
+          $usuario->apellidos = $request->apellidos;
+          $usuario->name = $request->nombres.' '.$request->apellidos;
+          $usuario->username = $request->username;
+          $usuario->email = $request->email;
+          $usuario->activo = $request->activo;
+          $usuario->password = Hash::make($request->password);
+          Log::info($request);
+          if($request->imagen)
+          {
+              $ext = $request->imagen->getClientOriginalExtension();
+              $fileName = str_random().'.'.$ext;
+              $request->imagen->storeAs('usuarios/', $fileName);
+              $usuario->fotografia = 'usuarios/'.$fileName;
+          }
+          else
+          {
+            $usuario->fotografia = 'usuariodef/avatar.png';
+          }
 
-            return redirect('/users/index')->with('mensaje', $toast);
+          
+          $usuario->save();
+          $array = explode(",", $request->roles);
+          $usuario->syncRoles($array);
+          
+          $toast = array(
+            'title'   => 'Usuario creado: ',
+            'message' => $request->username,
+            'type'    => 'success'
+          );
 
-        } catch (\Throwable $th) {
-            $toast = array(
-                'title'   => 'Usuario no creado: ',
-                'message' => $usuario->username,
-                'type'    => 'error'
-            );
-            return redirect('/users/index')->with('mensaje', $toast);
-        }
+          return [$usuario,$toast];
+
+          } catch (\Throwable $th) {
+              $toast = array(
+                  'title'   => 'Usuario no creado: ',
+                  'message' => $usuario->username,
+                  'type'    => 'error'
+              );
+              return [$usuario, $toast , $th];
+          }
 
             
         
@@ -132,8 +144,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $roles = Role::all();
         $usuario = User::find($id);
-        return view('usuarios.edit', compact('usuario'));
+        return view('usuarios.edit', compact('usuario', 'roles'));
     }
 
     /**
@@ -145,7 +158,143 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      Log::info($request);
+      $this->validate($request, [
+        'nombres' => 'required|string',
+        'apellidos' => 'required|string',
+        'username' => 'required|string',
+      ]);
+
+      
+      try {
+        $usuario = User::find($id);
+        $usuario->nombres = $request->nombres;
+        $usuario->apellidos = $request->apellidos;
+        $usuario->username = $request->username;
+        $usuario->activo = $request->activo;
+        
+        if($request->imagen)
+        {
+          $ext = $request->imagen->getClientOriginalExtension();
+          $fileName = str_random().'.'.$ext;
+          $request->imagen->storeAs('usuarios/', $fileName);
+          $usuario->fotografia = 'usuarios/'.$fileName;
+        }
+        $usuario->save();
+        
+        $toast = array(
+            'title'   => 'Usuario modificado: ',
+            'message' => $usuario->username,
+            'type'    => 'success'
+        );
+
+        // return redirect('/users/index')->with('mensaje', $toast);
+        return [$usuario,$toast];
+
+      } catch (\Throwable $th) {
+          $toast = array(
+              'title'   => 'Usuario no modificado: ',
+              'message' => 'error',
+              'type'    => 'error'
+          );
+          return response()->json($usuario,$toast);
+      }
+
+    }
+
+
+    public function updatepass(Request $request, $id)
+    {
+      $this->validate($request, [
+        'password' => 'string|min:6'
+      ]);
+
+      
+      try {
+        $usuario = User::find($id);
+        if($request->password)
+        {
+          $usuario->password = Hash::make($request->password);
+        }
+        
+        $usuario->save();
+        
+        $toast = array(
+            'title'   => 'Usuario modificado: ',
+            'message' => $usuario->username,
+            'type'    => 'success'
+        );
+        return [$usuario,$toast];
+
+      } catch (\Throwable $th) {
+          $toast = array(
+              'title'   => 'Usuario no modificado: ',
+              'message' => 'error',
+              'type'    => 'error'
+          );
+          return response()->json($usuario,$toast);
+      }
+    }
+
+    public function updateemail(Request $request, $id)
+    {
+      $this->validate($request, [
+        'email' => 'email|unique:users',
+      ]);
+      
+      try {
+        $usuario = User::find($id);
+        if($request->email)
+        {
+          $usuario->email = $request->email;
+        }
+        
+        $usuario->save();
+        
+        $toast = array(
+            'title'   => 'Email modificado: ',
+            'message' => $usuario->email,
+            'type'    => 'success'
+        );
+        return [$usuario,$toast];
+
+      } catch (\Throwable $th) {
+          $toast = array(
+              'title'   => 'Usuario no modificado: ',
+              'message' => 'error',
+              'type'    => 'error'
+          );
+          return response()->json($usuario,$toast);
+      }
+    }
+
+    public function updaterol(Request $request, $id)
+    {
+      try {
+        
+        
+        
+        $usuario = User::find($id);
+        
+        $array = explode(",", $request->roles);
+        $usuario->syncRoles($array);
+        
+        $toast = array(
+            'title'   => 'Email modificado: ',
+            'message' => $usuario->email,
+            'type'    => 'success'
+        );
+        
+        return [$usuario,$toast];
+
+      } catch (\Throwable $th) {
+          $toast = array(
+              'title'   => 'Usuario no modificado: ',
+              'message' => 'error',
+              'type'    => 'error'
+          );
+          return response()->json($usuario,$toast);
+      }
     }
 
     /**

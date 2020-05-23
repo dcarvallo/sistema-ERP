@@ -31,12 +31,18 @@ window.toast = toast;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('contactos', require('./components/RRHH/contactosComponent.vue').default);
-Vue.component('usuarios', require('./components/Admin/usuariosComponent.vue').default);
 Vue.component('pagination', require('./components/Pagination.vue').default);
 Vue.component('datatable', require('./components/ColumUserdatabase.vue').default);
 Vue.component('empleadoedit', require('./components/RRHH/empleadoeditComponent.vue').default);
 Vue.component('empresacreate', require('./components/Empresa/empresacreateComponent.vue').default);
 Vue.component('ubicaciones', require('./components/Empresa/ubicacionesComponent.vue').default);
+//usuarios
+Vue.component('usuarios', require('./components/Admin/usuariosComponent.vue').default);
+Vue.component('editarusuario', require('./components/Admin/editarusuarioComponent.vue').default);
+Vue.component('crearusuario', require('./components/Admin/crearusuarioComponent.vue').default);
+//roles
+Vue.component('roles', require('./components/Admin/Roles/rolesComponent.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

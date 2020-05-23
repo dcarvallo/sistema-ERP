@@ -24,60 +24,7 @@
       <div class="card card-solid">
         <div class="card-body ">
      
-        <form action="{{route('users.store')}}" method="post">
-          @csrf
-          <div class="form-row">
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-header">
-                   <h5>Información de Usuario</h5>
-                </div>
-              <div class="card-body">
-                {{-- @if($empresas != null) --}}
-
-                <div class="form-group">
-                  <label for="name">Nombre Completo*</label>
-                  <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Nombre Completo">
-                  @error('name')<div class="alert alert-danger">{{ $message }}</div> @enderror
-                </div>
-                <div class="form-group">
-                  <label for="username">Nombre de Usuario*</label>
-                  <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}"  placeholder="Nombre de usuario"/>
-                  @error('username')<div class="alert alert-danger">{{ $message }}</div> @enderror
-                </div>
-                <div class="form-group">
-                  <label for="email">Email*</label>
-                  <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email">
-                  @error('email')<div class="alert alert-danger">{{ $message }}</div> @enderror
-                </div>
-                <div class="form-group">
-                  <label for="email">Activo*</label>
-                  <select class="form-control" name="activo">
-                      <option value="1" selected>Si</option>
-                      <option value="0">No</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="password">Passwoddddddddasdfasdfsadfsrd*</label>
-                  <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="password">
-                  @error('password')<div class="alert alert-danger">{{ $message }}</div> @enderror
-                </div>
-                <div class="form-group col-md-12 px-0">
-                  <label for="fotografia">Fotografia de usuario</label>
-                  <input type="file" class="form-control" @error('fotografia') is-invalid @enderror name="fotografia" value="{{ old('fotografia') }}">
-                </div>
-               {{-- @endif --}}
-
-             </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Crear</button>
-          </div>
-           
-       <!-- </form> -->
-          
-         </div>
-          {{-- <empresacreate/> --}}
-        </form>
+        <crearusuario :roles="{{$roles}}" />
      
         </div>
       </div>

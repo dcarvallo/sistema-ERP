@@ -41,7 +41,9 @@ Route::middleware(['auth'])->group(function () {
 		->middleware('can:roles.destroy');
 
 	Route::get('roles/{role}/edit', 'C_Admin\RoleController@edit')->name('roles.edit')
-		->middleware('can:roles.edit');
+    ->middleware('can:roles.edit');
+    
+  Route::get('obtenerroles', 'C_Admin\RoleController@obtenerroles');
 
 
 	//Users
@@ -52,6 +54,15 @@ Route::middleware(['auth'])->group(function () {
 		->middleware('can:users.index');
 
 	Route::put('users/{user}', 'C_Admin\UserController@update')->name('users.update')
+    ->middleware('can:users.edit');
+    
+	Route::put('users/um/{user}', 'C_Admin\UserController@updateemail')->name('users.updatemail')
+    ->middleware('can:users.edit');
+    
+	Route::put('users/up/{user}', 'C_Admin\UserController@updatepass')->name('users.updatepass')
+    ->middleware('can:users.edit');
+    
+	Route::put('users/ur/{user}', 'C_Admin\UserController@updaterol')->name('users.updaterol')
 		->middleware('can:users.edit');
 
 	Route::get('users/{user}', 'C_Admin\UserController@show')->name('users.show')
