@@ -5,6 +5,7 @@ namespace App\Http\Controllers\C_Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Caffeinated\Shinobi\Models\Role;
+use Caffeinated\Shinobi\Models\Permission;
 use Log;
 
 class RoleController extends Controller
@@ -49,7 +50,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permisos = Permission::select('id','name','slug','description')->get();
+        return view('admin.roles.create', compact('permisos'));;
     }
 
     /**
@@ -60,7 +62,46 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $this->validate($request, [
+        'name' => 'required|string',
+        'slug' => 'required|string',
+        'description' => 'required|string',
+        ]);
+        try {
+          $rol = new Role();
+          $rol->name = $request->name;
+          $rol->slug = $request->slug;
+          $rol->description = $request->description;
+          if($request->special)
+          {
+            $arrayspecial = explode(",", $request->special);
+            $rol->special = $arrayspecial;
+          }
+          
+          $rol->save();
+          if($request->permisos)
+          {
+            $array = explode(",", $request->permisos);
+            $rol->givePermissionTo($array);
+          }
+          
+          $toast = array(
+            'title'   => 'rol creado: ',
+            'message' => $request->name,
+            'type'    => 'success'
+          );
+          
+          return [$rol,$toast];
+          
+        } catch (\Throwable $th) {
+          $toast = array(
+            'title'   => 'rol no creado: ',
+            'message' => $rol->name,
+            'type'    => 'error'
+          );
+          return [$rol, $toast , $th];
+        }
+
     }
 
     /**

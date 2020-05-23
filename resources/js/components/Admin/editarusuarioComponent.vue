@@ -111,7 +111,7 @@
                   <ul>
                     <li v-for="rol in roles" :key="rol.id">
                       <label>
-                        <input type="checkbox" :id="rol.id" :value="rol.slug" v-model="rolesSeleccionados">
+                        <input type="checkbox" :value="rol.slug" v-model="rolesSeleccionados">
                         <label :for="rol.name">{{rol.name}}</label>
                         <em>{{rol.description}}</em>
                       </label>
@@ -135,7 +135,7 @@
 <script>
 
 export default {
-  props: ['usuario','roles'],
+  props: ['usuario','roles','rolesusuario'],
   data(){
     return{
       botonmail: 'Guardar',
@@ -153,14 +153,13 @@ export default {
     }
   },
   created(){
-    // console.log(this.usuariomod.nombres);
+    
+    for(let i=0; i< this.rolesusuario.length; i++)
+    {
+      this.rolesSeleccionados[i] = this.rolesusuario[i].slug; 
+    }
+    console.log(this.rolesSeleccionados);
   },
-  // watch: {
-  //   rolesSeleccionados: function (newVal, oldVal) {
-  //     // Do what you want with the selected objects:
-  //     console.log(newVal)
-  //   }
-  // },
   methods:{
     onFileChange(e) {
       console.log(e.target.files[0]);
@@ -248,7 +247,7 @@ export default {
       let formData = new FormData();
       formData.append('roles', this.rolesSeleccionados);
       formData.append('_method', 'put');
-      console.log(formData);
+      console.log(this.rolesSeleccionados);
       this.errors = [];
         axios.post('/users/ur/'+this.usuario.id,
         formData

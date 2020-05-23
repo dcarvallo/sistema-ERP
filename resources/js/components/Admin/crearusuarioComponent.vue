@@ -1,84 +1,101 @@
 <template>
-    <form enctype="multipart/form-data">
-          
+<div>
+
+  <form enctype="multipart/form-data">
+  <div class="d-flex justify-content-between">
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Informacion</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Roles</a>
+  </div>
+</nav>
+<div class="text-right">
+      <button type="submit" class="btn btn-primary" @click.prevent="crearusuario">Guardar</button>
+    </div>
+  </div>
+<hr>
+<div class="tab-content" id="nav-tabContent">
+    <div style="min-height:50vh" class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="card">
+        <div class="card-header">
+            <h5>Información de Usuario</h5>
+        </div>
+        <div class="card-body">
           <div class="row">
             <div class="col-md-6">
-              <div class="card">
-                <div class="card-header">
-                   <h5>Información de Usuario</h5>
-                </div>
-              <div class="card-body">
-
                 <div class="form-group">
-                  <label for="nombres">Nombres*</label>
-                  <input type="text" class="form-control" name="nombres" v-model="usuario.nombres" placeholder="Nombres">
-                  <div v-if="errors.nombres" class="alert alert-danger">{{ errors.nombres[0] }}</div>
-                </div>
-                <div class="form-group">
-                  <label for="apellidos">Apellidos*</label>
-                  <input type="text" class="form-control" name="apellidos" v-model="usuario.apellidos" placeholder="Apellidos">
-                  <div v-if="errors.apellidos" class="alert alert-danger">{{ errors.apellidos[0] }}</div> 
-                </div>
-                <div class="form-group">
-                  <label for="username">Nombre de Usuario*</label>
-                  <input type="text" class="form-control" name="username" v-model="usuario.username" placeholder="Nombre de usuario"/>
-                  <div v-if="errors.username" class="alert alert-danger">{{ errors.username[0] }}</div> 
-                </div>
-                <div class="form-group">
-                  <label for="email">Email*</label>
-                  <input type="email" class="form-control" name="email" v-model="usuario.email" placeholder="email">
-                  <div v-if="errors.email" class="alert alert-danger">{{ errors.email[0] }}</div> 
-                </div>
-                <div class="form-group">
-                  <label for="email">Activo*</label>
-                  <select class="form-control" v-model="usuario.activo" name="activo">
-                      <option value="1"  selected>Si</option>
-                      <option value="0">No</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="password">Password*</label>
-                  <input type="password" class="form-control" v-model="usuario.password" placeholder="password">
-                  <div v-if="errors.password" class="alert alert-danger">{{ errors.password[0] }}</div> 
-                </div>
-
-             </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-
-            <div class="form-group">
-              <div class="text-center">
-                  <img :src="enlace" class="img" style="width: 15em" alt="Imagen de usuario">
-                </div>
-                <br>
-                <input type="file" @change="onFileChange" class="form-control" name="imagen" />
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h5>Roles</h5>
+                <label for="nombres">Nombres*</label>
+                <input type="text" class="form-control" name="nombres" v-model="usuario.nombres" placeholder="Nombres">
+                <div v-if="errors.nombres" class="alert alert-danger">{{ errors.nombres[0] }}</div>
               </div>
-              <div class="card-body">
-                  <ul>
-                    <li v-for="rol in roles" :key="rol.id">
-                      <label>
-                        <input type="checkbox" :id="rol.id" :value="rol.slug" v-model="rolesSeleccionados">
-                        <label :for="rol.name">{{rol.name}}: </label>
-                        <em>{{rol.description}}</em>
-                      </label>
-                    </li>
-                  </ul>
+              <div class="form-group">
+                <label for="apellidos">Apellidos*</label>
+                <input type="text" class="form-control" name="apellidos" v-model="usuario.apellidos" placeholder="Apellidos">
+                <div v-if="errors.apellidos" class="alert alert-danger">{{ errors.apellidos[0] }}</div> 
+              </div>
+              <div class="form-group">
+                <label for="username">Nombre de Usuario*</label>
+                <input type="text" class="form-control" name="username" v-model="usuario.username" placeholder="Nombre de usuario"/>
+                <div v-if="errors.username" class="alert alert-danger">{{ errors.username[0] }}</div> 
+              </div>
+              <div class="form-group">
+                <label for="email">Email*</label>
+                <input type="email" class="form-control" name="email" v-model="usuario.email" placeholder="email">
+                <div v-if="errors.email" class="alert alert-danger">{{ errors.email[0] }}</div> 
+              </div>
+              <div class="form-group">
+                <label for="email">Activo*</label>
+                <select class="form-control" v-model="usuario.activo" name="activo">
+                    <option value="1"  selected>Si</option>
+                    <option value="0">No</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="password">Password*</label>
+                <input type="password" class="form-control" v-model="usuario.password" placeholder="password">
+                <div v-if="errors.password" class="alert alert-danger">{{ errors.password[0] }}</div> 
               </div>
             </div>
-            <div class="text-right">
-              <button type="submit" class="btn btn-primary" @click.prevent="crearusuario">Crear</button>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">Fotografia</label>
+                <div class="text-center">
+                    <img :src="enlace" class="img" style="width: 15em" alt="Imagen de usuario">
+                  </div>
+                  <br>
+                  <input type="file" @change="onFileChange" class="form-control" name="imagen" />
+              </div>
             </div>
           </div>
-           
-         </div>
-        </form>
+        </div>
+      </div>
+        
+
+    </div>
+    <div style="min-height:50vh" class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <div class="card">
+        <div class="card-header">
+          <h5>Roles</h5>
+        </div>
+        <div class="card-body">
+            <ul>
+              <li v-for="rol in roles" :key="rol.id">
+                <label>
+                  <input type="checkbox"  :id="rol.id" :value="rol.slug" v-model="rolesSeleccionados" :checked="rol.special == 'no-access'">
+                  <label :for="rol.name">{{rol.name}}: </label>
+                  <em>{{rol.description}}</em>
+                </label>
+              </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+    
+
+</div>
+  </form>
+    
+</div>
 </template>
 
 <script>

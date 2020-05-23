@@ -20,10 +20,6 @@
   @yield('css-head')
 </head>
 <!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to to the body tag
-to get the desired effect
 |---------------------------------------------------------|
 |LAYOUT OPTIONS | sidebar-collapse                        |
 |               | sidebar-mini                            |
@@ -52,7 +48,7 @@ to get the desired effect
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+    {{-- <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" type="search" placeholder="Buscar" aria-label="Search">
         <div class="input-group-append">
@@ -61,14 +57,14 @@ to get the desired effect
           </button>
         </div>
       </div>
-    </form>
+    </form> --}}
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
+          <i class="far fa-comments fa-2x"></i>
           <span class="badge badge-danger navbar-badge">4</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -143,11 +139,12 @@ to get the desired effect
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <i class="far fa-bell fa-2x"></i>
+
+          <span class="badge badge-warning navbar-badge">9</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header">9 Notifications</span>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> 4 new messages
@@ -155,12 +152,12 @@ to get the desired effect
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
+            <i class="fas fa-users mr-2"></i> 3 friend requests
             <span class="float-right text-muted text-sm">12 hours</span>
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
+            <i class="fas fa-file mr-2"></i> 2 new reports
             <span class="float-right text-muted text-sm">2 days</span>
           </a>
           <div class="dropdown-divider"></div>
@@ -173,25 +170,30 @@ to get the desired effect
       @guest
           <li><a class="" href="{{ route('login') }}">Login</a></li>
       @else
-          <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                  {{ Auth::user()->name }} <span class="caret"></span>
-              </a>
-
-              <ul class="dropdown-menu">
-                  <li>
-                      <a href="{{ route('logout') }}"
-                          onclick="event.preventDefault();
-                                   document.getElementById('logout-form').submit();">
-                          Logout
-                      </a>
-
-                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                          {{ csrf_field() }}
-                      </form>
-                  </li>
-              </ul>
-          </li>
+        
+          <li class="nav-item dropdown">
+            
+            <a id="navbarDropdown" class="nav-link dropdown-toggle text-we text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+              <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img mr-1" style="width: 40px" alt="Logo">
+                
+                <span class="caret"> {{ Auth::user()->username }}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="">Perfil</a>
+              <a class="dropdown-item" href=""
+              onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                      Salir
+                    </a>
+                    
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                      @csrf
+                  </form>
+                </div>
+    
+    
+    
+              </li>
       @endguest
   </ul>
   </nav>
@@ -201,36 +203,15 @@ to get the desired effect
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/admin" class="brand-link">
-      <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      <img src="{{ asset('storage/'.$globalimagenempresa)}}" alt="" class="brand-image img-circl elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Sistema ERP</span>
+      <span class="brand-text font-weight-light"> Sistema ERP</span>
     </a>
 
+    
+    {{-- <img src="{{ asset('storage/'.$globalimagenempresa)}}" class="brand-image elevation-3" --}}
     <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          @if(Auth::user()->fotografia)
-          <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img h-100" alt="User Image">
-          @else
-          <img src="/img/avatar5.png" class="img h-100" alt="User Image">
-          @endif
-        </div>
-        <div class="info">
-          @auth
-            <a href="#" class="d-block">{{Auth::user()->name}}</a>
-          @else
-              <a href="{{ route('login') }}">Login</a>
-
-              @if (Route::has('register'))
-                  <a href="{{ route('register') }}">Register</a>
-              @endif
-          @endauth
-        
-        </div>
-      </div>
-
       <!-- Sidebar Menu -->
       <nav class="mt-2 min-vh-100 ">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -241,7 +222,7 @@ to get the desired effect
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Usuarios
+                Admin
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -272,12 +253,6 @@ to get the desired effect
                 <a href="/contactos" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Contactos</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Crear </p>
                 </a>
               </li>
             </ul>
@@ -396,69 +371,6 @@ to get the desired effect
             </ul>
             
           </li>
-          {{-- <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Widgets
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
-              <p>
-                Layout Options
-                <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation + Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Navbar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-footer.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Footer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collapsed Sidebar</p>
-                </a>
-              </li>
-            </ul>
-          </li> --}}
           
         </ul>
       </nav>
@@ -468,8 +380,9 @@ to get the desired effect
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  
-   @yield('content')
+  <div class="content-wrapper">
+    @yield('content')
+  </div>
   <!-- /.content-wrapper -->
 
   <!-- Control Sidebar -->

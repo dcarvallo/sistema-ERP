@@ -7,7 +7,6 @@
 
 @section('content')
 
-  <div class="content-wrapper">
 <div>
 
 </div>
@@ -109,10 +108,6 @@
       </div>
       </section>
       @endif
-      {{-- @include('sweetalert::alert') --}}
-
-  </div>
-
 @endsection
 
 @section('js-footer')

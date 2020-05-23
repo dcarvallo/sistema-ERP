@@ -272,16 +272,15 @@ class UserController extends Controller
     {
       try {
         
-        
-        
         $usuario = User::find($id);
         
-        $array = explode(",", $request->roles);
-        $usuario->syncRoles($array);
+        $arrayderoles = explode(",", $request->roles);
+        Log::info($arrayderoles);
+        $usuario->syncRoles($arrayderoles);
         
         $toast = array(
-            'title'   => 'Email modificado: ',
-            'message' => $usuario->email,
+            'title'   => 'roles modificados: ',
+            'message' => $usuario->username,
             'type'    => 'success'
         );
         
@@ -293,7 +292,7 @@ class UserController extends Controller
               'message' => 'error',
               'type'    => 'error'
           );
-          return response()->json($usuario,$toast);
+          return [$usuario,$toast];
       }
     }
 

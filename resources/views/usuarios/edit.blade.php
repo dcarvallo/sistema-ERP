@@ -4,8 +4,6 @@
 @endsection
 @section('content')
 
-  <div class="content-wrapper">
-
        <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
@@ -26,13 +24,12 @@
       <!-- Default box -->
       <div class="card card-solid">
         <div class="card-body ">
+        {{-- {{dd($usuario->roles->toArray())}} --}}
         
-        <editarusuario :usuario="{{$usuario}}" :roles="{{$roles}}" />
+        <editarusuario :usuario="{{$usuario}}" :rolesusuario="{{ $usuario->roles }}" :roles="{{$roles}}" />
           
         </div>
       </div>
     </section>
-
-  </div>
 
 @endsection

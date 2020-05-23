@@ -1,6 +1,6 @@
 <template>
 
-   <div class="usuarios content-wrapper">
+   <div class="usuarios">
      <div class="container-fluid">
         <div class="tableFilters my-1">
             <div class="d-flex justify-content-between">

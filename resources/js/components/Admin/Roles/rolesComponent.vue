@@ -1,6 +1,6 @@
 <template>
 
-   <div class="usuarios content-wrapper">
+   <div class="roles">
      <div class="container-fluid">
         <div class="tableFilters my-1">
             <div class="d-flex justify-content-between">
@@ -11,7 +11,7 @@
                       </select>
                     </div>
                       <div class="w-auto">
-                          <a class="btn btn-success" href="/roles/create">Crear Rol</a>
+                          <a class="btn btn-success" :href="'/roles/create'">Crear Rol</a>
                       </div>
                   </div>
 

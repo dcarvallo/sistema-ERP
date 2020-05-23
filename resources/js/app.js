@@ -42,6 +42,7 @@ Vue.component('editarusuario', require('./components/Admin/editarusuarioComponen
 Vue.component('crearusuario', require('./components/Admin/crearusuarioComponent.vue').default);
 //roles
 Vue.component('roles', require('./components/Admin/Roles/rolesComponent.vue').default);
+Vue.component('crearrol', require('./components/Admin/Roles/crearrolComponent.vue').default);
 
 
 /**

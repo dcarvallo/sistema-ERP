@@ -1,13 +1,28 @@
 @extends('layouts.adminlayout')
 
 @section('content')
-
-<div>
-  <usuarios></usuarios>
-</div>
-
-@endsection
-@section('js-footer')
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Usuarios</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">Usuarios /</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    
+    <usuarios></usuarios>
+    
+  </section>
+  
+  @endsection
+  @section('js-footer')
   @if( Session::has("mensaje") )
   <script>
     
