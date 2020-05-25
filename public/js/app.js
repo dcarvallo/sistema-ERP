@@ -1999,18 +1999,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['permisos'],
   data: function data() {
@@ -2021,6 +2009,7 @@ __webpack_require__.r(__webpack_exports__);
         description: '',
         special: []
       },
+      nombres: [],
       permiso: {
         slug: []
       },
@@ -2029,9 +2018,20 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    console.log(Object.keys(this.permisos));
+    console.log(this.rol.special);
   },
   methods: {
+    funcion: function funcion(el) {
+      if (this.nombres.includes(el)) {
+        var index = this.nombres.indexOf(el);
+
+        if (index > -1) {
+          this.nombres.splice(index, 1);
+        }
+      } else {
+        this.nombres.push(el);
+      }
+    },
     crearrol: function crearrol() {
       var _this = this;
 
@@ -2041,11 +2041,20 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('slug', this.rol.slug);
       formData.append('description', this.rol.description);
       formData.append('special', this.rol.special);
-      formData.append('permisos', this.permiso.slug);
+
+      if (this.rol.special.length == 0) {
+        formData.append('permisos', this.permiso.slug);
+      }
+
       console.log(formData);
       axios.post('/roles/store', formData).then(function (res) {
         var datos = res.data;
-        _this.rol = [];
+        _this.nombres = [];
+        _this.rol.name = '';
+        _this.rol.slug = '';
+        _this.rol.description = '';
+        _this.rol.special = [];
+        _this.permiso.slug = [];
         toast.fire({
           icon: datos[1].type,
           title: datos[1].title + ' ' + datos[1].message
@@ -2393,15 +2402,20 @@ __webpack_require__.r(__webpack_exports__);
         });
       })["catch"](function (error) {
         var datos = error.data;
+        console.log(datos);
 
         if (error.response.status == 422) {
           _this.errors = error.response.data.errors;
+          toast.fire({
+            icon: 'error',
+            title: 'Error, Revise formulario'
+          });
+        } else {
+          toast.fire({
+            icon: datos[1].type,
+            title: datos[1].title + ' ' + datos[1].message
+          });
         }
-
-        toast.fire({
-          icon: datos[1].type,
-          title: datos[1].title + ' ' + datos[1].message
-        });
       });
     }
   }
@@ -8259,7 +8273,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n /* @import \"../node_modules/@syncfusion/ej2-base/styles/material.css\";\n @import \"../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css\";\n @import \"../node_modules/@syncfusion/ej2-buttons/styles/material.css\"; */\n.control_wrapper {\n       display: block;\n       max-width: 350px;\n       max-height: 350px;\n       margin: auto;\n       overflow: auto;\n       border: 1px solid #dddddd;\n       border-radius: 3px;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n /* @import \"../node_modules/@syncfusion/ej2-base/styles/material.css\";\n @import \"../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css\";\n @import \"../node_modules/@syncfusion/ej2-buttons/styles/material.css\"; */\n.control_wrapper {\n       display: block;\n       max-width: 350px;\n       max-height: 350px;\n       margin: auto;\n       overflow: auto;\n       border: 1px solid #dddddd;\n       border-radius: 3px;\n}\n", ""]);
 
 // exports
 
@@ -43034,100 +43048,141 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _vm._m(2),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c(
-            "div",
-            { staticClass: "row" },
-            _vm._l(_vm.permisos, function(categoria, index) {
-              return _c(
+        _vm.rol.special.length == 0
+          ? _c("div", { staticClass: "card-body" }, [
+              _c(
                 "div",
-                {
-                  key: categoria.id,
-                  staticClass: "col-md-2 my-2",
-                  style: { cursor: "pointer" },
-                  attrs: {
-                    "data-toggle": "collapse",
-                    "data-target": "#" + index
-                  }
-                },
-                [
-                  _c("i", { staticClass: "far fa-plus-square" }),
-                  _vm._v(
-                    "\n              " +
-                      _vm._s(index) +
-                      "\n              \n\n              "
-                  ),
-                  _vm._l(categoria, function(elemento) {
-                    return _c(
-                      "li",
-                      {
-                        key: elemento.id,
-                        staticClass: "collapse",
-                        staticStyle: { "list-style": "none" },
-                        attrs: { id: index }
-                      },
-                      [
-                        _c("label", { style: { cursor: "pointer" } }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.permiso.slug,
-                                expression: "permiso.slug"
-                              }
-                            ],
-                            attrs: { type: "checkbox", id: elemento.id },
-                            domProps: {
-                              value: elemento.slug,
-                              checked: Array.isArray(_vm.permiso.slug)
-                                ? _vm._i(_vm.permiso.slug, elemento.slug) > -1
-                                : _vm.permiso.slug
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$a = _vm.permiso.slug,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = elemento.slug,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      _vm.$set(
-                                        _vm.permiso,
-                                        "slug",
-                                        $$a.concat([$$v])
-                                      )
-                                  } else {
-                                    $$i > -1 &&
-                                      _vm.$set(
-                                        _vm.permiso,
-                                        "slug",
-                                        $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1))
-                                      )
-                                  }
-                                } else {
-                                  _vm.$set(_vm.permiso, "slug", $$c)
-                                }
-                              }
+                { staticClass: "row" },
+                _vm._l(_vm.permisos, function(categoria, index) {
+                  return _c(
+                    "div",
+                    { key: index, staticClass: "col-md-2 my-2" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          style: { cursor: "pointer" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.funcion(index)
                             }
-                          }),
+                          }
+                        },
+                        [
+                          _vm.nombres.includes(index)
+                            ? _c("i", { staticClass: "far fa-minus-square" })
+                            : _c("i", { staticClass: "far fa-plus-square" }),
                           _vm._v(" "),
-                          _c("span", [_vm._v(_vm._s(elemento.name))])
-                        ])
-                      ]
-                    )
-                  })
-                ],
-                2
+                          _c("span", { staticClass: "bold" }, [
+                            _vm._v("  " + _vm._s(index) + " ")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(categoria, function(elemento) {
+                        return _c(
+                          "div",
+                          { key: elemento.id },
+                          [
+                            _c("transition", { attrs: { name: "fade" } }, [
+                              _vm.nombres.includes(elemento.category)
+                                ? _c(
+                                    "label",
+                                    { style: { cursor: "pointer" } },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.permiso.slug,
+                                            expression: "permiso.slug"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "checkbox",
+                                          id: elemento.id
+                                        },
+                                        domProps: {
+                                          value: elemento.slug,
+                                          checked: Array.isArray(
+                                            _vm.permiso.slug
+                                          )
+                                            ? _vm._i(
+                                                _vm.permiso.slug,
+                                                elemento.slug
+                                              ) > -1
+                                            : _vm.permiso.slug
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            var $$a = _vm.permiso.slug,
+                                              $$el = $event.target,
+                                              $$c = $$el.checked ? true : false
+                                            if (Array.isArray($$a)) {
+                                              var $$v = elemento.slug,
+                                                $$i = _vm._i($$a, $$v)
+                                              if ($$el.checked) {
+                                                $$i < 0 &&
+                                                  _vm.$set(
+                                                    _vm.permiso,
+                                                    "slug",
+                                                    $$a.concat([$$v])
+                                                  )
+                                              } else {
+                                                $$i > -1 &&
+                                                  _vm.$set(
+                                                    _vm.permiso,
+                                                    "slug",
+                                                    $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      )
+                                                  )
+                                              }
+                                            } else {
+                                              _vm.$set(_vm.permiso, "slug", $$c)
+                                            }
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("span", [
+                                        _vm._v(_vm._s(elemento.name))
+                                      ])
+                                    ]
+                                  )
+                                : _vm._e()
+                            ])
+                          ],
+                          1
+                        )
+                      })
+                    ],
+                    2
+                  )
+                }),
+                0
               )
-            }),
-            0
-          )
-        ])
+            ])
+          : _c(
+              "div",
+              { staticClass: "card-body" },
+              _vm._l(_vm.rol.special, function(especiales) {
+                return _c("div", { key: especiales }, [
+                  especiales == "all-access"
+                    ? _c("p", [_vm._v(" Acceso Total")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  especiales == "no-access"
+                    ? _c("p", [_vm._v(" Ningun Acceso")])
+                    : _vm._e()
+                ])
+              }),
+              0
+            )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "text-right" }, [
@@ -45031,7 +45086,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "usuarios content-wrapper" }, [
+  return _c("div", { staticClass: "usuarios" }, [
     _c(
       "div",
       { staticClass: "container-fluid" },

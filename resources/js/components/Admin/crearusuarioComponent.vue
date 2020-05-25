@@ -149,13 +149,20 @@ export default {
       })
       .catch(error => {
         let datos = error.data;
+        console.log(datos);
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
+            toast.fire({
+              icon: 'error',
+            title: 'Error, Revise formulario'
+          })
           }
-          toast.fire({
+          else{
+            toast.fire({
             icon: datos[1].type,
             title: datos[1].title+' '+datos[1].message
           })
+          }
       })
     }
   }

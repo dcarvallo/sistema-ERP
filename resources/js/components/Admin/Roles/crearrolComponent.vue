@@ -24,7 +24,6 @@
             
           </div>
         
-
     </div>
 
     <div class="card">
@@ -46,50 +45,39 @@
       </div>
     </div>
 
+    
 
       <div class="card">
         <div class="card-header">
           <h5>Permisos</h5>
         </div>
-        <div class="card-body">
+        <div v-if="rol.special.length == 0" class="card-body">
           <div class="row">
 
-            
-
-            <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="categoria.id" data-toggle="collapse" :data-target="'#'+index" :style="{cursor: 'pointer'}">
-              <i class="far fa-plus-square"></i>
-              {{index}}
-              
-
-              <li style="list-style:none" v-for="(elemento) in categoria" :key="elemento.id" :id="index" class="collapse">
-                <label :style="{cursor: 'pointer'}">
-                  <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
-                  <span>{{elemento.name}}</span>
-                </label>
-              </li>
-            </div>
-
-
-
-            <!-- <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="categoria.id" data-toggle="collapse" :data-target="'#'+index"  :style="{cursor: 'pointer'}">
-              <i class="far fa-plus-square"></i>
-              {{index}}
-            </div>
-              
-              <div v-for="(categoria,index) in permisos" :key="categoria.id" :style="{cursor: 'pointer'}">
-              
-              
-              <li style="list-style:none" v-for="(elemento) in categoria" :key="elemento.id" :id="index" class="collapse">
-                <label :style="{cursor: 'pointer'}">
-                  <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
-                  <span>{{elemento.name}}</span>
-                </label>
-              </li>
-              </div> -->
-
+               <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="index">
+                  <label @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
+                    <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
+                    <i v-else class="far fa-plus-square"></i>
+                    <span class="bold">  {{index}} </span>
+                  </label>
+                    <div v-for="elemento in categoria" :key="elemento.id"> 
+                      <transition name="fade">
+                        <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
+                          <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
+                          <span>{{elemento.name}}</span> 
+                          </label>
+                      </transition>
+                    </div>
+                 </div> 
 
           </div>
               
+        </div>
+        <div v-else class="card-body">
+            <div v-for="especiales in rol.special" :key="especiales">
+              <p v-if="especiales == 'all-access'"> Acceso Total</p>
+              <p v-if="especiales == 'no-access'"> Ningun Acceso</p>
+            </div>
         </div>
       </div>
     
@@ -113,6 +101,7 @@ export default {
         description: '',
         special: [],
       },
+      nombres: [],
       permiso: {
         slug: [],
       },
@@ -121,9 +110,22 @@ export default {
     }
   },
   created(){
-    console.log(Object.keys(this.permisos));
+    console.log(this.rol.special);
   },
   methods:{
+    funcion(el)
+    {
+      if(this.nombres.includes(el))
+      {
+          let index = this.nombres.indexOf(el);
+          if (index > -1) {
+            this.nombres.splice(index, 1);
+          }
+      }
+      else{
+          this.nombres.push(el)
+      }
+    },
     crearrol()
     {
       this.errors = [];
@@ -132,12 +134,20 @@ export default {
       formData.append('slug', this.rol.slug);
       formData.append('description', this.rol.description);
       formData.append('special', this.rol.special);
-      formData.append('permisos', this.permiso.slug);
+      if(this.rol.special.length == 0)
+      {
+        formData.append('permisos', this.permiso.slug);
+      }
       console.log(formData);
       axios.post('/roles/store',formData)
       .then(res => {
         let datos = res.data;
-        this.rol = [];
+        this.nombres = [];
+        this.rol.name = '';
+        this.rol.slug = '';
+        this.rol.description = '';
+        this.rol.special = [];
+        this.permiso.slug = [];
         toast.fire({
           icon: datos[1].type,
           title: datos[1].title+' '+datos[1].message
@@ -157,18 +167,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  /* @import "../node_modules/@syncfusion/ej2-base/styles/material.css";
-  @import "../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css";
-  @import "../node_modules/@syncfusion/ej2-buttons/styles/material.css"; */
- .control_wrapper {
-        display: block;
-        max-width: 350px;
-        max-height: 350px;
-        margin: auto;
-        overflow: auto;
-        border: 1px solid #dddddd;
-        border-radius: 3px;
-    }
-</style>

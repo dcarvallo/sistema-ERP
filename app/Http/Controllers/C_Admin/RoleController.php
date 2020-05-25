@@ -66,6 +66,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+
+      Log::info($request);
       $this->validate($request, [
         'name' => 'required|string',
         'slug' => 'required|string',
