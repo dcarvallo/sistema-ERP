@@ -6,7 +6,7 @@
     
       <div class="card">
         <div class="card-header">
-            <h5>Rol</h5>
+            <h5><strong> Rol </strong></h5>
         </div>
         <div class="card-body">
             <div class="form-group">
@@ -52,24 +52,44 @@
           <h5>Permisos</h5>
         </div>
         <div class="card-body">
-            <ul>
-              <li v-for="per in permisos" :key="per.id">
-                <label>
-                  <input :for="per.name" type="checkbox" :id="per.id" :value="per.slug" v-model="permiso.slug">
-                  <span >{{per.slug}} ({{per.name}}): </span>
-                  <em>{{per.description}}</em>
+          <div class="row">
+
+            
+
+            <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="categoria.id" data-toggle="collapse" :data-target="'#'+index" :style="{cursor: 'pointer'}">
+              <i class="far fa-plus-square"></i>
+              {{index}}
+              
+
+              <li style="list-style:none" v-for="(elemento) in categoria" :key="elemento.id" :id="index" class="collapse">
+                <label :style="{cursor: 'pointer'}">
+                  <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
+                  <span>{{elemento.name}}</span>
                 </label>
               </li>
-            </ul>
-            <!-- <ul>
-              <li v-for="per in permisos" :key="per.id">
-                <label >
-                  <input :for="per.name" type="checkbox" v-if="per.slug.split('.', 1) == per.slug.split('.', 1)" :id="per.id" :value="per.slug" v-model="permiso.slug">
-                  <span >{{per.slug.split('.', 1) }} ({{per.name}}): </span>
-                  <em>{{per.description}}</em> 
+            </div>
+
+
+
+            <!-- <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="categoria.id" data-toggle="collapse" :data-target="'#'+index"  :style="{cursor: 'pointer'}">
+              <i class="far fa-plus-square"></i>
+              {{index}}
+            </div>
+              
+              <div v-for="(categoria,index) in permisos" :key="categoria.id" :style="{cursor: 'pointer'}">
+              
+              
+              <li style="list-style:none" v-for="(elemento) in categoria" :key="elemento.id" :id="index" class="collapse">
+                <label :style="{cursor: 'pointer'}">
+                  <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
+                  <span>{{elemento.name}}</span>
                 </label>
               </li>
-            </ul> -->
+              </div> -->
+
+
+          </div>
+              
         </div>
       </div>
     
@@ -82,6 +102,7 @@
 </template>
 
 <script>
+
 export default {
   props: ['permisos'],
   data(){
@@ -95,11 +116,12 @@ export default {
       permiso: {
         slug: [],
       },
+      categorias: Object.values(this.permisos),
       errors: [],
     }
   },
   created(){
-    console.log(this.permiso);
+    console.log(Object.keys(this.permisos));
   },
   methods:{
     crearrol()
@@ -135,3 +157,18 @@ export default {
   }
 }
 </script>
+
+<style>
+  /* @import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+  @import "../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css";
+  @import "../node_modules/@syncfusion/ej2-buttons/styles/material.css"; */
+ .control_wrapper {
+        display: block;
+        max-width: 350px;
+        max-height: 350px;
+        margin: auto;
+        overflow: auto;
+        border: 1px solid #dddddd;
+        border-radius: 3px;
+    }
+</style>

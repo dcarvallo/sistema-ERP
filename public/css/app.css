@@ -1,4 +1,19 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+@charset "UTF-8";
+
+@font-face {
+  font-family: nunito;
+  src: url("/webfonts/nunito/Nunito-Regular.ttf");
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)

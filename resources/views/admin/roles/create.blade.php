@@ -17,7 +17,7 @@
       </div>
     </section>
     <section>
-      <crearrol :permisos="{{$permisos}}"/>
+      <crearrol :permisos="{{ json_encode($permisos) }}"/>
     </section>
 
 @endsection

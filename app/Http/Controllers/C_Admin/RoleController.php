@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Caffeinated\Shinobi\Models\Role;
 use Caffeinated\Shinobi\Models\Permission;
 use Log;
+use DB;
 
 class RoleController extends Controller
 {
@@ -50,7 +51,10 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permisos = Permission::select('id','name','slug','description')->get();
+
+        $permisos = Permission::all()->groupBy('category')->toArray();
+        // $permisos = Permission::select('id', 'name', 'description', 'category')->get()->toArray();
+        
         return view('admin.roles.create', compact('permisos'));;
     }
 

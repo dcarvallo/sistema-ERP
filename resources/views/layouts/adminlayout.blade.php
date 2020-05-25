@@ -16,7 +16,7 @@
  <link rel="stylesheet" href="/css/app.css">
  
   <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  {{-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> --}}
   @yield('css-head')
 </head>
 <!--
@@ -400,21 +400,12 @@
     </div>
   </footer>
 </div>
-<!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
 <script src="/js/jquery.min.js"></script>
-<!-- AdminLTE -->
-
+{{-- <script src="/js/bootstrap.min.js"></script> --}}
 <script src="/js/adminlte.js"></script>
-
 <script src="{{asset('js/app.js')}}"> </script>
-<!-- OPTIONAL SCRIPTS -->
-<script src="/js/Chart.min.js"></script>
-{{-- <script src="js/demo.js"></script> --}}
-{{-- <script src="js/dashboard3.js"></script> --}}
+
 
 @yield('js-footer')
 
