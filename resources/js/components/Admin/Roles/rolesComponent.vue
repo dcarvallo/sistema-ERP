@@ -11,7 +11,10 @@
                       </select>
                     </div>
                       <div class="w-auto">
-                          <a class="btn btn-success" :href="'/roles/create'">Crear Rol</a>
+                          <a class="btn btn-success" :href="'/roles/create'">
+                          <i class="far fa-plus-square"></i>
+                            Crear
+                          </a>
                       </div>
                   </div>
 
@@ -32,7 +35,7 @@
                       <a class="btn btn-warning" :href="'/roles/'+rol.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
                     <td style="width: 10px">
-                      <a class="btn btn-danger" :href="'/roles/'+rol.id"><i class="far fa-trash-alt"></i></a>
+                      <a class="btn text-white btn-danger" @click.prevent="eliminarrol(rol.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -100,6 +103,21 @@ export default {
         getroles(url = '/obtenerroles') {
             this.tableData.draw++;
             axios.get(url, {params: this.tableData})
+                .then(response => {
+                    let data = response.data;
+                    this.parametrostabla = data;
+                    if (this.tableData.draw == data.draw) {
+                        this.roles = data.data.data;
+                        this.configPagination(data.data);
+                    }
+                })
+                .catch(errors => {
+                    console.log(errors);
+                });
+        },
+        eliminarrol(rolid) {
+            this.tableData.draw++;
+            axios.delete('/roles/'+rolid, {params: this.tableData})
                 .then(response => {
                     let data = response.data;
                     this.parametrostabla = data;

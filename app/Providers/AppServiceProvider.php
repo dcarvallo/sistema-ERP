@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-
+use RefreshDatabase;
 use Illuminate\Support\ServiceProvider;
 use App\Models\M_Empresa\Empresa;
 
@@ -24,15 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      $empresa = Empresa::first();
-      // dd($empresa);
-      if($empresa){
-        view()->share('globalimagenempresa', $empresa->imagen_empresa);
-        view()->share('globalnombreempresa', $empresa->nombre);
-      }
-      else{
-        view()->share('globalimagenempresa', '');
-        view()->share('globalnombreempresa', 'Sistema');
-      }
+      // 
     }
 }

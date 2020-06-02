@@ -20,6 +20,7 @@ class CreateUbicacionsTable extends Migration
             $table->string('locacion',255);
             $table->unsignedBigInteger('empresa_id');
             $table->foreign('empresa_id')->references('id')->on('empresas');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

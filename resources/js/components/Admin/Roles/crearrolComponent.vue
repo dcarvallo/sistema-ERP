@@ -1,9 +1,10 @@
 <template>
 <div class="container-fluid">
 
-  <form enctype="multipart/form-data">
+  <form @keydown.enter.prevent>
 
-    
+    <div class="row">
+        <div class="col-md-6">
       <div class="card">
         <div class="card-header">
             <h5><strong> Rol </strong></h5>
@@ -12,50 +13,51 @@
             <div class="form-group">
                 <label>Nombre*</label>
                 <input class="form-control" type="text" v-model="rol.name">
+                <label v-if="errors.name" class="alert-danger">{{errors.name[0]}}</label>
             </div>
             <div class="form-group">
                 <label>Slug (abreviacion)*</label>
                 <input class="form-control" type="text" v-model="rol.slug">
+                 <label v-if="errors.slug" class="alert-danger">{{errors.slug[0]}}</label>
             </div>
             <div class="form-group">
                 <label>Descripcion*</label>
-                <input class="form-control" type="text" v-model="rol.description">
+                <textarea class="form-control" type="text" v-model="rol.description"></textarea>
+                 <label v-if="errors.description" class="alert-danger">{{errors.description[0]}}</label>
             </div>
             
           </div>
         
     </div>
-
-    <div class="card">
-      <div class="card-header">
-          <h5>Permisos Eseciales</h5>
-      </div>
-      <div class="card-body">
-        <div class="form-group">
-                <label>
-                  <input type="checkbox" :value="'all-access'" v-model="rol.special">
-                  <span>Acceso Total</span>
-                </label>
-                <br>
-                <label>
-                  <input type="checkbox" :value="'no-access'" v-model="rol.special">
-                  <span>Ningun Acceso</span>
-                </label>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+                <h5>Permisos Eseciales</h5>
             </div>
-      </div>
+            <div class="card-body">
+              <select class="form-control col-md-4" v-model="rol.special">
+                  <option value=""> Personalizado </option>
+                  <option value="all-access">Acceso Total</option>
+                  <option value="no-access">Ningun Acceso</option>
+              </select>
+            </div>
+          </div>
+        </div>
     </div>
-
-    
+      
 
       <div class="card">
         <div class="card-header">
           <h5>Permisos</h5>
         </div>
-        <div v-if="rol.special.length == 0" class="card-body">
+        <div v-if="rol.special == ''" class="card-body">
+          <label v-if="expand" @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Contraer todos</label>
+          <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
           <div class="row">
 
                <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="index">
-                  <label @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
+                  <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
                     <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
                     <i v-else class="far fa-plus-square"></i>
                     <span class="bold">  {{index}} </span>
@@ -74,10 +76,8 @@
               
         </div>
         <div v-else class="card-body">
-            <div v-for="especiales in rol.special" :key="especiales">
-              <p v-if="especiales == 'all-access'"> Acceso Total</p>
-              <p v-if="especiales == 'no-access'"> Ningun Acceso</p>
-            </div>
+              <p v-if="rol.special == 'all-access'"> <i class="far fa-check-square"></i> Acceso total a el CRUD de los modulos</p>
+              <p v-if="rol.special == 'no-access'"> <i class="far fa-check-square"></i> Ningun Acceso a los modulos</p>
         </div>
       </div>
     
@@ -99,8 +99,10 @@ export default {
         name: '',
         slug: '',
         description: '',
-        special: [],
+        special: '',
       },
+      test:[],
+      expand: false,
       nombres: [],
       permiso: {
         slug: [],
@@ -110,9 +112,21 @@ export default {
     }
   },
   created(){
+     for(var k in this.permisos) {
+        this.test.push(k);
+      }
     console.log(this.rol.special);
   },
   methods:{
+    expandirTodos()
+    {
+      if(this.expand)
+      {
+        this.nombres = this.test;
+      }
+      else
+        this.nombres = [];
+    },
     funcion(el)
     {
       if(this.nombres.includes(el))
@@ -134,7 +148,7 @@ export default {
       formData.append('slug', this.rol.slug);
       formData.append('description', this.rol.description);
       formData.append('special', this.rol.special);
-      if(this.rol.special.length == 0)
+      if(this.rol.special == '')
       {
         formData.append('permisos', this.permiso.slug);
       }
@@ -146,10 +160,9 @@ export default {
         this.rol.name = '';
         this.rol.slug = '';
         this.rol.description = '';
-        this.rol.special = [];
+        this.rol.special = '';
         this.permiso.slug = [];
-        toast.fire({
-          icon: datos[1].type,
+        toastsuccess.fire({
           title: datos[1].title+' '+datos[1].message
         })
       })
@@ -158,10 +171,12 @@ export default {
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
           }
-          toast.fire({
-            icon: datos[1].type,
+          if(datos)
+          {
+            toasterror.fire({
             title: datos[1].title+' '+datos[1].message
           })
+          }
       })
     }
   }

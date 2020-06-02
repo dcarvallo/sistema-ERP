@@ -44,7 +44,7 @@
                     </ul>
                   </div>
                   <div class="col-5 text-center">
-                    <img src="img/user1-128x128.jpg" alt="" class="img-circle img-fluid">
+                    <img src="{{asset('storage/'.$usuario->fotografia)}}" alt="" width="100px" height="100px" class="img-circle img-fuid">
                   </div>
                 </div>
               </div>

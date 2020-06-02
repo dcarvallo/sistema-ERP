@@ -36,17 +36,17 @@
                 <div class="form-group">
                   <label for="nombre">Nombre*</label>
                   <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" value="{{ old('nombre') }}" placeholder="Ubicacion xyz">
-                  @error('nombre')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                  @error('nombre')<div class="alert-danger">{{ $message }}</div> @enderror
                 </div>
                 <div class="form-group">
                   <label for="descripcion">Descripcion*</label>
                   <textarea type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" placeholder="Descripción">{{ old('descripcion') }}</textarea>
-                  @error('descripcion')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                  @error('descripcion')<div class="alert-danger">{{ $message }}</div> @enderror
                 </div>
                 <div class="form-group">
                   <label for="locacion">Locacion*</label>
                   <input type="text" class="form-control @error('locacion') is-invalid @enderror" name="locacion" value="{{ old('locacion') }}" placeholder="Locacion">
-                  @error('locacion')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                  @error('locacion')<div class="alert-danger">{{ $message }}</div> @enderror
                 </div>
                 
                {{-- @endif --}}

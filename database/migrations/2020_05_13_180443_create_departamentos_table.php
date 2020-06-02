@@ -20,6 +20,7 @@ class CreateDepartamentosTable extends Migration
             $table->bigInteger('encargado_id')->nullable();
             $table->unsignedBigInteger('ubicacion_id');
             $table->foreign('ubicacion_id')->references('id')->on('ubicaciones');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

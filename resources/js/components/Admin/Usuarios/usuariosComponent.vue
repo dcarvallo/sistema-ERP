@@ -10,26 +10,51 @@
                           <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
                       </select>
                     </div>
+                      <div class="w-auto mr-2">
+                          <a class="btn btn-success" href="/users/create">
+                            <i class="far fa-plus-square"></i>
+                            Crear
+                          </a>
+                      </div>
                       <div class="w-auto">
-                          <a class="btn btn-success" href="/users/create">Crear Usuario</a>
+                          <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalexportar">
+                            <i class=" fas fa-file-download"></i>
+                            Exportar
+                          </a>
                       </div>
                   </div>
-
-                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
+                
+                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar"
                     @input="getUsuarios()">
 
             </div>
+
+        <!-- <div class="px-0 offset-9 col-md-3" @mouseleave="expanded = false" >
+          <div class="form-control d-flex justify-content-between" style="cursor:pointer"  @click="expanded = !expanded">
+            <label style="cursor:pointer" > Filtrar columnas</label>
+            <span><i class="fas fa-arrow-down"></i></span>
+          </div>
+          <div v-if="expanded" class="w-100 rounded position-absolute border-dark bg-white">
+            <div class="form-control" v-for="(columnas, index) in columns" :key="index" style="cursor:pointer" >
+            <label class="mb-0 w-100" style="cursor:pointer" >
+             <input type="checkbox" :value="columnas.name" @click="filtro" v-model="checkbox" />
+              {{columnas.label}}
+            </label>
+            </div>
+          </div>
+        </div> -->
         </div>
-        <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
-            <tbody class="text-center">
-                <tr v-for="usuario in usuarios" :key="usuario.id">
-                    <td>{{usuario.name}}</td>
-                    <td>{{usuario.username}}</td>
-                    <td>{{usuario.email}}</td>
-                    <td v-if="usuario.activo">SI</td>
-                    <td v-else>NO</td>
+        <datatable :columns="columns" :checkboxfil="checkbox" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
+          
+            <tbody>
+                <tr v-for="(usuario) in usuarios" :key="usuario.id">
+                    <td v-if="checkbox.includes('name')" class="text-left">{{usuario.name}}</td>
+                    <td >{{usuario.username}}</td>
+                    <td >{{usuario.email}}</td>
+                    <td style="width: 10px" v-if="usuario.activo">SI</td>
+                    <td style="width: 10px" v-else>NO</td>
                     <td style="width: 10px">
-                      <!-- <form @submit.prevent>
+                      <!-- < form @submit.prevent>
                         <a class="btn btn-warning mx-2" @click="importardatousuario(usuario)">Importar de Dominio</a>
                       </form> -->
                         <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
@@ -39,20 +64,56 @@
         </datatable>
         <div class="d-flex justify-content-end">
           <pagination :pagination="pagination"
-                      @prev="getUsuarios(pagination.prevPageUrl)"
-                      @next="getUsuarios(pagination.nextPageUrl)">
+              @prev="getUsuarios(pagination.prevPageUrl)"
+              @next="getUsuarios(pagination.nextPageUrl)">
           </pagination>
         </div>
         </div>
-    </div>
 
+      <!-- Modal -->
+      <div class="modal fade" id="modalexportar" tabindex="-1" role="dialog" aria-labelledby="modalexportar" aria-hidden="true">
+        <div class="modal-dialog modal-sm"  role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalexportar">Exportar lista de usuarios:</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="col-md-6 offset-4">
+                <form action="">
+                  <div class="form-group"> 
+                    <label>
+                    <input type="checkbox" :value="exportar" v-model="exportar"> 
+                    <span> PDF </span>  
+                    </label>
+                    </div>
+                  <div class="form-group"> 
+                    <label>
+                      <input type="checkbox" :value="exportar" v-model="exportar"> 
+                      <span> Excel</span> 
+                    </label>
+                    </div>
+                </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Generar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
 
 </template>
 
 <script>
 
-import Datatable from '../ColumUserdatabase.vue';
-import Pagination from '../Pagination.vue';
+import Datatable from '../../ColumUserdatabase.vue';
+import Pagination from '../../Pagination.vue';
 export default {
     components: { datatable: Datatable, pagination: Pagination },
     created() {
@@ -62,7 +123,7 @@ export default {
         let sortOrders = {};
         let parametrostabla = {};
         let columns = [
-            {label: 'Nombre', name: 'name' },
+            {label: 'Nombre Completo', name: 'name' },
             {label: 'Nombre de usuario', name: 'username'},
             {label: 'Email', name: 'email'},
             {label: 'Activo', name: 'activo'},
@@ -73,6 +134,15 @@ export default {
         });
         return {
             usuarios: [],
+            exportar: [],
+            checkbox: [
+              'name',
+              'username',
+              'email',
+              'activo',
+              'acciones',
+            ],
+            expanded: false,
             columns: columns,
             sortKey: 'name',
             sortOrders: sortOrders,
@@ -109,8 +179,14 @@ export default {
                     }
                 })
                 .catch(errors => {
-                    console.log(errors);
+                    toast.fire({
+                        icon: 'error',
+                        title: 'Error'
+                    })
                 });
+        },
+        filtro(){
+          this.getUsuarios();
         },
         configPagination(data) {
             this.pagination.lastPage = data.last_page;

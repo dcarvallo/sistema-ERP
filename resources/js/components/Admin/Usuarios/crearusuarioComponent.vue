@@ -1,7 +1,7 @@
 <template>
 <div>
 
-  <form enctype="multipart/form-data">
+  <form enctype="multipart/form-data" @keydown.enter.prevent>
   <div class="d-flex justify-content-between">
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -23,29 +23,54 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-6">
+              <div class="form-group border rounded">
+                <div class="custom-control custom-switch">
+                  <input style="cursor:pointer" type="checkbox" class="custom-control-input display-2" id="switch1" v-model="vincular">
+                  <label style="cursor:pointer" class="custom-control-label" for="switch1">Vincular con empleado</label>
+                  
+                </div>
+                <div v-if="vincular" class="form-group mb-0">
+                    <input class="form-control mt-2 col-md-12" type="text" style="text-transform:uppercase" placeholder="Buscar empleado" v-model="dato">
+                    <div class="col-md-11 position-relative">
+                      <div class="position-absolute w-100">
+                      <div v-show="dato!=''" :style="'cursor:pointer'" class="form-control border asdf" @click.prevent="seleccionempleado(empleado)" v-for="(empleado, index) in buscarempleado" :key="index">
+                        
+                        <label class="w-100 position-absolute" style="cursor:pointer" >
+                          {{empleado.nombres}} {{empleado.apellidos}}, CI: {{empleado.ci}}
+                        </label>
+                      </div>
+                      </div>
+                  </div>
+                      <span v-if="empselect">
+                       <strong> Usuario vinculado con:</strong> {{empselect}}
+                      </span>
+                </div>
+                <div v-else>{{empselect=''}}{{empleado_id=''}}</div>
+              </div>
+
                 <div class="form-group">
                 <label for="nombres">Nombres*</label>
                 <input type="text" class="form-control" name="nombres" v-model="usuario.nombres" placeholder="Nombres">
-                <div v-if="errors.nombres" class="alert alert-danger">{{ errors.nombres[0] }}</div>
+                <div v-if="errors.nombres" class="alert-danger">{{ errors.nombres[0] }}</div>
               </div>
               <div class="form-group">
                 <label for="apellidos">Apellidos*</label>
                 <input type="text" class="form-control" name="apellidos" v-model="usuario.apellidos" placeholder="Apellidos">
-                <div v-if="errors.apellidos" class="alert alert-danger">{{ errors.apellidos[0] }}</div> 
+                <div v-if="errors.apellidos" class="alert-danger">{{ errors.apellidos[0] }}</div> 
               </div>
               <div class="form-group">
                 <label for="username">Nombre de Usuario*</label>
                 <input type="text" class="form-control" name="username" v-model="usuario.username" placeholder="Nombre de usuario"/>
-                <div v-if="errors.username" class="alert alert-danger">{{ errors.username[0] }}</div> 
+                <div v-if="errors.username" class="alert-danger">{{ errors.username[0] }}</div> 
               </div>
               <div class="form-group">
                 <label for="email">Email*</label>
                 <input type="email" class="form-control" name="email" v-model="usuario.email" placeholder="email">
-                <div v-if="errors.email" class="alert alert-danger">{{ errors.email[0] }}</div> 
+                <div v-if="errors.email" class="alert-danger">{{ errors.email[0] }}</div> 
               </div>
               <div class="form-group">
                 <label for="email">Activo*</label>
-                <select class="form-control" v-model="usuario.activo" name="activo">
+                <select class="form-control col-md-2" v-model="usuario.activo" name="activo">
                     <option value="1"  selected>Si</option>
                     <option value="0">No</option>
                 </select>
@@ -53,7 +78,7 @@
               <div class="form-group">
                 <label for="password">Password*</label>
                 <input type="password" class="form-control" v-model="usuario.password" placeholder="password">
-                <div v-if="errors.password" class="alert alert-danger">{{ errors.password[0] }}</div> 
+                <div v-if="errors.password" class="alert-danger">{{ errors.password[0] }}</div> 
               </div>
             </div>
             <div class="col-md-6">
@@ -65,6 +90,7 @@
                   <br>
                   <input type="file" @change="onFileChange" class="form-control" name="imagen" />
               </div>
+              
             </div>
           </div>
         </div>
@@ -82,7 +108,7 @@
               <li v-for="rol in roles" :key="rol.id">
                 <label>
                   <input type="checkbox"  :id="rol.id" :value="rol.slug" v-model="rolesSeleccionados" :checked="rol.special == 'no-access'">
-                  <label :for="rol.name">{{rol.name}}: </label>
+                  <span :for="rol.name">{{rol.name}}: </span>
                   <em>{{rol.description}}</em>
                 </label>
               </li>
@@ -100,10 +126,13 @@
 
 <script>
 export default {
-  props: ['roles'],
+  props: ['roles', 'empleados'],
   data(){
     return{
       message: '',
+      dato: '',
+      empselect:'',
+      empleado_id:'',
       enlace: '/storage/usuariodef/avatar.png',
       usuario: {
         nombres: '',
@@ -114,19 +143,31 @@ export default {
         password: '',
         imagen: '',
       },
+      vincular: false,
       errors: [],
       rolesSeleccionados: [],
     }
   },
+  computed: {
+    buscarempleado(){
+      return this.empleados.filter((empleado) => empleado.apellidos.toLowerCase().includes(this.dato) || empleado.nombres.toLowerCase().includes(this.dato));
+    },
+  },
   methods:{
+    seleccionempleado(emp){
+      this.dato ='';
+      this.empselect = emp.nombres+' '+emp.apellidos+' CI: '+emp.ci;
+      this.empleado_id = emp.id;
+      this.usuario.nombres = emp.nombres;
+      this.usuario.apellidos = emp.apellidos;
+    },
     onFileChange(e) {
       this.usuario.imagen = e.target.files[0];
       this.enlace = URL.createObjectURL(this.usuario.imagen );
     },
     crearusuario()
     {
-      this.errors = [];
-      this.rolesSeleccionados = [];
+      
       let formData = new FormData();
       formData.append('nombres', this.usuario.nombres);
       formData.append('apellidos', this.usuario.apellidos);
@@ -136,31 +177,43 @@ export default {
       formData.append('password', this.usuario.password);
       formData.append('imagen', this.usuario.imagen);
       formData.append('roles', this.rolesSeleccionados);
-      console.log(formData);
+      if(this.empleado_id != ''){
+        formData.append('empleado_id', this.empleado_id);
+      }
       axios.post('/users/store',formData)
       .then(res => {
         let datos = res.data;
         this.usuario = [];
+        this.usuario.activo = 1;
+        this.errors = [];
+        this.rolesSeleccionados = [];
+        this.dato ='';
+        this.empleado_id = '';
+        this.empselect = '';
+        this.vincular=false;
         this.enlace = '/storage/usuariodef/avatar.png';
-        toast.fire({
-          icon: datos[1].type,
+        toastsuccess.fire({
           title: datos[1].title+' '+datos[1].message
         })
       })
       .catch(error => {
+        console.log(error)
         let datos = error.data;
-        console.log(datos);
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
-            toast.fire({
-              icon: 'error',
+            toasterror.fire({
             title: 'Error, Revise formulario'
           })
           }
-          else{
-            toast.fire({
-            icon: datos[1].type,
+        if(datos){
+            toasterror.fire({
             title: datos[1].title+' '+datos[1].message
+          })
+          }
+          if(error.response.status == 500){
+            this.errors = error.response.data.errors;
+            toasterror.fire({
+            title: 'Error, notificado a administrador'
           })
           }
       })
@@ -168,3 +221,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .asdf:hover{
+    background-color: #d8e0ea;
+  }
+</style>

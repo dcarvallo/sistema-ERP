@@ -25,6 +25,7 @@ class CreateEmpresasTable extends Migration
             $table->string('email', 100)->nullable();
             $table->string('imagen_empresa', 200)->nullable();
             $table->date('fecha_creacion');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

@@ -12,9 +12,9 @@ class RoleSeederTable extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
-            'name'          => 'Navegar usuarios',
-            'slug'          => 'users.index',
-            'description'   => 'Lista y navega todos los usuarios del sistema',
+            'name'          => 'Admin',
+            'slug'          => 'admin',
+            'description'   => 'Acceso a todos los modulo del sistema',
             'special'       => 'all-access'
         ]);
     }

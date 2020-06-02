@@ -1,7 +1,7 @@
 <template>
    <div class="row" >
       <div class="col-md-6">
-      <form enctype="multipart/form-data">
+      <form enctype="multipart/form-data" @keydown.enter.prevent>
           <div >
               <div class="card">
                 <div class="card-header">
@@ -12,17 +12,17 @@
                 <div class="form-group">
                   <label for="nombres">Nombres</label>
                   <input type="text" class="form-control " name="nombres" v-model="usuariomod.nombres" placeholder="Nombres">
-                  <div v-if="errors.nombres" class="alert alert-danger">{{ errors.nombres[0] }}</div>
+                  <div v-if="errors.nombres" class="alert-danger">{{ errors.nombres[0] }}</div>
                 </div>
                 <div class="form-group">
                   <label for="apellidos">Apellidos</label>
                   <input type="text" class="form-control " name="apellidos" v-model="usuariomod.apellidos" placeholder="Apellidos">
-                  <div v-if="errors.apellidos" class="alert alert-danger">{{ errors.apellidos[0] }}</div>
+                  <div v-if="errors.apellidos" class="alert-danger">{{ errors.apellidos[0] }}</div>
                 </div>
                 <div class="form-group">
                   <label for="username">Nombre de Usuario</label>
                   <input type="text" class="form-control " name="username" v-model="usuariomod.username"  placeholder="Nombre de usuario"/>
-                  <div v-if="errors.username" class="alert alert-danger">{{ errors.username[0] }}</div>
+                  <div v-if="errors.username" class="alert-danger">{{ errors.username[0] }}</div>
                 </div>
 
                 
@@ -69,7 +69,7 @@
                   <div class="d-flex">
 
                     <input type="email" class="form-control col-md-10 mr-2" v-model="usuario.email" placeholder="email">
-                    <button class="btn btn-sm btn-primary text-white" @click.prevent="updateemail">{{botonmail}}</button>
+                    <button class="btn btn-sm btn-primary text-white col-md-2" @click.prevent="updateemail">{{botonmail}}</button>
                    
                   </div>
                   <p class="alert alert-danger" v-if="errors.email">{{errors.email[0]}}</p>
@@ -91,7 +91,7 @@
                   <div class="form-group">
                   <div class="d-flex">
                   <input type="password" class="form-control col-md-10 mr-2" v-model="usuario.password" name="password"  placeholder="Password">
-                  <button class="btn btn-sm btn-primary text-white" @click.prevent="updatepass">{{botonpass}}</button>
+                  <button class="btn btn-sm btn-primary text-white col-md-2" @click.prevent="updatepass">{{botonpass}}</button>
                   </div>
                   <span class="text-success">Minimo de 6 caracteres </span>
                   <p v-if="errors.password" class="alert alert-danger">{{errors.password[0]}}</p>
@@ -112,14 +112,14 @@
                     <li v-for="rol in roles" :key="rol.id">
                       <label>
                         <input type="checkbox" :value="rol.slug" v-model="rolesSeleccionados">
-                        <label :for="rol.name">{{rol.name}}</label>
+                        <span>{{rol.name}}</span>
                         <em>{{rol.description}}</em>
                       </label>
                     </li>
                   </ul>
                   <br>
                   <div class="text-right">
-                    <button class="btn btn-sm btn-primary" @click.prevent="updaterol">Guardar</button>
+                    <button class="btn btn-primary" @click.prevent="updaterol">Guardar</button>
                   </div>
                   </form>
                 </div>
@@ -176,8 +176,7 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuario.password = '';
-          toast.fire({
-                icon: datos[1].type,
+          toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
          console.log(datos);
@@ -200,8 +199,7 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuario.password = '';
-          toast.fire({
-                icon: datos[1].type,
+          toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
          console.log(datos);
@@ -228,8 +226,7 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuariomod.password = '';
-          toast.fire({
-                icon: datos[1].type,
+          toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
          console.log(datos);
@@ -255,8 +252,7 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuario.password = '';
-          toast.fire({
-                icon: datos[1].type,
+          toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
          console.log(datos);

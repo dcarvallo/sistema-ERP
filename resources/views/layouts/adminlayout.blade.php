@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>Panel Administrador </title>
+  <title>Sistema ERP </title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/css/all.min.css">
@@ -171,15 +171,15 @@
           <li><a class="" href="{{ route('login') }}">Login</a></li>
       @else
         
-          <li class="nav-item dropdown">
+          <li class="nav-item right-align dropdown">
             
-            <a id="navbarDropdown" class="nav-link dropdown-toggle text-we text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            <a id="navbarDropdown" class="nav-link dropdown-toggle text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
               <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img mr-1" style="width: 40px" alt="Logo">
                 
                 <span class="caret"> {{ Auth::user()->username }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="">Perfil</a>
+              <a class="dropdown-item" href="{{route('perfilusuario')}}">Perfil</a>
               <a class="dropdown-item" href=""
               onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
@@ -205,7 +205,7 @@
     <a href="/admin" class="brand-link">
       <img src="{{ asset('storage/'.$globalimagenempresa)}}" alt="" class="brand-image img-circl elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light"> Sistema ERP</span>
+      <span class="brand-text font-weight-light"> {{$globalnombreempresa}}</span>
     </a>
 
     
@@ -217,7 +217,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          
+        @can('admin.index')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -235,7 +235,7 @@
                 </a>
               </li>
               @endcan
-              @can('users.index')
+              @can('roles.index')
               <li class="nav-item  {{ request()->is("route('roles.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('roles.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -243,20 +243,76 @@
                 </a>
               </li>
               @endcan
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+              @can('permisos.index')
+              <li class="nav-item  {{ request()->is("route('permisos.index')") ? 'bg-blue' : ''}}">
+                <a href="{{route('permisos.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Empleados</p>
+                  <p>Permisos</p>
                 </a>
               </li>
+              @endcan
+              @can('contactos.index')
               <li class="nav-item {{ request()->is('contactos') ? 'bg-blue' : ''}}">
                 <a href="/contactos" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Contactos</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
+          @endcan
+          @can('empresas.index')
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                Administrar Empresa
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('empresas.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Empresa</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('ubicaciones.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Estructura organizativa</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('ubicaciones.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ubicaciones</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/empleados" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Departamentos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Areas</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cargos</p>
+                </a>
+              </li>
+            </ul>
+            
+          </li>
+          @endcan
+          @can('rrhh.index')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-friends"></i>
@@ -269,7 +325,7 @@
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Departamentos</p>
+                  <p>Contratacion</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -302,77 +358,153 @@
                   <p>Asistencia </p>
                 </a>
               </li>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Entrevistas </p>
-              </a>
-            </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Entrevistas </p>
+                </a>
+              </li>
             </ul>
             
           </li>
-
-
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-building"></i>
-              <p>
-                Gestion Empresa
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              @can('empresas.index')
-              <li class="nav-item">
-                <a href="{{route('empresas.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Empresa</p>
+          @endcan
+          @can('contabilidad.index')
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-receipt"></i>
+                <p>
+                  Contabilidad
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Facturacion</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Cuentas x Pagar</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/empleados" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Cuentas x Cobrar</p>
+                  </a>
+                </li>
+              </ul>
+            
+            </li>
+            @endcan
+            @can('almacen.index')
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Almacen
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Inventario</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Compra</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/empleados" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Documentos</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Servicio de campo</p>
+                    </a>
+                  </li>
+                </ul>
+            
               </li>
               @endcan
-              <li class="nav-item">
-                <a href="{{ route('ubicaciones.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ubicaciones</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/empleados" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Departamentos</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Areas</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cargos</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Asistencia </p>
-                </a>
-              </li>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Entrevistas </p>
-              </a>
-            </li>
-            </ul>
+              @can('tesoreria.index')
+                <li class="nav-item has-treeview">
+                  <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-cash-register"></i>
+                    <p>
+                      Tesoreria
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Cajas</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dia</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="/empleados" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Reportes</p>
+                      </a>
+                    </li>
+
+                  </ul>
             
-          </li>
-          
-        </ul>
+                </li>
+                @endcan
+                @can('helpdesk.index')
+                  <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon far fa-life-ring"></i>
+                      <p>
+                        HelpDesk
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Incidencias</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Eventos</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Reportes</p>
+                        </a>
+                      </li>
+                      
+                    </ul>
+            
+                  </li>
+                  @endcan
+          </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -402,7 +534,6 @@
 </div>
 
 <script src="/js/jquery.min.js"></script>
-{{-- <script src="/js/bootstrap.min.js"></script> --}}
 <script src="/js/adminlte.js"></script>
 <script src="{{asset('js/app.js')}}"> </script>
 

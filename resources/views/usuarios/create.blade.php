@@ -22,7 +22,7 @@
       <div class="card card-solid">
         <div class="card-body ">
      
-        <crearusuario :roles="{{$roles}}" />
+        <crearusuario :roles="{{$roles}}" :empleados="{{$empleados}}"/>
      
         </div>
       </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\C_Admin;
+namespace App\Http\Controllers\C_Usuario;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,16 +8,15 @@ use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Caffeinated\Shinobi\Models\Role;
+use App\Http\Requests\Usuarios\StoreUsuario;
+use App\Http\Requests\Usuarios\UpdateUsuario;
+use App\Models\M_RRHH\Empleado;
 use DB;
 use Log;
+use Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     
     public function __construct()
     {
@@ -43,7 +42,8 @@ class UserController extends Controller
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
                 $query->where('name', 'like', '%' . $searchValue . '%')
-                ->orWhere('username', 'like', '%' . $searchValue . '%');
+                ->orWhere('username', 'like', '%' . $searchValue . '%')
+                ->orWhere('email', 'like', '%' . $searchValue . '%');
             });
         }
 
@@ -51,97 +51,73 @@ class UserController extends Controller
         return ['data' => $usuarios, 'draw' => $request->input('draw')];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $roles = Role::all();
-        return view('usuarios.create', compact('roles'));
+      $empleados = Empleado::select('id', 'nombres', 'apellidos', 'ci')->get();
+      $roles = Role::all();
+      return view('usuarios.create', compact('roles', 'empleados'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreUsuario $request)
     {
-        $this->validate($request, [
-            'nombres' => 'required|string',
-            'apellidos' => 'required|string',
-            'username' => 'required|string',
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:6'
-        ]);
-        try {
-          $usuario = new User();
-          $usuario->nombres = $request->nombres;
-          $usuario->apellidos = $request->apellidos;
-          $usuario->name = $request->nombres.' '.$request->apellidos;
-          $usuario->username = $request->username;
-          $usuario->email = $request->email;
-          $usuario->activo = $request->activo;
-          $usuario->password = Hash::make($request->password);
-          Log::info($request);
-          if($request->imagen)
-          {
-              $ext = $request->imagen->getClientOriginalExtension();
-              $fileName = str_random().'.'.$ext;
-              $request->imagen->storeAs('usuarios/', $fileName);
-              $usuario->fotografia = 'usuarios/'.$fileName;
-          }
-          else
-          {
-            $usuario->fotografia = 'usuariodef/avatar.png';
-          }
+      Log::info($request);
+      try {
+        $usuario = new User();
+        $usuario->nombres = $request->nombres;
+        $usuario->apellidos = $request->apellidos;
+        $usuario->name = $request->nombres.' '.$request->apellidos;
+        $usuario->username = $request->username;
+        $usuario->email = $request->email;
+        $usuario->activo = $request->activo;
+        $usuario->password = Hash::make($request->password);
+        if($request->empleado_id)
+        { 
+          $usuario->empleado_id = $request->empleado_id;
+        }
+        if($request->imagen)
+        {
+            $ext = $request->imagen->getClientOriginalExtension();
+            $fileName = str_random().'.'.$ext;
+            $request->imagen->storeAs('usuarios/', $fileName);
+            $usuario->fotografia = 'usuarios/'.$fileName;
+        }
+        else
+        {
+          $usuario->fotografia = 'usuariodef/avatar.png';
+        }
 
-          
-          $usuario->save();
+        $usuario->save();
+        
+        if($request->roles)
+        {
           $array = explode(",", $request->roles);
           $usuario->syncRoles($array);
+        }
           
+        $toast = array(
+          'title'   => 'Usuario creado: ',
+          'message' => $request->username,
+          'type'    => 'success'
+        );
+
+        return [$usuario,$toast];
+
+      } catch (\Illuminate\Database\QueryException $e) {
           $toast = array(
-            'title'   => 'Usuario creado: ',
-            'message' => $request->username,
-            'type'    => 'success'
+              'title'   => 'Usuario no creado: ',
+              'message' => $usuario->username,
+              'type'    => 'error'
           );
+          return [$usuario, $toast , $e->errorInfo];
+      }
 
-          return [$usuario,$toast];
-
-          } catch (\Throwable $th) {
-              $toast = array(
-                  'title'   => 'Usuario no creado: ',
-                  'message' => $usuario->username,
-                  'type'    => 'error'
-              );
-              return [$usuario, $toast , $th];
-          }
-
-            
-        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $roles = Role::all();
@@ -149,22 +125,8 @@ class UserController extends Controller
         return view('usuarios.edit', compact('usuario', 'roles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UpdateUsuario $request, $id)
     {
-      Log::info($request);
-      $this->validate($request, [
-        'nombres' => 'required|string',
-        'apellidos' => 'required|string',
-        'username' => 'required|string',
-      ]);
-
       
       try {
         $usuario = User::find($id);
@@ -188,7 +150,6 @@ class UserController extends Controller
             'type'    => 'success'
         );
 
-        // return redirect('/users/index')->with('mensaje', $toast);
         return [$usuario,$toast];
 
       } catch (\Throwable $th) {
@@ -273,16 +234,25 @@ class UserController extends Controller
       try {
         
         $usuario = User::find($id);
-        
-        $arrayderoles = explode(",", $request->roles);
-        Log::info($arrayderoles);
-        $usuario->syncRoles($arrayderoles);
-        
-        $toast = array(
-            'title'   => 'roles modificados: ',
+        if($request->roles)
+        {
+          $arrayderoles = explode(",", $request->roles);
+          $usuario->syncRoles($arrayderoles);
+          $toast = array(
+            'title'   => 'roles modificados para: ',
             'message' => $usuario->username,
             'type'    => 'success'
-        );
+          );
+        }
+        else{
+          $usuario->removeRoles($usuario->roles);
+          $toast = array(
+            'title'   => 'roles modificados para: ',
+            'message' => $usuario->username,
+            'type'    => 'success'
+          );
+        }
+        
         
         return [$usuario,$toast];
 
@@ -296,12 +266,6 @@ class UserController extends Controller
       }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
@@ -331,6 +295,12 @@ class UserController extends Controller
         
         // $usuarios = DB::table('users')->orderBy('name', 'asc')->paginate(10);
        
+    }
 
+    public function perfilusuario()
+    {
+      
+      $usuario = User::find(Auth::user()->id);
+      return view('usuarios.perfil', compact('usuario'));
     }
 }

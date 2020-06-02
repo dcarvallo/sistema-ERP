@@ -7,25 +7,56 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+ 
 import swal from 'sweetalert2';
 window.swal = swal;
 
-const toast = swal.mixin({
+const toastsuccess = swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
-    timer: 4000,
+    background: '#e1f6d0',
+    icon: 'success',
+    timer: 5000,
+    // timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', swal.stopTimer)
+      toast.addEventListener('mouseleave', swal.resumeTimer)
+    }
 })
 
-window.toast = toast;
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+const toasterror = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  background: '#edc3c3',
+  icon: 'error',
+  timer: 5000,
+  // timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', swal.stopTimer)
+    toast.addEventListener('mouseleave', swal.resumeTimer)
+  }
+})
+
+const toastinfo = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  background: '#d0e0f4',
+  icon: 'info',
+  iconHtml: '<i style="font-size: 0.9rem;" class="far fa-flag"></i>',
+  timer: 5000,
+  // timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', swal.stopTimer)
+    toast.addEventListener('mouseleave', swal.resumeTimer)
+  }
+})
+
+window.toastsuccess = toastsuccess;
+window.toasterror = toasterror;
+window.toastinfo = toastinfo;
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
@@ -37,12 +68,17 @@ Vue.component('empleadoedit', require('./components/RRHH/empleadoeditComponent.v
 Vue.component('empresacreate', require('./components/Empresa/empresacreateComponent.vue').default);
 Vue.component('ubicaciones', require('./components/Empresa/ubicacionesComponent.vue').default);
 //usuarios
-Vue.component('usuarios', require('./components/Admin/usuariosComponent.vue').default);
-Vue.component('editarusuario', require('./components/Admin/editarusuarioComponent.vue').default);
-Vue.component('crearusuario', require('./components/Admin/crearusuarioComponent.vue').default);
+Vue.component('usuarios', require('./components/Admin/Usuarios/usuariosComponent.vue').default);
+Vue.component('editarusuario', require('./components/Admin/Usuarios/editarusuarioComponent.vue').default);
+Vue.component('crearusuario', require('./components/Admin/Usuarios/crearusuarioComponent.vue').default);
 //roles
 Vue.component('roles', require('./components/Admin/Roles/rolesComponent.vue').default);
 Vue.component('crearrol', require('./components/Admin/Roles/crearrolComponent.vue').default);
+Vue.component('editarrol', require('./components/Admin/Roles/editarrolComponent.vue').default);
+//rpermisos
+Vue.component('permisos', require('./components/Admin/Permisos/permisosComponent.vue').default);
+Vue.component('crearpermiso', require('./components/Admin/Permisos/crearpermisoComponent.vue').default);
+Vue.component('editarpermiso', require('./components/Admin/Permisos/editarpermisoComponent.vue').default);
 
 
 /**

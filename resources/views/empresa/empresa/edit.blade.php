@@ -33,17 +33,17 @@
                <div class="form-group">
                  <label for="nombre">Nombre de Empresa*</label>
                  <input type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" value="{{$empresa->nombre}}" placeholder="Empresa xyz">
-                 @error('nombre')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                 @error('nombre')<div class="alert-danger">{{ $message }}</div> @enderror
                </div>
                <div class="form-group">
                  <label for="descripcion">Descripción*</label>
                  <textarea type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" placeholder="Descripción">{{ $empresa->descripcion }}</textarea>
-                 @error('descripcion')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                 @error('descripcion')<div class="alert-danger">{{ $message }}</div> @enderror
                </div>
                <div class="form-group">
                  <label for="rubro">Rubro*</label>
                  <input type="text" class="form-control @error('rubro') is-invalid @enderror" name="rubro" value="{{$empresa->rubro }}" placeholder="Rubro de la empresa">
-                 @error('rubro')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                 @error('rubro')<div class="alert-danger">{{ $message }}</div> @enderror
                </div>
                <div class="form-group">
                  <label for="mision">Misión</label>
@@ -65,7 +65,7 @@
              <div class="form-group">
                <label for="nombre">Dirección*</label>
                <input type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" value="{{ $empresa->direccion }}" placeholder="Nombre de la calle">
-               @error('direccion')<div class="alert alert-danger">{{ $message }}</div> @enderror
+               @error('direccion')<div class="alert-danger">{{ $message }}</div> @enderror
              </div>
              <div class="form-group col-md-5 px-0">
                <label for="nombre">Teléfonos</label>
@@ -74,12 +74,12 @@
              <div class="form-group">
                <label for="nombre">Email</label>
                <input type="text" class="form-control" @error('email') is-invalid @enderror name="email" value="{{ $empresa->email }}" placeholder="Email" >
-               @error('email')<div class="alert alert-danger">{{ $message }}</div> @enderror
+               @error('email')<div class="alert-danger">{{ $message }}</div> @enderror
              </div>
              <div class="form-group col-md-5 px-0">
                <label for="fecha_creacion">Fecha de Creación de la Empresa*</label>
                <input type="date" class="form-control @error('fecha_creacion') is-invalid @enderror" name="fecha_creacion" value="{{ $empresa->fecha_creacion }}">
-               @error('fecha_creacion')<div class="alert alert-danger">{{ $message }}</div> @enderror
+               @error('fecha_creacion')<div class="alert-danger">{{ $message }}</div> @enderror
              </div>
              <div class="form-group col-md-12 px-0">
                <label for="fecha_creacion">Imagen de la Empresa</label>

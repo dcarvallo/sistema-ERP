@@ -53,6 +53,7 @@ class RoleController extends Controller
     {
 
         $permisos = Permission::all()->groupBy('category')->toArray();
+        ksort($permisos);
         // $permisos = Permission::select('id', 'name', 'description', 'category')->get()->toArray();
         
         return view('admin.roles.create', compact('permisos'));;
@@ -67,7 +68,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
 
-      Log::info($request);
+
       $this->validate($request, [
         'name' => 'required|string',
         'slug' => 'required|string',
@@ -80,11 +81,12 @@ class RoleController extends Controller
           $rol->description = $request->description;
           if($request->special)
           {
-            $arrayspecial = explode(",", $request->special);
-            $rol->special = $arrayspecial;
+            $rol->special = $request->special;
           }
           
           $rol->save();
+
+
           if($request->permisos)
           {
             $array = explode(",", $request->permisos);
@@ -129,7 +131,10 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+      $rol = Role::find($id);
+      $permisos = Permission::all()->groupBy('category')->toArray();
+      ksort($permisos);
+      return view('admin.roles.edit', compact('rol', 'permisos'));
     }
 
     /**
@@ -141,7 +146,48 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+      $this->validate($request, [
+        'name' => 'required|string',
+        'slug' => 'required|string',
+        'description' => 'required|string',
+        ]);
+        try {
+          $rol = Role::find($id);
+          $rol->name = $request->name;
+          $rol->slug = $request->slug;
+          Log::info($request);
+          $rol->description = $request->description;
+          if($request->special)
+          {
+            $rol->special = $request->special;
+          }
+          
+          $rol->save();
+
+          if($request->permisos)
+          {
+            $array = explode(",", $request->permisos);
+            $rol->syncPermissions($array);
+          }
+          
+          $toast = array(
+            'title'   => 'Rol modificado: ',
+            'message' => $request->name,
+            'type'    => 'success'
+          );
+          
+          return [$rol,$toast];
+          
+        } catch (\Throwable $th) {
+          $toast = array(
+            'title'   => 'Rol no creado: ',
+            'message' => $rol->name,
+            'type'    => 'error'
+          );
+          return [$rol, $toast , $th];
+        }
+
     }
 
     /**
@@ -152,6 +198,14 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $rol = Role::find($id);
+       Log::info($rol);
+        $rol->delete();
+        $toast = array(
+          'title'   => 'Rol eliminado: ',
+          'message' => '',
+          'type'    => 'success'
+        );
+        return $toast;
     }
 }
