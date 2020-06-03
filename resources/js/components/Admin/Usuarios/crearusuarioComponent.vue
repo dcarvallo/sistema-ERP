@@ -10,7 +10,7 @@
   </div>
 </nav>
 <div class="text-right">
-      <button type="submit" class="btn btn-primary" @click.prevent="crearusuario">Guardar</button>
+      <button type="submit" class="btn btn-primary" @click.prevent="crearusuario"><i class="far fa-save"></i> Guardar</button>
     </div>
   </div>
 <hr>

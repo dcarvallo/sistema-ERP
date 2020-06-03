@@ -21,8 +21,14 @@ Route::get('licence', function(){
 
   });
 
-Auth::routes();
-Route::get('/', 'Auth\LoginController@login');
+// Auth::routes();
+Route::post('login', 'Auth\LoginController@login');
+Route::get('/', 'Auth\LoginController@showLoginForm');
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('password/reset', 'C_Usuario\UserController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'C_Usuario\UserController@reset')->name('password.update');
 
 
 Route::get('/home', 'HomeController@index')->name('home');

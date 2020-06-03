@@ -22,7 +22,7 @@
 
 <script>
     export default {
-      props: ['columns', 'checkboxfil', 'sortKey', 'sortOrders'],
+      props: ['columns', 'sortKey', 'sortOrders'],
       data() {
         return {
           data3:[]

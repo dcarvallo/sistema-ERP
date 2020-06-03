@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
   
-  Route::get('perfilusuario', 'C_Usuario\UserController@perfilusuario')->name('perfilusuario');
+  Route::get('perfil', 'C_Usuario\UserController@perfilusuario')->name('perfil');
 
 	Route::get('obtenerusuarios', 'C_Usuario\UserController@obtenerusuarios');
 

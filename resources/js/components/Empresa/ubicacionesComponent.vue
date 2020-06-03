@@ -1,6 +1,6 @@
 <template>
 
-   <div class="usuarios">
+   <div>
      <div class="container-fluid">
         <div class="tableFilters my-1">
             <div class="d-flex justify-content-between">
@@ -28,10 +28,10 @@
                     <td>{{ubicacion.locacion}}</td>
                     <td>{{ubicacion.empresa.nombre}}</td>
                     <td style="width: 10px">
-                        <a class="btn btn-warning" :href="'/users/'+ubicacion.id+'/edit'"><i class="far fa-edit"></i></a>
+                        <a class="btn btn-warning" :href="'/ubicaciones/'+ubicacion.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
                     <td style="width: 10px">
-                        <a class="btn btn-danger" :href="'/users/'+ubicacion.id+'/edit'"><i class="fas fa-trash-alt"></i></a>
+                        <a class="btn btn-danger" :href="'/ubicaciones/'+ubicacion.id+'/edit'"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -69,7 +69,7 @@ export default {
             {label: 'Eliminar', name: 'eliminar'}
         ];
         columns.forEach((column) => {
-           sortOrders[column.nombre] = -1;
+           sortOrders[column.name] = -1;
         });
         return {
             ubicaciones: [],
@@ -125,7 +125,7 @@ export default {
         sortBy(key) {
             this.sortKey = key;
             this.sortOrders[key] = this.sortOrders[key] * -1;
-            this.tableData.column = this.getIndex(this.columns, 'nombre', key);
+            this.tableData.column = this.getIndex(this.columns, 'name', key);
             this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
             this.getUbicaciones();
         },

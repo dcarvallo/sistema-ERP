@@ -79,6 +79,9 @@ Vue.component('editarrol', require('./components/Admin/Roles/editarrolComponent.
 Vue.component('permisos', require('./components/Admin/Permisos/permisosComponent.vue').default);
 Vue.component('crearpermiso', require('./components/Admin/Permisos/crearpermisoComponent.vue').default);
 Vue.component('editarpermiso', require('./components/Admin/Permisos/editarpermisoComponent.vue').default);
+//Usuario
+Vue.component('perfil', require('./components/Usuario/perfilComponent.vue').default);
+
 
 
 /**

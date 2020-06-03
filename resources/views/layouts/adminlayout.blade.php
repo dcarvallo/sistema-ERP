@@ -174,12 +174,12 @@
           <li class="nav-item right-align dropdown">
             
             <a id="navbarDropdown" class="nav-link dropdown-toggle text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-              <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img mr-1" style="width: 40px" alt="Logo">
+              <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img-circle img-fluid mr-1" style="width: 38px; height: 38px;" alt="user">
                 
                 <span class="caret"> {{ Auth::user()->username }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{{route('perfilusuario')}}">Perfil</a>
+              <a class="dropdown-item" href="{{route('perfil')}}">Perfil</a>
               <a class="dropdown-item" href=""
               onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
@@ -536,7 +536,6 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/adminlte.js"></script>
 <script src="{{asset('js/app.js')}}"> </script>
-
 
 @yield('js-footer')
 

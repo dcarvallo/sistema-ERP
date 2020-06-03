@@ -49,6 +49,17 @@ class LoginController extends Controller
         return 'username';
     }
 
+    // public function redirectPath()
+    // {
+    //     if (auth()->user()->hasRole(['admin'])) {
+    //         return 'paneladmin';
+    //     }
+    //     else if (auth()->user()->hasRole(['rrhh'])) {
+    //         return 'gerente';
+    //     }
+    //     return property_exists($this, 'redirectTo') ? $this->redirectTo : 'home';
+    // }
+
 
     // protected function credentials(Request $request)
     // {

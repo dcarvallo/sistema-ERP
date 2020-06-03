@@ -44,7 +44,7 @@
           </div>
         </div> -->
         </div>
-        <datatable :columns="columns" :checkboxfil="checkbox" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
+        <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
           
             <tbody>
                 <tr v-for="(usuario) in usuarios" :key="usuario.id">

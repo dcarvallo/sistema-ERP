@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Permisos</h1>
+            <h1><i class="far fa-check-square"></i> Permisos</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

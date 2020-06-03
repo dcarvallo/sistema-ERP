@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Caffeinated\Shinobi\Models\Role;
 use App\Http\Requests\Usuarios\StoreUsuario;
+use App\Http\Requests\Usuarios\ResetPassword;
 use App\Http\Requests\Usuarios\UpdateUsuario;
 use App\Models\M_RRHH\Empleado;
 use DB;
 use Log;
+use Session;
 use Auth;
 
 class UserController extends Controller
@@ -302,5 +304,27 @@ class UserController extends Controller
       
       $usuario = User::find(Auth::user()->id);
       return view('usuarios.perfil', compact('usuario'));
+    }
+
+    public function showResetForm()
+    {
+      return view('auth.passwords.reset');
+    }
+
+    public function reset(ResetPassword $request)
+    {
+
+      $user = User::find(Auth::user()->id);
+
+      $user->password = Hash::make($request->nuevo);
+
+      $user->save();
+
+      $msg = 'Contraseña cambiada';
+
+      Session::flash('resetpass', $msg);
+
+      return redirect('perfil');
+
     }
 }
