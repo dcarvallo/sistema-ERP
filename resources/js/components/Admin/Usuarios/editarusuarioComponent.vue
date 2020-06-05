@@ -5,7 +5,7 @@
           <div >
               <div class="card">
                 <div class="card-header">
-                  <h5><strong> Usuario: </strong>{{ usuariomod.nombres }} {{usuariomod.apellidos }} </h5>
+                  <h5>{{ usuariomod.nombres }} {{usuariomod.apellidos }} </h5>
                 </div>
               <div class="card-body" id="usuarioedit">
 
@@ -61,7 +61,7 @@
             <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h4>Editar correo</h4>
+                <h5>Editar correo</h5>
               </div>
               <div class="card-body">
             <form >
@@ -84,7 +84,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Restablecer password</h4>
+                  <h5>Restablecer password</h5>
                 </div>
                 <div class="card-body">
                   <form>
@@ -104,7 +104,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4>Roles</h4>
+                  <h5>Roles</h5>
                 </div>
                 <div class="card-body">
                   <form>
@@ -158,11 +158,9 @@ export default {
     {
       this.rolesSeleccionados[i] = this.rolesusuario[i].slug; 
     }
-    console.log(this.rolesSeleccionados);
   },
   methods:{
     onFileChange(e) {
-      console.log(e.target.files[0]);
       this.usuariomod.imagen = e.target.files[0];
       this.enlace = URL.createObjectURL(this.usuariomod.imagen );
     },
@@ -179,11 +177,9 @@ export default {
           toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
-         console.log(datos);
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
-          console.log(this.errors);
           }
         });
 
@@ -202,11 +198,9 @@ export default {
           toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
-         console.log(datos);
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
-          console.log(this.errors);
           }
         });
     },
@@ -229,11 +223,9 @@ export default {
           toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
-         console.log(datos);
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
-          console.log(this.errors);
           }
         });
 
@@ -244,7 +236,6 @@ export default {
       let formData = new FormData();
       formData.append('roles', this.rolesSeleccionados);
       formData.append('_method', 'put');
-      console.log(this.rolesSeleccionados);
       this.errors = [];
         axios.post('/users/ur/'+this.usuario.id,
         formData
@@ -255,11 +246,9 @@ export default {
           toastsuccess.fire({
                 title:  datos[1].title+' '+datos[1].message
             })
-         console.log(datos);
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
-          console.log(this.errors);
           }
         });
     },

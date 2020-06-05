@@ -197,12 +197,11 @@ export default {
         })
       })
       .catch(error => {
-        console.log(error)
         let datos = error.data;
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
             toasterror.fire({
-            title: 'Error, Revise formulario'
+            title: 'Revise formulario'
           })
           }
         if(datos){
@@ -213,7 +212,7 @@ export default {
           if(error.response.status == 500){
             this.errors = error.response.data.errors;
             toasterror.fire({
-            title: 'Error, notificado a administrador'
+            title: 'Error, notifique al nadministrador'
           })
           }
       })

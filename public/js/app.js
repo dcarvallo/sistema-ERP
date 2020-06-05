@@ -2737,6 +2737,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2757,6 +2759,9 @@ __webpack_require__.r(__webpack_exports__);
       label: 'Descripcion',
       name: 'description'
     }, {
+      label: 'Permiso especial',
+      name: 'special'
+    }, {
       label: 'Ver',
       name: 'ver'
     }, {
@@ -2772,12 +2777,13 @@ __webpack_require__.r(__webpack_exports__);
     return {
       roles: [],
       columns: columns,
+      quitarid: '',
       sortKey: 'name',
       sortOrders: sortOrders,
-      perPage: ['10', '20', '50'],
+      perPage: ['15', '30', '50'],
       tableData: {
         draw: 0,
-        length: 10,
+        length: 15,
         search: '',
         column: 0,
         dir: 'asc'
@@ -2818,20 +2824,34 @@ __webpack_require__.r(__webpack_exports__);
     eliminarrol: function eliminarrol(rolid) {
       var _this2 = this;
 
-      this.tableData.draw++;
-      axios["delete"]('/roles/' + rolid, {
-        params: this.tableData
-      }).then(function (response) {
-        var data = response.data;
-        _this2.parametrostabla = data;
+      modalconfirm.fire({
+        title: '¿Está seguro que desea quitar este rol?',
+        text: "El registro ya no se utilizará en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        confirmButtonText: 'Si, quitar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: function preConfirm(login) {
+          return axios["delete"]('/roles/' + rolid, {
+            params: _this2.tableData
+          }).then(function (response) {
+            var data = response.data;
+            _this2.quitarid = '';
 
-        if (_this2.tableData.draw == data.draw) {
-          _this2.roles = data.data.data;
+            _this2.getroles();
 
-          _this2.configPagination(data.data);
+            toastsuccess.fire({
+              title: data.title + ' ' + data.message
+            });
+          })["catch"](function (errors) {
+            console.log(errors);
+          });
+        },
+        allowOutsideClick: function allowOutsideClick() {
+          return !swal.isLoading();
         }
-      })["catch"](function (errors) {
-        console.log(errors);
+      }).then(function (result) {
+        if (result.value) {
+          swal.fire('Quitado!', 'Se ha quitado el rol.', 'success');
+        }
       });
     },
     configPagination: function configPagination(data) {
@@ -3072,13 +3092,12 @@ __webpack_require__.r(__webpack_exports__);
           title: datos[1].title + ' ' + datos[1].message
         });
       })["catch"](function (error) {
-        console.log(error);
         var datos = error.data;
 
         if (error.response.status == 422) {
           _this2.errors = error.response.data.errors;
           toasterror.fire({
-            title: 'Error, Revise formulario'
+            title: 'Revise formulario'
           });
         }
 
@@ -3091,7 +3110,7 @@ __webpack_require__.r(__webpack_exports__);
         if (error.response.status == 500) {
           _this2.errors = error.response.data.errors;
           toasterror.fire({
-            title: 'Error, notificado a administrador'
+            title: 'Error, notifique al nadministrador'
           });
         }
       });
@@ -3266,12 +3285,9 @@ __webpack_require__.r(__webpack_exports__);
     for (var i = 0; i < this.rolesusuario.length; i++) {
       this.rolesSeleccionados[i] = this.rolesusuario[i].slug;
     }
-
-    console.log(this.rolesSeleccionados);
   },
   methods: {
     onFileChange: function onFileChange(e) {
-      console.log(e.target.files[0]);
       this.usuariomod.imagen = e.target.files[0];
       this.enlace = URL.createObjectURL(this.usuariomod.imagen);
     },
@@ -3287,11 +3303,9 @@ __webpack_require__.r(__webpack_exports__);
         toastsuccess.fire({
           title: datos[1].title + ' ' + datos[1].message
         });
-        console.log(datos);
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this.errors = error.response.data.errors;
-          console.log(_this.errors);
         }
       });
     },
@@ -3307,11 +3321,9 @@ __webpack_require__.r(__webpack_exports__);
         toastsuccess.fire({
           title: datos[1].title + ' ' + datos[1].message
         });
-        console.log(datos);
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this2.errors = error.response.data.errors;
-          console.log(_this2.errors);
         }
       });
     },
@@ -3332,11 +3344,9 @@ __webpack_require__.r(__webpack_exports__);
         toastsuccess.fire({
           title: datos[1].title + ' ' + datos[1].message
         });
-        console.log(datos);
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this3.errors = error.response.data.errors;
-          console.log(_this3.errors);
         }
       });
     },
@@ -3347,7 +3357,6 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('roles', this.rolesSeleccionados);
       formData.append('_method', 'put');
-      console.log(this.rolesSeleccionados);
       this.errors = [];
       axios.post('/users/ur/' + this.usuario.id, formData).then(function (response) {
         var datos = response.data;
@@ -3355,11 +3364,9 @@ __webpack_require__.r(__webpack_exports__);
         toastsuccess.fire({
           title: datos[1].title + ' ' + datos[1].message
         });
-        console.log(datos);
       })["catch"](function (error) {
         if (error.response.status == 422) {
           _this4.errors = error.response.data.errors;
-          console.log(_this4.errors);
         }
       });
     }
@@ -3379,6 +3386,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ColumUserdatabase_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../ColumUserdatabase.vue */ "./resources/js/components/ColumUserdatabase.vue");
 /* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Pagination.vue */ "./resources/js/components/Pagination.vue");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3517,8 +3530,14 @@ __webpack_require__.r(__webpack_exports__);
       label: 'Activo',
       name: 'activo'
     }, {
-      label: 'Acciones',
-      name: 'acciones'
+      label: 'Ver',
+      name: 'ver'
+    }, {
+      label: 'Editar',
+      name: 'editar'
+    }, {
+      label: 'Quitar',
+      name: 'quitar'
     }];
     columns.forEach(function (column) {
       sortOrders[column.name] = -1;
@@ -3531,10 +3550,10 @@ __webpack_require__.r(__webpack_exports__);
       columns: columns,
       sortKey: 'name',
       sortOrders: sortOrders,
-      perPage: ['10', '20', '50'],
+      perPage: ['15', '30', '50'],
       tableData: {
         draw: 0,
-        length: 10,
+        length: 15,
         search: '',
         column: 0,
         dir: 'asc'
@@ -45658,10 +45677,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "roles" }, [
+  return _c("div", [
     _c(
       "div",
-      { staticClass: "container-fluid" },
       [
         _c("div", { staticClass: "tableFilters my-1" }, [
           _c("div", { staticClass: "d-flex justify-content-between" }, [
@@ -45724,9 +45742,7 @@ var render = function() {
                   },
                   [
                     _c("i", { staticClass: "far fa-plus-square" }),
-                    _vm._v(
-                      "\n                         Crear\n                       "
-                    )
+                    _vm._v("\n                 Crear\n               ")
                   ]
                 )
               ])
@@ -45774,32 +45790,32 @@ var render = function() {
           [
             _c(
               "tbody",
-              { staticClass: "text-center" },
               _vm._l(_vm.roles, function(rol) {
                 return _c("tr", { key: rol.id }, [
-                  _c("td", [_vm._v(_vm._s(rol.name))]),
+                  _c("td", { staticClass: "col-sm-4" }, [
+                    _vm._v(_vm._s(rol.name))
+                  ]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(rol.description))]),
+                  _c("td", { staticClass: "col-md-5" }, [
+                    _vm._v(_vm._s(rol.description))
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "td",
-                    {
-                      staticClass: "text-white",
-                      staticStyle: { width: "10px" }
-                    },
-                    [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-outline-info",
-                          attrs: { href: "/roles/" + rol.id }
-                        },
-                        [_c("i", { staticClass: " far fa-eye" })]
-                      )
-                    ]
-                  ),
+                  _c("td", { staticClass: "col-sm-3" }, [
+                    _vm._v(_vm._s(rol.special))
+                  ]),
                   _vm._v(" "),
-                  _c("td", { staticStyle: { width: "10px" } }, [
+                  _c("td", { staticClass: "col-sm- text-center" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-outline-info",
+                        attrs: { href: "/roles/" + rol.id }
+                      },
+                      [_c("i", { staticClass: " far fa-eye" })]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "col-sm- text-center" }, [
                     _c(
                       "a",
                       {
@@ -45810,14 +45826,13 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("td", { staticStyle: { width: "10px" } }, [
+                  _c("td", { staticClass: "col-sm- text-center" }, [
                     _c(
                       "a",
                       {
                         staticClass: "btn text-white btn-danger",
                         on: {
                           click: function($event) {
-                            $event.preventDefault()
                             return _vm.eliminarrol(rol.id)
                           }
                         }
@@ -46613,7 +46628,6 @@ var render = function() {
             _c("div", { staticClass: "card" }, [
               _c("div", { staticClass: "card-header" }, [
                 _c("h5", [
-                  _c("strong", [_vm._v(" Usuario: ")]),
                   _vm._v(
                     _vm._s(_vm.usuariomod.nombres) +
                       " " +
@@ -47061,7 +47075,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h4", [_vm._v("Editar correo")])
+      _c("h5", [_vm._v("Editar correo")])
     ])
   },
   function() {
@@ -47069,7 +47083,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h4", [_vm._v("Restablecer password")])
+      _c("h5", [_vm._v("Restablecer password")])
     ])
   },
   function() {
@@ -47077,7 +47091,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h4", [_vm._v("Roles")])
+      _c("h5", [_vm._v("Roles")])
     ])
   }
 ]
@@ -47102,10 +47116,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "usuarios" }, [
+  return _c("div", [
     _c(
       "div",
-      { staticClass: "container-fluid" },
       [
         _c("div", { staticClass: "tableFilters my-1" }, [
           _c("div", { staticClass: "d-flex justify-content-between" }, [
@@ -47208,25 +47221,38 @@ var render = function() {
               "tbody",
               _vm._l(_vm.usuarios, function(usuario) {
                 return _c("tr", { key: usuario.id }, [
-                  _vm.checkbox.includes("name")
-                    ? _c("td", { staticClass: "text-left" }, [
-                        _vm._v(_vm._s(usuario.name))
-                      ])
-                    : _vm._e(),
+                  _c("td", { staticClass: "col-sm-4 py-2" }, [
+                    _vm._v(_vm._s(usuario.name))
+                  ]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(usuario.username))]),
+                  _c("td", { staticClass: "col-sm-3 py-2" }, [
+                    _vm._v(_vm._s(usuario.username))
+                  ]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(usuario.email))]),
+                  _c("td", { staticClass: "col-sm-3 py-2" }, [
+                    _vm._v(_vm._s(usuario.email))
+                  ]),
                   _vm._v(" "),
                   usuario.activo
-                    ? _c("td", { staticStyle: { width: "10px" } }, [
+                    ? _c("td", { staticClass: "col-sm-1 py-2 text-center" }, [
                         _vm._v("SI")
                       ])
-                    : _c("td", { staticStyle: { width: "10px" } }, [
+                    : _c("td", { staticClass: "col-sm-1 py-2 text-center" }, [
                         _vm._v("NO")
                       ]),
                   _vm._v(" "),
-                  _c("td", { staticStyle: { width: "10px" } }, [
+                  _c("td", { staticClass: "py-2 text-center" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-info",
+                        attrs: { href: "/users/" + usuario.id }
+                      },
+                      [_c("i", { staticClass: "far fa-eye" })]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
                     _c(
                       "a",
                       {
@@ -47234,6 +47260,17 @@ var render = function() {
                         attrs: { href: "/users/" + usuario.id + "/edit" }
                       },
                       [_c("i", { staticClass: "far fa-edit" })]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { href: "/users/" + usuario.id + "/edit" }
+                      },
+                      [_c("i", { staticClass: "far fa-trash-alt" })]
                     )
                   ])
                 ])
@@ -47488,7 +47525,8 @@ var render = function() {
     _c(
       "table",
       {
-        staticClass: "table table-bordered table-responsive-sm  data-table my-2"
+        staticClass:
+          "table table-bordered table-responsive-sm table-striped my-2"
       },
       [
         _c("thead", { staticClass: "table-dark" }, [
@@ -47521,8 +47559,14 @@ var render = function() {
                   _vm.sortKey === column.name
                     ? _c("label", { staticClass: " mb-0" }, [
                         _vm.sortOrders[column.name] > 0
-                          ? _c("i", { staticClass: "fas fa-arrow-up" })
-                          : _c("i", { staticClass: "fas fa-arrow-down" })
+                          ? _c("i", {
+                              staticClass: "fas fa-arrow-up",
+                              staticStyle: { cursor: "pointer" }
+                            })
+                          : _c("i", {
+                              staticClass: "fas fa-arrow-down",
+                              staticStyle: { cursor: "pointer" }
+                            })
                       ])
                     : _vm._e()
                 ]
@@ -62021,50 +62065,105 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a; //toast
+// const toastsuccess = swal.mixin({
+//     toast: true,
+//     position: 'top-end',
+//     showConfirmButton: false,
+//     background: '#e1f6d0',
+//     icon: 'success',
+//     timer: 5000,
+//     // timerProgressBar: true,
+//     onOpen: (toast) => {
+//       toast.addEventListener('mouseenter', swal.stopTimer)
+//       toast.addEventListener('mouseleave', swal.resumeTimer)
+//     }
+// })
+// const toasterror = swal.mixin({
+//   toast: true,
+//   position: 'top-end',
+//   showConfirmButton: false,
+//   background: '#edc3c3',
+//   icon: 'error',
+//   timer: 5000,
+//   // timerProgressBar: true,
+//   onOpen: (toast) => {
+//     toast.addEventListener('mouseenter', swal.stopTimer)
+//     toast.addEventListener('mouseleave', swal.resumeTimer)
+//   }
+// })
+// const toastinfo = swal.mixin({
+//   toast: true,
+//   position: 'top-end',
+//   showConfirmButton: false,
+//   background: '#d0e0f4',
+//   icon: 'info',
+//   iconHtml: '<i style="font-size: 0.9rem;" class="far fa-flag"></i>',
+//   timer: 5000,
+//   // timerProgressBar: true,
+//   onOpen: (toast) => {
+//     toast.addEventListener('mouseenter', swal.stopTimer)
+//     toast.addEventListener('mouseleave', swal.resumeTimer)
+//   }
+// })
+// modales
+
 var toastsuccess = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  background: '#e1f6d0',
+  showConfirmButton: true,
   icon: 'success',
   timer: 5000,
-  // timerProgressBar: true,
+  timerProgressBar: true,
   onOpen: function onOpen(toast) {
     toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.stopTimer);
     toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.resumeTimer);
   }
 });
 var toasterror = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  background: '#edc3c3',
+  showConfirmButton: true,
+  background: '#eddad8',
   icon: 'error',
   timer: 5000,
-  // timerProgressBar: true,
+  timerProgressBar: true,
   onOpen: function onOpen(toast) {
     toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.stopTimer);
     toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.resumeTimer);
   }
 });
 var toastinfo = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
+  showConfirmButton: true,
   background: '#d0e0f4',
   icon: 'info',
-  iconHtml: '<i style="font-size: 0.9rem;" class="far fa-flag"></i>',
   timer: 5000,
-  // timerProgressBar: true,
+  timerProgressBar: true,
   onOpen: function onOpen(toast) {
     toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.stopTimer);
     toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.resumeTimer);
   }
 });
+var toastwarning = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
+  showConfirmButton: true,
+  icon: 'warning',
+  background: '#ffe28c',
+  timer: 5000,
+  timerProgressBar: true,
+  onOpen: function onOpen(toast) {
+    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.stopTimer);
+    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.resumeTimer);
+  }
+});
+var modalconfirm = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
+  showConfirmButton: true,
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#007bff',
+  cancelButtonColor: '#dc3545' // background: '#f8f3e5',
+
+});
 window.toastsuccess = toastsuccess;
 window.toasterror = toasterror;
-window.toastinfo = toastinfo; // const files = require.context('./', true, /\.vue$/i)
+window.toastinfo = toastinfo;
+window.toastwarning = toastwarning;
+window.modalconfirm = modalconfirm; // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('contactos', __webpack_require__(/*! ./components/RRHH/contactosComponent.vue */ "./resources/js/components/RRHH/contactosComponent.vue")["default"]);

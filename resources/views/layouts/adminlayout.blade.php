@@ -5,18 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>Sistema ERP </title>
+  <title>Sistema ERP</title>
 
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/css/all.min.css">
-  <!-- IonIcons -->
-  {{-- <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
-  <!-- Theme style -->
   <link rel="stylesheet" href="/css/adminlte.min.css">
  <link rel="stylesheet" href="/css/app.css">
  
-  <!-- Google Font: Source Sans Pro -->
-  {{-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> --}}
   @yield('css-head')
 </head>
 <!--
@@ -25,7 +19,7 @@
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-collapse sidebar-mini">
 <div id="app" class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -38,7 +32,7 @@
         <a href="/admin" class="nav-link">Inicio</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contacto</a>
+        <a href="#" class="nav-link">Contactos</a>
       </li>
       @can('admin.archivos')
       <li class="nav-item d-none d-sm-inline-block">
@@ -171,31 +165,29 @@
           <li><a class="" href="{{ route('login') }}">Login</a></li>
       @else
         
-          <li class="nav-item right-align dropdown">
-            
-            <a id="navbarDropdown" class="nav-link dropdown-toggle text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-              <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img-circle img-fluid mr-1" style="width: 38px; height: 38px;" alt="user">
-                
-                <span class="caret"> {{ Auth::user()->username }}</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{{route('perfil')}}">Perfil</a>
-              <a class="dropdown-item" href=""
+        <li class="nav-item right-align dropdown">
+          
+          <a id="navbarDropdown" class="nav-link dropdown-toggle text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img-circle img-fluid mr-1" style="width: 38px; height: 38px;" alt="user">
+              
+            <span class="caret"> {{ Auth::user()->username }}</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{route('perfil')}}">Perfil</a>
+            <a class="dropdown-item" href=""
               onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                      Salir
-                    </a>
-                    
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                      @csrf
-                  </form>
-                </div>
-    
-    
-    
-              </li>
+              document.getElementById('logout-form').submit();">
+              Salir
+            </a>
+                  
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+            </form>
+          </div>
+  
+        </li>
       @endguest
-  </ul>
+    </ul>
   </nav>
   <!-- /.navbar -->
 
@@ -208,8 +200,6 @@
       <span class="brand-text font-weight-light"> {{$globalnombreempresa}}</span>
     </a>
 
-    
-    {{-- <img src="{{ asset('storage/'.$globalimagenempresa)}}" class="brand-image elevation-3" --}}
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar Menu -->
@@ -299,7 +289,7 @@
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Areas</p>
+                  <p>Áreas</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -325,7 +315,7 @@
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Contratacion</p>
+                  <p>Contratación</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -381,7 +371,7 @@
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Facturacion</p>
+                    <p>Facturación</p>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -405,7 +395,7 @@
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-box"></i>
                   <p>
-                    Almacen
+                    Almacén
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
@@ -513,17 +503,31 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+    <section class="content-header pt-2 pb-0">
+      <div class="container-fluid">
+        <div class="row mb-2"> 
+          <div class="col-sm-6">
+            <h3>
+              @yield('icono')
+              @yield('vista')
+            </h3>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              @yield('breadcrumb')
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    @yield('')
     @yield('content')
   </div>
-  <!-- /.content-wrapper -->
 
-  <!-- Control Sidebar -->
+  
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
   </aside>
-  <!-- /.control-sidebar -->
-
-  <!-- Main Footer -->
   <footer class="main-footer mb-4">
     <strong>Copyright &copy; 2020 <a href="#">Daniel Carvallo</a></strong>
     Todos los derechos reservados.

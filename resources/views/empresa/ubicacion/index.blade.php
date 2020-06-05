@@ -1,41 +1,19 @@
 @extends('layouts.adminlayout')
-@section('content')
-<section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1><i class="fas fa-search-location"></i> Ubicaciones</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item active">Ubicaciones</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</section>
-<section>
-  <ubicaciones/>
-</section>
-    
 
+@section('icono')
+  <i class="fas fa-search-location"></i> 
 @endsection
-@section('js-footer')
-  @if( Session::has("mensaje") )
-  <script>
+
+@section('vista', 'Ubicaciones')
+
+@section('breadcrumb')  
+  <li class="breadcrumb-item active">Ubicaciones</li>
+@endsection
+
+@section('content')
+
+  <section>
+    <ubicaciones/>
+  </section>
     
-    var tipo = [
-      '{{ Session::get('mensaje.type') }}',
-      '{{ Session::get('mensaje.message') }}',
-      '{{ Session::get('mensaje.title') }}'
-    ];
-    toast.fire({
-      icon: tipo[0],
-      text: tipo[1],
-      title: tipo[2],
-      // background: 'green',
-    });
-     
-  </script>
-  @endif
 @endsection

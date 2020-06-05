@@ -1,7 +1,7 @@
 <template>
 
-   <div class="usuarios">
-     <div class="container-fluid">
+   <div>
+     <div>
         <div class="tableFilters my-1">
             <div class="d-flex justify-content-between">
                 <div class="control d-flex">
@@ -48,16 +48,22 @@
           
             <tbody>
                 <tr v-for="(usuario) in usuarios" :key="usuario.id">
-                    <td v-if="checkbox.includes('name')" class="text-left">{{usuario.name}}</td>
-                    <td >{{usuario.username}}</td>
-                    <td >{{usuario.email}}</td>
-                    <td style="width: 10px" v-if="usuario.activo">SI</td>
-                    <td style="width: 10px" v-else>NO</td>
-                    <td style="width: 10px">
+                    <td class="col-sm-4 py-2">{{usuario.name}}</td>
+                    <td class="col-sm-3 py-2" >{{usuario.username}}</td>
+                    <td class="col-sm-3 py-2" >{{usuario.email}}</td>
+                    <td class="col-sm-1 py-2 text-center" v-if="usuario.activo">SI</td>
+                    <td class="col-sm-1 py-2 text-center" v-else>NO</td>
+                    <td class="py-2 text-center">
                       <!-- < form @submit.prevent>
                         <a class="btn btn-warning mx-2" @click="importardatousuario(usuario)">Importar de Dominio</a>
                       </form> -->
+                        <a class="btn btn-info" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
+                    </td>
+                    <td>
                         <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -127,7 +133,9 @@ export default {
             {label: 'Nombre de usuario', name: 'username'},
             {label: 'Email', name: 'email'},
             {label: 'Activo', name: 'activo'},
-            {label: 'Acciones', name: 'acciones'}
+            {label: 'Ver', name: 'ver'},
+            {label: 'Editar', name: 'editar'},
+            {label: 'Quitar', name: 'quitar'}
         ];
         columns.forEach((column) => {
            sortOrders[column.name] = -1;
@@ -146,10 +154,10 @@ export default {
             columns: columns,
             sortKey: 'name',
             sortOrders: sortOrders,
-            perPage: ['10', '20', '50'],
+            perPage: ['15', '30', '50'],
             tableData: {
                 draw: 0,
-                length: 10,
+                length: 15,
                 search: '',
                 column: 0,
                 dir: 'asc',

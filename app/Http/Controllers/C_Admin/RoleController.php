@@ -19,14 +19,13 @@ class RoleController extends Controller
 
     public function obtenerroles(Request $request)
     {
-        $columns = ['name', 'description', 'ver', 'editar', 'eliminar'];
+        $columns = ['name', 'description', 'special', 'ver', 'editar', 'eliminar'];
 
         $length = $request->input('length');
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
-        Log::info($request);
-        $query = Role::select('id', 'name', 'description')->orderBy($columns[$column], $dir);
+        $query = Role::select('id', 'name', 'description','special')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
@@ -78,18 +77,16 @@ class RoleController extends Controller
           }
           
           $toast = array(
-            'title'   => 'rol creado: ',
+            'title'   => 'Rol creado: ',
             'message' => $request->name,
-            'type'    => 'success'
           );
           
           return [$rol,$toast];
           
         } catch (\Throwable $th) {
           $toast = array(
-            'title'   => 'rol no creado: ',
+            'title'   => 'Rol no creado: ',
             'message' => $rol->name,
-            'type'    => 'error'
           );
           return [$rol, $toast , $th];
         }
@@ -121,7 +118,6 @@ class RoleController extends Controller
           $rol = Role::find($id);
           $rol->name = $request->name;
           $rol->slug = $request->slug;
-          Log::info($request);
           $rol->description = $request->description;
           if($request->special)
           {
@@ -139,7 +135,6 @@ class RoleController extends Controller
           $toast = array(
             'title'   => 'Rol modificado: ',
             'message' => $request->name,
-            'type'    => 'success'
           );
           
           return [$rol,$toast];
@@ -148,7 +143,6 @@ class RoleController extends Controller
           $toast = array(
             'title'   => 'Rol no creado: ',
             'message' => $rol->name,
-            'type'    => 'error'
           );
           return [$rol, $toast , $th];
         }
@@ -163,7 +157,6 @@ class RoleController extends Controller
         $toast = array(
           'title'   => 'Rol eliminado: ',
           'message' => '',
-          'type'    => 'success'
         );
         return $toast;
     }

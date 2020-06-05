@@ -1,7 +1,18 @@
 @extends('layouts.adminlayout')
 @section('content')
 
-      <div class="text-center">
-          <h1>Modulo Recursos Humanos</h1>
-      </div>
+@section('icono')
+  <i class="nav-icon fas fa-user-friends"></i>
+@endsection
+
+@section('vista', 'Recursos Humanos')
+
+@section('breadcrumb')  
+  <li class="breadcrumb-item active">RRHH</li>
+@endsection
+
+  <div class="text-center">
+      <h1>Modulo Empleados</h1>
+  </div>
+
 @endsection

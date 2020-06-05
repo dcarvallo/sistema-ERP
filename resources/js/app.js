@@ -11,52 +11,112 @@ window.Vue = require('vue');
 import swal from 'sweetalert2';
 window.swal = swal;
 
+//toast
+// const toastsuccess = swal.mixin({
+//     toast: true,
+//     position: 'top-end',
+//     showConfirmButton: false,
+//     background: '#e1f6d0',
+//     icon: 'success',
+//     timer: 5000,
+//     // timerProgressBar: true,
+//     onOpen: (toast) => {
+//       toast.addEventListener('mouseenter', swal.stopTimer)
+//       toast.addEventListener('mouseleave', swal.resumeTimer)
+//     }
+// })
+
+// const toasterror = swal.mixin({
+//   toast: true,
+//   position: 'top-end',
+//   showConfirmButton: false,
+//   background: '#edc3c3',
+//   icon: 'error',
+//   timer: 5000,
+//   // timerProgressBar: true,
+//   onOpen: (toast) => {
+//     toast.addEventListener('mouseenter', swal.stopTimer)
+//     toast.addEventListener('mouseleave', swal.resumeTimer)
+//   }
+// })
+
+// const toastinfo = swal.mixin({
+//   toast: true,
+//   position: 'top-end',
+//   showConfirmButton: false,
+//   background: '#d0e0f4',
+//   icon: 'info',
+//   iconHtml: '<i style="font-size: 0.9rem;" class="far fa-flag"></i>',
+//   timer: 5000,
+//   // timerProgressBar: true,
+//   onOpen: (toast) => {
+//     toast.addEventListener('mouseenter', swal.stopTimer)
+//     toast.addEventListener('mouseleave', swal.resumeTimer)
+//   }
+// })
+
+// modales
 const toastsuccess = swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    background: '#e1f6d0',
-    icon: 'success',
-    timer: 5000,
-    // timerProgressBar: true,
-    onOpen: (toast) => {
-      toast.addEventListener('mouseenter', swal.stopTimer)
-      toast.addEventListener('mouseleave', swal.resumeTimer)
-    }
+  showConfirmButton: true,
+  icon: 'success',
+  timer: 5000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', swal.stopTimer)
+    toast.addEventListener('mouseleave', swal.resumeTimer)
+  }
 })
 
 const toasterror = swal.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  background: '#edc3c3',
-  icon: 'error',
+showConfirmButton: true,
+background: '#eddad8',
+icon: 'error',
+timer: 5000,
+timerProgressBar: true,
+onOpen: (toast) => {
+  toast.addEventListener('mouseenter', swal.stopTimer)
+  toast.addEventListener('mouseleave', swal.resumeTimer)
+}
+})
+
+const toastinfo = swal.mixin({
+showConfirmButton: true,
+background: '#d0e0f4',
+icon: 'info',
+timer: 5000,
+timerProgressBar: true,
+onOpen: (toast) => {
+  toast.addEventListener('mouseenter', swal.stopTimer)
+  toast.addEventListener('mouseleave', swal.resumeTimer)
+}
+})
+
+const toastwarning = swal.mixin({
+  showConfirmButton: true,
+  icon: 'warning',
+  background: '#ffe28c',
   timer: 5000,
-  // timerProgressBar: true,
+  timerProgressBar: true,
   onOpen: (toast) => {
     toast.addEventListener('mouseenter', swal.stopTimer)
     toast.addEventListener('mouseleave', swal.resumeTimer)
   }
 })
 
-const toastinfo = swal.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  background: '#d0e0f4',
-  icon: 'info',
-  iconHtml: '<i style="font-size: 0.9rem;" class="far fa-flag"></i>',
-  timer: 5000,
-  // timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', swal.stopTimer)
-    toast.addEventListener('mouseleave', swal.resumeTimer)
-  }
+const modalconfirm = swal.mixin({
+  showConfirmButton: true,
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#007bff',
+  cancelButtonColor: '#dc3545',
+  // background: '#f8f3e5',
 })
 
 window.toastsuccess = toastsuccess;
 window.toasterror = toasterror;
 window.toastinfo = toastinfo;
+window.toastwarning = toastwarning;
+window.modalconfirm = modalconfirm;
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))

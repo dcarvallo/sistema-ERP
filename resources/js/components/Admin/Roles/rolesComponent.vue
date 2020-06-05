@@ -1,41 +1,42 @@
 <template>
 
-   <div class="roles">
-     <div class="container-fluid">
+   <div>
+     <div>
         <div class="tableFilters my-1">
-            <div class="d-flex justify-content-between">
-                <div class="control d-flex">
-                    <div class="mr-3">
-                      <select class="form-control" v-model="tableData.length" @change="getroles()">
-                          <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
-                      </select>
-                    </div>
-                      <div class="w-auto">
-                          <a class="btn btn-success" :href="'/roles/create'">
-                          <i class="far fa-plus-square"></i>
-                            Crear
-                          </a>
-                      </div>
-                  </div>
+          <div class="d-flex justify-content-between">
+            <div class="control d-flex">
+              <div class="mr-3">
+                <select class="form-control" v-model="tableData.length" @change="getroles()">
+                    <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
+                </select>
+              </div>
+                <div class="w-auto">
+                  <a class="btn btn-success" :href="'/roles/create'">
+                  <i class="far fa-plus-square"></i>
+                    Crear
+                  </a>
+                </div>
+              </div>
 
-                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
-                    @input="getroles()">
+            <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
+                @input="getroles()">
 
-            </div>
+          </div>
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
-            <tbody class="text-center">
+            <tbody>
                 <tr v-for="rol in roles" :key="rol.id">
-                    <td>{{rol.name}}</td>
-                    <td>{{rol.description}}</td>
-                    <td style="width: 10px" class="text-white">                        
+                    <td class="col-sm-4">{{rol.name}}</td>
+                    <td class="col-md-5">{{rol.description}}</td>
+                    <td class="col-sm-3">{{rol.special}}</td>
+                    <td class="col-sm- text-center">                        
                       <a class="btn btn-outline-info" :href="'/roles/'+rol.id"><i class=" far fa-eye"></i></a>
                     </td>
-                    <td style="width: 10px">
+                    <td class="col-sm- text-center">
                       <a class="btn btn-warning" :href="'/roles/'+rol.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
-                    <td style="width: 10px">
-                      <a class="btn text-white btn-danger" @click.prevent="eliminarrol(rol.id)"><i class="far fa-trash-alt"></i></a>
+                    <td class="col-sm- text-center">
+                      <a class="btn text-white btn-danger" @click="eliminarrol(rol.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -47,6 +48,7 @@
           </pagination>
         </div>
         </div>
+
     </div>
 
 
@@ -67,6 +69,7 @@ export default {
         let columns = [
             {label: 'Nombre', name: 'name' },
             {label: 'Descripcion', name: 'description'},
+            {label: 'Permiso especial', name: 'special'},
             {label: 'Ver', name: 'ver'},
             {label: 'Editar', name: 'editar'},
             {label: 'Eliminar', name: 'eliminar'}
@@ -77,12 +80,13 @@ export default {
         return {
             roles: [],
             columns: columns,
+            quitarid:'',
             sortKey: 'name',
             sortOrders: sortOrders,
-            perPage: ['10', '20', '50'],
+            perPage: ['15', '30', '50'],
             tableData: {
                 draw: 0,
-                length: 10,
+                length: 15,
                 search: '',
                 column: 0,
                 dir: 'asc',
@@ -100,35 +104,52 @@ export default {
         }
     },
     methods: {
-        getroles(url = '/obtenerroles') {
-            this.tableData.draw++;
-            axios.get(url, {params: this.tableData})
+      getroles(url = '/obtenerroles') {
+          this.tableData.draw++;
+          axios.get(url, {params: this.tableData})
+              .then(response => {
+                  let data = response.data;
+                  this.parametrostabla = data;
+                  if (this.tableData.draw == data.draw) {
+                      this.roles = data.data.data;
+                      this.configPagination(data.data);
+                  }
+              })
+              .catch(errors => {
+                  console.log(errors);
+              });
+      },
+      eliminarrol(rolid) {
+            
+        modalconfirm.fire({
+        title: '¿Está seguro que desea quitar este rol?',
+        text: "El registro ya no se utilizará en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        confirmButtonText: 'Si, quitar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: (login) => {
+          return axios.delete('/roles/'+rolid, {params: this.tableData})
                 .then(response => {
-                    let data = response.data;
-                    this.parametrostabla = data;
-                    if (this.tableData.draw == data.draw) {
-                        this.roles = data.data.data;
-                        this.configPagination(data.data);
-                    }
-                })
-                .catch(errors => {
-                    console.log(errors);
-                });
-        },
-        eliminarrol(rolid) {
-            this.tableData.draw++;
-            axios.delete('/roles/'+rolid, {params: this.tableData})
-                .then(response => {
-                    let data = response.data;
-                    this.parametrostabla = data;
-                    if (this.tableData.draw == data.draw) {
-                        this.roles = data.data.data;
-                        this.configPagination(data.data);
-                    }
-                })
-                .catch(errors => {
-                    console.log(errors);
-                });
+                  let data = response.data;
+                  this.quitarid='';
+                  this.getroles();
+                  toastsuccess.fire({
+                    title: data.title+' '+data.message
+                  })
+              })
+              .catch(errors => {
+                  console.log(errors);
+              });
+          },
+          allowOutsideClick: () => !swal.isLoading()
+          }).then((result) => {
+            if (result.value) {
+              swal.fire(
+                'Quitado!',
+                'Se ha quitado el rol.',
+                'success'
+              )
+            }
+          })
         },
         configPagination(data) {
             this.pagination.lastPage = data.last_page;

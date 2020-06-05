@@ -135,6 +135,7 @@ class UserController extends Controller
         $usuario->nombres = $request->nombres;
         $usuario->apellidos = $request->apellidos;
         $usuario->username = $request->username;
+        $usuario->name = $request->nombres.' '.$request->apellidos;
         $usuario->activo = $request->activo;
         
         if($request->imagen)

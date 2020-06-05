@@ -1,22 +1,25 @@
 @extends('layouts.adminlayout')
+
+@section('icono')
+  <i class="fas fa-user-tag"></i>
+@endsection
+
+@section('vista', 'Roles')
+
+@section('breadcrumb')  
+  <li class="breadcrumb-item active">Roles</li>
+@endsection
+
 @section('content')
 
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1><i class="far fa-handshake"></i> Roles</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item active">Roles</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section>
-      <roles />
-    </section>
+<section class="content mb-4">
+  <div class="card card-solid">
+    <div class="card-body ">
+
+      <roles></roles>
+
+    </div>
+  </div>
+</section>
 
 @endsection
