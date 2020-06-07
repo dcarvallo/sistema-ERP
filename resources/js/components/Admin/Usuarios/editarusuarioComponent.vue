@@ -41,7 +41,8 @@
                   <img :src="enlace" class="img" style="width: 15em" alt="Imagen de usuario">
                   </div>
                   <br>
-                  <input type="file" @change="onFileChange" class="form-control" name="imagen" />
+                  <input type="file" @change="onFileChange" class="form-control" name="imagen" accept="image/*"/>
+                  <div v-if="errors.imagen" class="alert-danger">{{ errors.imagen[0] }}</div>
                 </div>
                 
           <div class="text-right">

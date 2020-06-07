@@ -33,17 +33,17 @@
                     <input class="form-control mt-2 col-md-12" type="text" style="text-transform:uppercase" placeholder="Buscar empleado" v-model="dato">
                     <div class="col-md-11 position-relative">
                       <div class="position-absolute w-100">
-                      <div v-show="dato!=''" :style="'cursor:pointer'" class="form-control border asdf" @click.prevent="seleccionempleado(empleado)" v-for="(empleado, index) in buscarempleado" :key="index">
-                        
-                        <label class="w-100 position-absolute" style="cursor:pointer" >
-                          {{empleado.nombres}} {{empleado.apellidos}}, CI: {{empleado.ci}}
-                        </label>
+                        <div v-show="dato!=''" :style="'cursor:pointer'" class="form-control border asdf" @click.prevent="seleccionempleado(empleado)" v-for="(empleado, index) in buscarempleado" :key="index">
+                          
+                          <label class="w-100 position-absolute" style="cursor:pointer" >
+                            {{empleado.nombres}} {{empleado.apellidos}}, CI: {{empleado.ci}}
+                          </label>
+                        </div>
                       </div>
-                      </div>
-                  </div>
-                      <span v-if="empselect">
-                       <strong> Usuario vinculado con:</strong> {{empselect}}
-                      </span>
+                    </div>
+                    <span v-if="empselect">
+                      <strong> Usuario vinculado con:</strong> {{empselect}}
+                    </span>
                 </div>
                 <div v-else>{{empselect=''}}{{empleado_id=''}}</div>
               </div>
@@ -88,7 +88,8 @@
                     <img :src="enlace" class="img" style="width: 15em" alt="Imagen de usuario">
                   </div>
                   <br>
-                  <input type="file" @change="onFileChange" class="form-control" name="imagen" />
+                  <input type="file" @change="onFileChange" class="form-control" name="imagen" accept="image/*"/>
+                  <div v-if="errors.imagen" class="alert-danger">{{ errors.imagen[0] }}</div> 
               </div>
               
             </div>
@@ -104,15 +105,39 @@
           <h5>Roles</h5>
         </div>
         <div class="card-body">
-            <ul>
-              <li v-for="rol in roles" :key="rol.id">
+            <!-- <div class="row">
+              <div class="col-md-2" v-for="rol in roles" :key="rol.id">
                 <label>
                   <input type="checkbox"  :id="rol.id" :value="rol.slug" v-model="rolesSeleccionados" :checked="rol.special == 'no-access'">
                   <span :for="rol.name">{{rol.name}}: </span>
                   <em>{{rol.description}}</em>
                 </label>
-              </li>
-            </ul>
+              </div>
+            </div> -->
+            <label v-if="expand" @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Contraer todos</label>
+            <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
+
+            <div class="row">
+               <div class="col-md-2 my-2" v-for="(categoria,index) in roles" :key="index">
+                  <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
+                    <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
+                    <i v-else class="far fa-plus-square"></i>
+                    <span class="bold">  {{index}} </span>
+                  </label>
+                    <div v-for="elemento in categoria" :key="elemento.id"> 
+                      <transition name="fade">
+                        <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
+                          <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="rol.slug">
+                          <span>{{elemento.name}}</span> 
+                          </label>
+                      </transition>
+                    </div>
+                 </div> 
+              </div>
+
+
+
+
         </div>
       </div>
     </div>
@@ -143,10 +168,20 @@ export default {
         password: '',
         imagen: '',
       },
+      rol: {
+        slug: [],
+      },
       vincular: false,
+      nombres: [],
+      test:[],
+      expand: false,
       errors: [],
-      rolesSeleccionados: [],
     }
+  },
+  created() {
+    for(var k in this.roles) {
+        this.test.push(k);
+      }
   },
   computed: {
     buscarempleado(){
@@ -154,6 +189,28 @@ export default {
     },
   },
   methods:{
+    expandirTodos()
+    {
+      if(this.expand)
+      {
+        this.nombres = this.test;
+      }
+      else
+        this.nombres = [];
+    },
+    funcion(el)
+    {
+      if(this.nombres.includes(el))
+      {
+        let index = this.nombres.indexOf(el);
+        if (index > -1) {
+          this.nombres.splice(index, 1);
+        }
+      }
+      else{
+        this.nombres.push(el)
+      }
+    },
     seleccionempleado(emp){
       this.dato ='';
       this.empselect = emp.nombres+' '+emp.apellidos+' CI: '+emp.ci;
@@ -176,7 +233,7 @@ export default {
       formData.append('activo', this.usuario.activo);
       formData.append('password', this.usuario.password);
       formData.append('imagen', this.usuario.imagen);
-      formData.append('roles', this.rolesSeleccionados);
+      formData.append('roles', this.rol.slug);
       if(this.empleado_id != ''){
         formData.append('empleado_id', this.empleado_id);
       }
@@ -210,9 +267,8 @@ export default {
           })
           }
           if(error.response.status == 500){
-            this.errors = error.response.data.errors;
             toasterror.fire({
-            title: 'Error, notifique al nadministrador'
+            title: 'Error, notifique al administrador'
           })
           }
       })

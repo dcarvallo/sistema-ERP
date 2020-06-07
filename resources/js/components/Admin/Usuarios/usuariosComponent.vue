@@ -63,7 +63,7 @@
                         <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
                     <td>
-                        <a class="btn btn-danger" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-trash-alt"></i></a>
+                        <a class="btn btn-danger text-white" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -135,7 +135,7 @@ export default {
             {label: 'Activo', name: 'activo'},
             {label: 'Ver', name: 'ver'},
             {label: 'Editar', name: 'editar'},
-            {label: 'Quitar', name: 'quitar'}
+            {label: 'Eliminar', name: 'eliminar'}
         ];
         columns.forEach((column) => {
            sortOrders[column.name] = -1;
@@ -192,6 +192,37 @@ export default {
                         title: 'Error'
                     })
                 });
+        },
+        eliminarusuario(usuarioid) {
+            
+        modalconfirm.fire({
+        title: '¿Está seguro que desea eliminar este usuario?',
+        text: "El usuairo ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: (login) => {
+          return axios.delete('/users/'+usuarioid, {params: this.tableData})
+                .then(response => {
+                  let data = response.data;
+                  this.getUsuarios();
+                  toastsuccess.fire({
+                    title: data.title+' '+data.message
+                  })
+              })
+              .catch(errors => {
+                  console.log(errors);
+              });
+          },
+          allowOutsideClick: () => !swal.isLoading()
+          }).then((result) => {
+            if (result.value) {
+              swal.fire(
+                'Quitado!',
+                'Se ha quitado el rol.',
+                'success'
+              )
+            }
+          })
         },
         filtro(){
           this.getUsuarios();

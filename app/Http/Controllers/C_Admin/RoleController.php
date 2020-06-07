@@ -43,9 +43,14 @@ class RoleController extends Controller
 
         $permisos = Permission::all()->groupBy('category')->toArray();
         ksort($permisos);
+        $cat = Role::select('category')->groupBy('category')->get();
+        foreach($cat as $cate){
+            $categorias[] = $cate->category;
+        }
+        // dd($categorias);
         // $permisos = Permission::select('id', 'name', 'description', 'category')->get()->toArray();
         
-        return view('admin.roles.create', compact('permisos'));;
+        return view('admin.roles.create', compact('permisos', 'categorias'));;
     }
 
     public function store(Request $request)
@@ -56,12 +61,15 @@ class RoleController extends Controller
         'name' => 'required|string',
         'slug' => 'required|string',
         'description' => 'required|string',
+        'category' => 'required|string',
         ]);
         try {
           $rol = new Role();
           $rol->name = $request->name;
           $rol->slug = $request->slug;
           $rol->description = $request->description;
+          $rol->category = $request->category;
+          
           if($request->special)
           {
             $rol->special = $request->special;
@@ -103,7 +111,12 @@ class RoleController extends Controller
       $rol = Role::find($id);
       $permisos = Permission::all()->groupBy('category')->toArray();
       ksort($permisos);
-      return view('admin.roles.edit', compact('rol', 'permisos'));
+
+      $cat = Role::select('category')->groupBy('category')->get();
+      foreach($cat as $cate){
+          $categorias[] = $cate->category;
+      }
+      return view('admin.roles.edit', compact('rol', 'permisos' , 'categorias'));
     }
 
     public function update(Request $request, $id)
@@ -113,12 +126,14 @@ class RoleController extends Controller
         'name' => 'required|string',
         'slug' => 'required|string',
         'description' => 'required|string',
+        'category' => 'required|string',
         ]);
         try {
           $rol = Role::find($id);
           $rol->name = $request->name;
           $rol->slug = $request->slug;
           $rol->description = $request->description;
+          $rol->category = $request->category;
           if($request->special)
           {
             $rol->special = $request->special;
@@ -152,7 +167,6 @@ class RoleController extends Controller
     public function destroy($id)
     {
       $rol = Role::find($id);
-       Log::info($rol);
         $rol->delete();
         $toast = array(
           'title'   => 'Rol eliminado: ',

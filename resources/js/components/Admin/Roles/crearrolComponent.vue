@@ -25,17 +25,42 @@
                 <textarea class="form-control" type="text" v-model="rol.description"></textarea>
                  <label v-if="errors.description" class="alert-danger">{{errors.description[0]}}</label>
             </div>
-            
-          </div>
-        
-    </div>
-        </div>
+            <div class="form-group">
+              <label class="mr-2"> Categoria*</label> 
+               <i class="far" :class="nueva ? 'fa-minus-square' : 'fa-plus-square'" 
+               :style="'cursor:pointer'" 
+               data-toggle="tooltip" data-placement="top" :title="!nueva ? 'Nueva categoria': 'Volver a existentes'" 
+               @click="nueva = !nueva">
+               </i>
+              
+                <multiselect v-if="!nueva" v-model="value" 
+                :option="'Nueva categoria'"
+                :options= categorias
+                :searchable="true" 
+                :placeholder="'Seleccione una opcion'" 
+                :selectLabel="''" 
+                :selectedLabel="'Seleccionado'" 
+                :deselectLabel="''"
+                :noOptions="''"
+                >
+                <span slot="noResult">No existe categoria, agregue nueva categoria.</span>
+                </multiselect>
+                <!-- {{value}} -->
+                <input v-if="nueva" class="form-control" placeholder="Ingrese nueva categoria" type="text" v-model="rol.category">
+                <label v-if="errors.category" class="alert-danger">{{errors.category[0]}}</label>
+              </div>
+ 
+          </div>  
+      </div>
+
+
+      </div>
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
                 <h5>Permisos Eseciales</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body text-center">
               <select class="form-control col-md-4" v-model="rol.special">
                   <option value=""> Personalizado </option>
                   <option value="all-access">Acceso Total</option>
@@ -56,21 +81,21 @@
           <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
           <div class="row">
 
-               <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="index">
-                  <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
-                    <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
-                    <i v-else class="far fa-plus-square"></i>
-                    <span class="bold">  {{index}} </span>
+            <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="index">
+              <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
+                <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
+                <i v-else class="far fa-plus-square"></i>
+                <span class="bold">  {{index}} </span>
+              </label>
+              <div v-for="elemento in categoria" :key="elemento.id"> 
+                <transition name="fade">
+                  <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
+                    <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
+                    <span>{{elemento.name}}</span> 
                   </label>
-                    <div v-for="elemento in categoria" :key="elemento.id"> 
-                      <transition name="fade">
-                        <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
-                          <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
-                          <span>{{elemento.name}}</span> 
-                          </label>
-                      </transition>
-                    </div>
-                 </div> 
+                </transition>
+              </div>
+            </div> 
 
           </div>
               
@@ -90,15 +115,18 @@
 </template>
 
 <script>
-
+import Multiselect from 'vue-multiselect'
 export default {
-  props: ['permisos'],
+  props: ['permisos', 'categorias'],
+  components: { Multiselect },
   data(){
     return{
+      value: null,
       rol: {
         name: '',
         slug: '',
         description: '',
+        category: '',
         special: '',
       },
       test:[],
@@ -107,7 +135,7 @@ export default {
       permiso: {
         slug: [],
       },
-      categorias: Object.values(this.permisos),
+      nueva: false,
       errors: [],
     }
   },
@@ -115,7 +143,6 @@ export default {
      for(var k in this.permisos) {
         this.test.push(k);
       }
-    console.log(this.rol.special);
   },
   methods:{
     expandirTodos()
@@ -140,6 +167,19 @@ export default {
           this.nombres.push(el)
       }
     },
+    nuevacategoria(){
+      this.nueva = !this.nueva;
+
+    },
+    seleccioncategoria(){
+      if(this.value == 'Nueva categoria')
+      {
+          this.nueva= true;
+      }
+      else
+      this.nueva = false;
+      this.rol.category = this.value;
+    },
     crearrol()
     {
       this.errors = [];
@@ -148,6 +188,13 @@ export default {
       formData.append('slug', this.rol.slug);
       formData.append('description', this.rol.description);
       formData.append('special', this.rol.special);
+      if(this.nueva)
+      {
+        formData.append('category', this.rol.category);
+      }else if(!this.nueva && this.value != null)
+      {
+        formData.append('category', this.value);
+      }
       if(this.rol.special == '')
       {
         formData.append('permisos', this.permiso.slug);
@@ -157,10 +204,12 @@ export default {
       .then(res => {
         let datos = res.data;
         this.nombres = [];
+        this.nueva = false;
         this.rol.name = '';
         this.rol.slug = '';
         this.rol.description = '';
         this.rol.special = '';
+        this.rol.category = '';
         this.permiso.slug = [];
         toastsuccess.fire({
           title: datos[1].title+' '+datos[1].message
@@ -182,3 +231,9 @@ export default {
   }
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style>
+  .asdf:hover{
+    background-color: #d8e0ea;
+  }
+</style>

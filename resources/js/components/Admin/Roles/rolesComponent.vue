@@ -80,7 +80,6 @@ export default {
         return {
             roles: [],
             columns: columns,
-            quitarid:'',
             sortKey: 'name',
             sortOrders: sortOrders,
             perPage: ['15', '30', '50'],
@@ -130,7 +129,6 @@ export default {
           return axios.delete('/roles/'+rolid, {params: this.tableData})
                 .then(response => {
                   let data = response.data;
-                  this.quitarid='';
                   this.getroles();
                   toastsuccess.fire({
                     title: data.title+' '+data.message

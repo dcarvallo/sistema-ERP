@@ -19,7 +19,7 @@ class CreatePermissionsTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->string('category')->nullable();
+            $table->string('category', 50)->default('Sin categoria')->nullable();
             $table->timestamps();
         });
     }

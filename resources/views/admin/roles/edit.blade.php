@@ -14,7 +14,10 @@
 @section('content')
 
     <section>
-    <editarrol :rol="{{ $rol }}" :permisos=" {{json_encode($permisos)}} " :permisosseleccionados="{{$rol->permissions}}"/>
+    <editarrol :rol="{{ $rol }}" 
+    :permisos=" {{json_encode($permisos)}} " 
+    :permisosseleccionados="{{$rol->permissions}}" 
+    :categorias="{{json_encode($categorias)}}"/>
     </section>
 
 @endsection

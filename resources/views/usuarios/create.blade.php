@@ -17,7 +17,7 @@
     <div class="card card-solid">
       <div class="card-body ">
     
-      <crearusuario :roles="{{$roles}}" :empleados="{{$empleados}}"/>
+      <crearusuario :roles="{{json_encode($roles)}}" :empleados="{{$empleados}}"/>
     
       </div>
     </div>

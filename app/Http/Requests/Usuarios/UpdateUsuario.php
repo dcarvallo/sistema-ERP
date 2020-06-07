@@ -26,6 +26,7 @@ class UpdateUsuario extends FormRequest
         return [
           'nombres' => 'required|string',
           'apellidos' => 'required|string',
+          'imagen' => 'image',
           'username' => 'required|string',
         ];
     }

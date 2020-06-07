@@ -22,6 +22,31 @@
                 <label>Descripcion*</label>
                 <textarea class="form-control" type="text" v-model="rolmod.description"></textarea>
             </div>
+            <div class="form-group">
+              <label class="mr-2"> Categoria*</label> 
+               <i class="far" :class="nueva ? 'fa-minus-square' : 'fa-plus-square'" 
+               :style="'cursor:pointer'" 
+               data-toggle="tooltip" data-placement="top" :title="!nueva ? 'Nueva categoria': 'Volver a existentes'" 
+               @click="nueva = !nueva">
+               </i>
+              
+                <multiselect v-if="!nueva" v-model="value" 
+                :option="'Nueva categoria'"
+                :options= categorias
+                :searchable="true" 
+                :placeholder="'Seleccione una opcion'" 
+                :selectLabel="''" 
+                :selectedLabel="'Seleccionado'" 
+                :deselectLabel="''"
+                :noOptions="''"
+                
+                >
+                <span slot="noResult">No existe categoria, agregue nueva categoria.</span>
+                </multiselect>
+                <!-- {{value}} -->
+                <input v-if="nueva" class="form-control" placeholder="Ingrese nueva categoria" type="text" v-model="rolmod.category">
+                <label v-if="errors.category" class="alert-danger">{{errors.category[0]}}</label>
+              </div>
           </div>
         
     </div>
@@ -87,17 +112,19 @@
 </template>
 
 <script>
-
+import Multiselect from 'vue-multiselect'
 export default {
-  props: ['permisos','rol', 'permisosseleccionados'],
+  props: ['permisos','rol', 'permisosseleccionados','categorias'],
+  components: { Multiselect },
   data(){
     return{
       rolmod: this.rol,
       nombres: [],
       test: [],
       expand: false,
-      categorias: Object.values(this.permisos),
       errors: [],
+      nueva: false,
+      value: this.rol.category,
       perseleccionaados:[],
     }
   },
@@ -147,6 +174,13 @@ export default {
       formData.append('slug', this.rolmod.slug);
       formData.append('description', this.rolmod.description);
       formData.append('special', this.rolmod.special);
+      if(this.nueva)
+      {
+        formData.append('category', this.rolmod.category);
+      }else if(!this.nueva && this.value != null)
+      {
+        formData.append('category', this.value);
+      }
       formData.append('_method', 'put');
       if(this.rolmod.special == '')
       {
@@ -174,3 +208,4 @@ export default {
   }
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

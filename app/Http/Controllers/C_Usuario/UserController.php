@@ -12,10 +12,12 @@ use App\Http\Requests\Usuarios\StoreUsuario;
 use App\Http\Requests\Usuarios\ResetPassword;
 use App\Http\Requests\Usuarios\UpdateUsuario;
 use App\Models\M_RRHH\Empleado;
-use DB;
 use Log;
+use Storage;
+use File;
 use Session;
 use Auth;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class UserController extends Controller
 {
@@ -56,13 +58,16 @@ class UserController extends Controller
     public function create()
     {
       $empleados = Empleado::select('id', 'nombres', 'apellidos', 'ci')->get();
-      $roles = Role::all();
+      // $roles = Role::orderBy('name', 'asc')->get();
+
+      $roles = Role::all()->groupBy('category')->toArray();
+      ksort($roles);
+
       return view('usuarios.create', compact('roles', 'empleados'));
     }
 
     public function store(StoreUsuario $request)
     {
-      Log::info($request);
       try {
         $usuario = new User();
         $usuario->nombres = $request->nombres;
@@ -78,10 +83,17 @@ class UserController extends Controller
         }
         if($request->imagen)
         {
-            $ext = $request->imagen->getClientOriginalExtension();
-            $fileName = str_random().'.'.$ext;
-            $request->imagen->storeAs('usuarios/', $fileName);
-            $usuario->fotografia = 'usuarios/'.$fileName;
+          //laravel intervention
+
+          $ext = $request->imagen->getClientOriginalExtension();
+          $fileName = str_random().'.'.$ext;
+          //original
+          $request->imagen->storeAs('usuarios/originales', $fileName);
+          //modificado
+          $imagenmod = Image::make($request->imagen)->fit(300, 300);
+          Storage::put('usuarios/thumbnail/'.$fileName, $imagenmod->encode() );
+
+          $usuario->fotografia = 'usuarios/thumbnail/'.$fileName;
         }
         else
         {
@@ -140,10 +152,23 @@ class UserController extends Controller
         
         if($request->imagen)
         {
+          // $ext = $request->imagen->getClientOriginalExtension();
+          // $fileName = str_random().'.'.$ext;
+          // $request->imagen->storeAs('usuarios/', $fileName);
+          // $usuario->fotografia = 'usuarios/'.$fileName;
+
+          //laravel intervention
+
           $ext = $request->imagen->getClientOriginalExtension();
           $fileName = str_random().'.'.$ext;
-          $request->imagen->storeAs('usuarios/', $fileName);
-          $usuario->fotografia = 'usuarios/'.$fileName;
+          //original
+          $request->imagen->storeAs('usuarios/originales', $fileName);
+          //modificado
+          $imagenmod = Image::make($request->imagen)->fit(300, 300);
+          Storage::put('usuarios/thumbnail/'.$fileName, $imagenmod->encode() );
+
+          $usuario->fotografia = 'usuarios/thumbnail/'.$fileName;
+
         }
         $usuario->save();
         
@@ -166,6 +191,17 @@ class UserController extends Controller
 
     }
 
+
+    public function destroy($id)
+    {
+      $usuario = User::find($id);
+       $usuario->delete();
+       $toast = array(
+         'title'   => 'usuario eliminado: ',
+         'message' => '',
+       );
+       return $toast;
+    }
 
     public function updatepass(Request $request, $id)
     {
@@ -269,11 +305,6 @@ class UserController extends Controller
       }
     }
 
-    public function destroy($id)
-    {
-        //
-    }
-
     public function contactos()
     {
         $usuarios = User::paginate(9);
@@ -296,7 +327,6 @@ class UserController extends Controller
             //throw $th;
         }
         
-        // $usuarios = DB::table('users')->orderBy('name', 'asc')->paginate(10);
        
     }
 
