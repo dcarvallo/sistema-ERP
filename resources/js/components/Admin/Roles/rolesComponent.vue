@@ -61,62 +61,62 @@ import Pagination from '../../Pagination.vue';
 export default {
     components: { datatable: Datatable, pagination: Pagination },
     created() {
-        this.getroles();
+      this.getroles();
     },
     data() {
-        let sortOrders = {};
-        let parametrostabla = {};
-        let columns = [
-            {label: 'Nombre', name: 'name' },
-            {label: 'Descripcion', name: 'description'},
-            {label: 'Permiso especial', name: 'special'},
-            {label: 'Ver', name: 'ver'},
-            {label: 'Editar', name: 'editar'},
-            {label: 'Eliminar', name: 'eliminar'}
-        ];
-        columns.forEach((column) => {
-           sortOrders[column.name] = -1;
-        });
-        return {
-            roles: [],
-            columns: columns,
-            sortKey: 'name',
-            sortOrders: sortOrders,
-            perPage: ['15', '30', '50'],
-            tableData: {
-                draw: 0,
-                length: 15,
-                search: '',
-                column: 0,
-                dir: 'asc',
-            },
-            pagination: {
-                lastPage: '',
-                currentPage: '',
-                total: '',
-                lastPageUrl: '',
-                nextPageUrl: '',
-                prevPageUrl: '',
-                from: '',
-                to: ''
-            },
-        }
+      let sortOrders = {};
+      let parametrostabla = {};
+      let columns = [
+          {label: 'Nombre', name: 'name' },
+          {label: 'Descripcion', name: 'description'},
+          {label: 'Permiso especial', name: 'special'},
+          {label: 'Ver', name: 'ver'},
+          {label: 'Editar', name: 'editar'},
+          {label: 'Eliminar', name: 'eliminar'}
+      ];
+      columns.forEach((column) => {
+          sortOrders[column.name] = -1;
+      });
+      return {
+        roles: [],
+        columns: columns,
+        sortKey: 'name',
+        sortOrders: sortOrders,
+        perPage: ['15', '30', '50'],
+        tableData: {
+            draw: 0,
+            length: 15,
+            search: '',
+            column: 0,
+            dir: 'asc',
+        },
+        pagination: {
+            lastPage: '',
+            currentPage: '',
+            total: '',
+            lastPageUrl: '',
+            nextPageUrl: '',
+            prevPageUrl: '',
+            from: '',
+            to: ''
+        },
+      }
     },
     methods: {
       getroles(url = '/obtenerroles') {
-          this.tableData.draw++;
-          axios.get(url, {params: this.tableData})
-              .then(response => {
-                  let data = response.data;
-                  this.parametrostabla = data;
-                  if (this.tableData.draw == data.draw) {
-                      this.roles = data.data.data;
-                      this.configPagination(data.data);
-                  }
-              })
-              .catch(errors => {
-                  console.log(errors);
-              });
+        this.tableData.draw++;
+        axios.get(url, {params: this.tableData})
+        .then(response => {
+          let data = response.data;
+          this.parametrostabla = data;
+          if (this.tableData.draw == data.draw) {
+            this.roles = data.data.data;
+            this.configPagination(data.data);
+          }
+        })
+        .catch(errors => {
+          console.log(errors);
+        });
       },
       eliminarrol(rolid) {
             
@@ -127,16 +127,16 @@ export default {
         cancelButtonText: 'Cancelar',
         preConfirm: (login) => {
           return axios.delete('/roles/'+rolid, {params: this.tableData})
-                .then(response => {
-                  let data = response.data;
-                  this.getroles();
-                  toastsuccess.fire({
-                    title: data.title+' '+data.message
-                  })
+            .then(response => {
+              let data = response.data;
+              this.getroles();
+              toastsuccess.fire({
+                title: data.title+' '+data.message
               })
-              .catch(errors => {
-                  console.log(errors);
-              });
+            })
+            .catch(errors => {
+                console.log(errors);
+            });
           },
           allowOutsideClick: () => !swal.isLoading()
           }).then((result) => {
@@ -150,26 +150,27 @@ export default {
           })
         },
         configPagination(data) {
-            this.pagination.lastPage = data.last_page;
-            this.pagination.currentPage = data.current_page;
-            this.pagination.total = data.total;
-            this.pagination.lastPageUrl = data.last_page_url;
-            this.pagination.nextPageUrl = data.next_page_url;
-            this.pagination.prevPageUrl = data.prev_page_url;
-            this.pagination.from = data.from;
-            this.pagination.to = data.to;
+          this.pagination.lastPage = data.last_page;
+          this.pagination.currentPage = data.current_page;
+          this.pagination.total = data.total;
+          this.pagination.lastPageUrl = data.last_page_url;
+          this.pagination.nextPageUrl = data.next_page_url;
+          this.pagination.prevPageUrl = data.prev_page_url;
+          this.pagination.from = data.from;
+          this.pagination.to = data.to;
         },
         sortBy(key) {
-            this.sortKey = key;
-            this.sortOrders[key] = this.sortOrders[key] * -1;
-            this.tableData.column = this.getIndex(this.columns, 'name', key);
-            this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
-            this.getroles();
+          this.sortKey = key;
+          this.sortOrders[key] = this.sortOrders[key] * -1;
+          this.tableData.column = this.getIndex(this.columns, 'name', key);
+          this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
+          this.getroles();
         },
         getIndex(array, key, value) {
-            return array.findIndex(i => i[key] == value)
+          return array.findIndex(i => i[key] == value)
         },
 
     }
 };
+
 </script>

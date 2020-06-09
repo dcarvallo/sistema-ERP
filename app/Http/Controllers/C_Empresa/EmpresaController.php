@@ -35,7 +35,7 @@ class EmpresaController extends Controller
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
             'rubro' => 'required|string',
-            'email' => 'email|string',
+            'email' => 'email|string|nullable',
             'direccion' => 'required|string',
             'fecha_creacion' => 'required',
         ]);
@@ -51,7 +51,6 @@ class EmpresaController extends Controller
         $empresa->email = $request->email;
         if($request->imagen_empresa)
         {
-
           $ext = $request->imagen_empresa->getClientOriginalExtension();
           $fileName = str_random().'.'.$ext;
           $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
@@ -65,18 +64,17 @@ class EmpresaController extends Controller
         return redirect('/empresas')->with('toast', $empresa->nombre.': Empresa creada');
     }
 
-    public function show($id)
+    public function show(Empresa $empresa)
     {
         //
     }
 
-    public function edit($id)
+    public function edit(Empresa $empresa)
     {
-        $empresa = Empresa::find($id);
         return view('empresa.empresa.edit', compact('empresa'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Empresa $empresa)
     {
         $this->validate($request, [
             'nombre' => 'required|string',
@@ -87,7 +85,6 @@ class EmpresaController extends Controller
             'fecha_creacion' => 'required',
         ]);
 
-        $empresa = Empresa::find($id);
         $empresa->nombre = $request->nombre;
         $empresa->descripcion = $request->descripcion;
         $empresa->rubro = $request->rubro;
@@ -111,7 +108,7 @@ class EmpresaController extends Controller
         return redirect('/empresas')->with('toast', $empresa->nombre.': Informacion modificada');
     }
 
-    public function destroy($id)
+    public function destroy(Empresa $empresa)
     {
         //
     }

@@ -10,11 +10,6 @@ use DB;
 
 class UbicacionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function __construct()
     {
@@ -28,6 +23,8 @@ class UbicacionController extends Controller
 
     public function obtenerubicaciones(Request $request)
     {
+      try {
+      
         $columns = ['nombre', 'descripcion', 'locacion', 'empresa','editar', 'eliminar'];
 
         $length = $request->input('length');
@@ -47,24 +44,17 @@ class UbicacionController extends Controller
 
         $ubicaciones = $query->paginate($length);
         return ['data' => $ubicaciones, 'draw' => $request->input('draw')];
+         
+      } catch (\Throwable $th) {
+        //throw $th;
+      }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('empresa.ubicacion.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
@@ -73,13 +63,11 @@ class UbicacionController extends Controller
             'descripcion' => 'required|string',
             'locacion' => 'required|string'
         ]);
-
-        $empresa = Empresa::first('id');
-
-        // dd($empresa);
-
-        if($empresa != null)
-        {   
+        try {
+          $empresa = Empresa::first('id');
+          
+          if($empresa != null)
+          {   
             $ubicacion = new Ubicacion();
             $ubicacion->nombre = $request->nombre;
             $ubicacion->descripcion = $request->descripcion;
@@ -88,67 +76,94 @@ class UbicacionController extends Controller
             $ubicacion->save();
             
             $toast = array(
-                'title'   => 'Ubicacion creada: ',
-                'message' => $ubicacion->nombre,
-                'type'    => 'success'
+              'title'   => 'Ubicacion creada: ',
+              'message' => $ubicacion->nombre,
+              'type'    => 'success'
             );
 
-            return redirect('/ubicaciones')->with('mensaje', $toast);
-        }
-        else
-        {
+            return back()->with('toast', $toast);
+          }
+          else
+          {
             $toast = array(
-                'title'   => 'error',
-                'message' => 'empresa no creada',
-                'type'    => 'error'
+              'title'   => 'error',
+              'message' => 'No existe empresa creada',
+              'type'    => 'error'
             );
-            return redirect('/ubicaciones')->with('mensaje', $toast);
+            return back()->with('toast', $toast);
+          }
+        } catch (\Throwable $th) {
+            $toast = array(
+              'title'   => 'Error',
+              'message' => 'Error inesperado, contacte al administrador',
+              'type'    => 'error'
+            );
+            return back()->with('toast', $toast);
         }
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Ubicacion  $ubicacion
-     * @return \Illuminate\Http\Response
-     */
     public function show(Ubicacion $ubicacion)
     {
-        //
+        return view('empresa.ubicacion.show', compact('ubicacion'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Ubicacion  $ubicacion
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Ubicacion $ubicacion)
     {
-        //
+      return view('empresa.ubicacion.edit', compact('ubicacion'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Ubicacion  $ubicacion
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Ubicacion $ubicacion)
     {
-        //
+      $this->validate($request, [
+        'nombre' => 'required|string',
+        'descripcion' => 'required|string',
+        'locacion' => 'required|string'
+      ]);
+      try {
+        $ubicacion->nombre = $request->nombre;
+        $ubicacion->descripcion = $request->descripcion;
+        $ubicacion->locacion = $request->locacion;
+        $ubicacion->save();
+        
+        $toast = array(
+            'title'   => 'Ubicacion modificada: ',
+            'message' => $ubicacion->nombre,
+            'type'    => 'success'
+        );
+
+        return back()->with('toast', $toast);
+       
+      } catch (\Throwable $th) {
+        $toast = array(
+          'title'   => 'Error: ',
+          'message' => 'Error inesperado, contacte al administrdor',
+          'type'    => 'error'
+      );
+
+      return back()->with('toast', $toast);
+      }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Ubicacion  $ubicacion
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Ubicacion $ubicacion)
     {
-        //
+      if($ubicacion->departamentos()->count())
+      {
+        $toast = array(
+          'title'   => 'Error: ',
+          'message' => 'No se puede quitar, ubicacion tiene departamentos dependientes',
+          'type'    => 'error'
+        );
+        return $toast;
+      }
+
+      $ubicacion->delete();
+
+      $toast = array(
+        'title'   => 'ubicacion eliminada: ',
+        'message' => '',
+        'type'    => 'error',
+      );
+      return $toast;
     }
 }

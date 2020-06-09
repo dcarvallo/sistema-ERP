@@ -15,6 +15,7 @@ class CreateTesoreriasTable extends Migration
     {
         Schema::create('tesorerias', function (Blueprint $table) {
             $table->id();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

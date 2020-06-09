@@ -112,7 +112,18 @@ const modalconfirm = swal.mixin({
   // background: '#f8f3e5',
 })
 
+const toast = swal.mixin({
+  showConfirmButton: true,
+  timer: 5000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', swal.stopTimer)
+    toast.addEventListener('mouseleave', swal.resumeTimer)
+  }
+})
+
 window.toastsuccess = toastsuccess;
+window.toast = toast;
 window.toasterror = toasterror;
 window.toastinfo = toastinfo;
 window.toastwarning = toastwarning;
@@ -127,6 +138,18 @@ Vue.component('datatable', require('./components/ColumUserdatabase.vue').default
 Vue.component('empleadoedit', require('./components/RRHH/empleadoeditComponent.vue').default);
 Vue.component('empresacreate', require('./components/Empresa/empresacreateComponent.vue').default);
 Vue.component('ubicaciones', require('./components/Empresa/ubicacionesComponent.vue').default);
+//departamentos
+Vue.component('departamentos', require('./components/Empresa/departamento/departamentosComponent.vue').default);
+Vue.component('creardepartamento', require('./components/Empresa/departamento/creardepartamentoComponent.vue').default);
+Vue.component('editardepartamento', require('./components/Empresa/departamento/editardepartamentoComponent.vue').default);
+//areas
+Vue.component('areas', require('./components/Empresa/area/areasComponent.vue').default);
+Vue.component('creararea', require('./components/Empresa/area/crearareaComponent.vue').default);
+Vue.component('editararea', require('./components/Empresa/area/editarareaComponent.vue').default);
+//cargos
+Vue.component('cargos', require('./components/Empresa/cargo/cargosComponent.vue').default);
+Vue.component('crearcargo', require('./components/Empresa/cargo/crearcargoComponent.vue').default);
+Vue.component('editarcargo', require('./components/Empresa/cargo/editarcargoComponent.vue').default);
 //usuarios
 Vue.component('usuarios', require('./components/Admin/Usuarios/usuariosComponent.vue').default);
 Vue.component('editarusuario', require('./components/Admin/Usuarios/editarusuarioComponent.vue').default);

@@ -13,8 +13,9 @@ class CreateContabilidadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contabilidads', function (Blueprint $table) {
+        Schema::create('contabilidades', function (Blueprint $table) {
             $table->id();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

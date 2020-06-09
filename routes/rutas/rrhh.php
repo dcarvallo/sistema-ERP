@@ -11,8 +11,7 @@ Route::get('rrhh', 'C_RRHH\RecursoshumanoController@index')->name('rrhh.index')
 
 //empleado
 
-Route::post('empleados/store', 'C_RRHH\EmpleadoController@store')->name('empleados.store')
-		->middleware('can:empleados.create');
+Route::post('empleados/store', 'C_RRHH\EmpleadoController@store')->name('empleados.store')->middleware('can:empleados.create');
 
 	Route::get('empleados', 'C_RRHH\EmpleadoController@index')->name('empleados.index')
 		->middleware('can:empleados.index');

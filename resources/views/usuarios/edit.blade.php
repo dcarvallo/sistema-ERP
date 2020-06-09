@@ -19,7 +19,7 @@
   <section class="content mb-4">
     <div class="card card-solid">
       <div class="card-body ">
-        <editarusuario :usuario="{{$usuario}}" :rolesusuario="{{ $usuario->roles }}" :roles="{{$roles}}" />
+        <editarusuario :usuario="{{$usuario}}" :rolesusuario="{{ $usuario->roles }}" :roles="{{json_encode($roles)}}" />
       </div>
     </div>
   </section>

@@ -39,7 +39,7 @@ class CreateEmpleadosTable extends Migration
             $table->foreign('departamento_id')->references('id')->on('departamentos');
             $table->foreign('area_id')->references('id')->on('areas');
             $table->foreign('cargo_id')->references('id')->on('cargos');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

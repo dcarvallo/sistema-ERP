@@ -3,13 +3,13 @@
 
   <form enctype="multipart/form-data" @keydown.enter.prevent>
   <div class="d-flex justify-content-between">
-<nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Informacion</a>
-    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Roles</a>
-  </div>
-</nav>
-<div class="text-right">
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Informacion</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Roles</a>
+      </div>
+    </nav>
+    <div class="text-right">
       <button type="submit" class="btn btn-primary" @click.prevent="crearusuario"><i class="far fa-save"></i> Guardar</button>
     </div>
   </div>

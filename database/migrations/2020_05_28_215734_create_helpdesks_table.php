@@ -15,6 +15,7 @@ class CreateHelpdesksTable extends Migration
     {
         Schema::create('helpdesks', function (Blueprint $table) {
             $table->id();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

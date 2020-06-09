@@ -4,16 +4,16 @@
   <i class="fas fa-search-location"></i> 
 @endsection
 
-@section('vista', 'Crear Ubición')
+@section('vista', 'Crear Ubicación')
 
 @section('breadcrumb')  
   <li class="breadcrumb-item"><a href="{{route('ubicaciones.index')}}">Ubicaciones</a></li>
-  <li class="breadcrumb-item active">Crear Ubicacion</li>
+  <li class="breadcrumb-item active">Crear Ubicación</li>
 @endsection
 
 @section('content')
 
-  <section class="content mb-4" id="app">
+  <section class="content mb-4">
     <!-- Default box -->
     <div class="card card-solid">
       <div class="card-body ">
@@ -24,10 +24,9 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                  <h5>Información de Ubicacion</h5>
+                  <h5>Información de Ubicación</h5>
               </div>
             <div class="card-body">
-              {{-- @if($empresas != null) --}}
 
               <div class="form-group">
                 <label for="nombre">Nombre*</label>
@@ -35,31 +34,46 @@
                 @error('nombre')<div class="alert-danger">{{ $message }}</div> @enderror
               </div>
               <div class="form-group">
-                <label for="descripcion">Descripcion*</label>
+                <label for="descripcion">Descripción*</label>
                 <textarea type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" placeholder="Descripción">{{ old('descripcion') }}</textarea>
                 @error('descripcion')<div class="alert-danger">{{ $message }}</div> @enderror
               </div>
               <div class="form-group">
-                <label for="locacion">Locacion*</label>
+                <label for="locacion">Locación*</label>
                 <input type="text" class="form-control @error('locacion') is-invalid @enderror" name="locacion" value="{{ old('locacion') }}" placeholder="Locacion">
                 @error('locacion')<div class="alert-danger">{{ $message }}</div> @enderror
               </div>
-              
-              {{-- @endif --}}
 
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Crear</button>
         </div>
-          
-      <!-- </form> -->
         
         </div>
-        {{-- <empresacreate/> --}}
       </form>
     
       </div>
     </div>
   </section>
 
+@endsection
+
+
+@section('js-footer')
+  @if(Session::has('toast'))
+  <script>
+    var variable = {!! json_encode(Session::get('toast')) !!}
+    swal.fire({
+      showConfirmButton: true,
+      icon: variable.type,
+      title: variable.title+' '+variable.message,
+      timer: 5000,
+      timerProgressBar: true,
+      onOpen: (toast) => {
+        toast.addEventListener('mouseenter', swal.stopTimer)
+        toast.addEventListener('mouseleave', swal.resumeTimer)
+      }
+    })
+    </script>
+  @endif
 @endsection

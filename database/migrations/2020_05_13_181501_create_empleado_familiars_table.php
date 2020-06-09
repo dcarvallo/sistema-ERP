@@ -26,7 +26,7 @@ class CreateEmpleadoFamiliarsTable extends Migration
             $table->string('apellidos_madre',100)->nullable();
             $table->unsignedBigInteger('empleado_id');
             $table->foreign('empleado_id')->references('id')->on('empleados');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

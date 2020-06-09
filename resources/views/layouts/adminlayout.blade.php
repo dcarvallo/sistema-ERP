@@ -281,19 +281,19 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/empleados" class="nav-link">
+                <a href="{{route('departamentos.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Departamentos</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('areas.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Áreas</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('cargos.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Cargos</p>
                 </a>

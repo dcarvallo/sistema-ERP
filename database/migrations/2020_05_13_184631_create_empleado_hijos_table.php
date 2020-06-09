@@ -21,7 +21,7 @@ class CreateEmpleadoHijosTable extends Migration
             $table->string('lugar_nac',200)->nullable();
             $table->unsignedBigInteger('empleado_id');
             $table->foreign('empleado_id')->references('id')->on('empleados');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -134,7 +134,8 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $roles = Role::all();
+        $roles = Role::all()->groupBy('category')->toArray();
+        ksort($roles);
         $usuario = User::find($id);
         return view('usuarios.edit', compact('usuario', 'roles'));
     }
@@ -194,10 +195,11 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+
       $usuario = User::find($id);
        $usuario->delete();
        $toast = array(
-         'title'   => 'usuario eliminado: ',
+         'title'   => 'usuario quitado. ',
          'message' => '',
        );
        return $toast;

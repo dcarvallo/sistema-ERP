@@ -1,4 +1,15 @@
 <template>
+<div>
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Informacion</a>
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Roles</a>
+    </div>
+  </nav>
+
+<hr>
+<div class="tab-content" id="nav-tabContent">
+    <div style="min-height:50vh" class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
    <div class="row" >
       <div class="col-md-6">
       <form enctype="multipart/form-data" @keydown.enter.prevent>
@@ -102,14 +113,22 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12">
+            
+
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div style="min-height:50vh" class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
                   <h5>Roles</h5>
                 </div>
                 <div class="card-body">
                   <form>
-                  <ul>
+                  <!-- <ul>
                     <li v-for="rol in roles" :key="rol.id">
                       <label>
                         <input type="checkbox" :value="rol.slug" v-model="rolesSeleccionados">
@@ -117,7 +136,27 @@
                         <em>{{rol.description}}</em>
                       </label>
                     </li>
-                  </ul>
+                  </ul> -->
+                  <label v-if="expand" @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Contraer todos</label>
+                  <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
+
+                  <div class="row">
+                    <div class="col-md-2 my-2" v-for="(categoria,index) in roles" :key="index">
+                        <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
+                          <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
+                          <i v-else class="far fa-plus-square"></i>
+                          <span class="bold">  {{index}} </span>
+                        </label>
+                          <div v-for="elemento in categoria" :key="elemento.id"> 
+                            <transition name="fade">
+                              <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
+                                <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="rolesSeleccionados">
+                                <span>{{elemento.name}}</span> 
+                                </label>
+                            </transition>
+                          </div>
+                      </div> 
+                    </div>
                   <br>
                   <div class="text-right">
                     <button class="btn btn-primary" @click.prevent="updaterol">Guardar</button>
@@ -126,11 +165,15 @@
                 </div>
               </div>
             </div>
+    </div>
 
-          </div>
-          </div>
-         
-         </div>
+
+    </div>
+
+
+
+
+  </div>
 </template>
 
 <script>
@@ -141,6 +184,9 @@ export default {
     return{
       botonmail: 'Guardar',
       botonpass: 'Guardar',
+      expand: false,
+      nombres: [],
+      test:[],
       errors: [],
       enlace: '/storage/'+this.usuario.fotografia,
       usuariomod:{
@@ -159,8 +205,33 @@ export default {
     {
       this.rolesSeleccionados[i] = this.rolesusuario[i].slug; 
     }
+    for(var k in this.roles) {
+        this.test.push(k);
+      }
   },
   methods:{
+    expandirTodos()
+    {
+      if(this.expand)
+      {
+        this.nombres = this.test;
+      }
+      else
+        this.nombres = [];
+    },
+    funcion(el)
+    {
+      if(this.nombres.includes(el))
+      {
+        let index = this.nombres.indexOf(el);
+        if (index > -1) {
+          this.nombres.splice(index, 1);
+        }
+      }
+      else{
+        this.nombres.push(el)
+      }
+    },
     onFileChange(e) {
       this.usuariomod.imagen = e.target.files[0];
       this.enlace = URL.createObjectURL(this.usuariomod.imagen );

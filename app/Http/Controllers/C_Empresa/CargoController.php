@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\C_Empresa;
 
 use App\Http\Controllers\Controller;
-use App\Cargo;
+use App\Models\M_Empresa\Area;
+use App\Models\M_Empresa\Cargo;
 use Illuminate\Http\Request;
+
+use Log;
 
 class CargoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function __construct()
     {
@@ -21,72 +19,142 @@ class CargoController extends Controller
 
     public function index()
     {
-        //
+        return view('empresa.cargo.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function obtenercargos(Request $request)
+    {
+      try {
+      
+        $columns = ['nombre', 'descripcion', 'area_id', 'ver','editar', 'eliminar'];
+
+        $length = $request->input('length');
+        $column = $request->input('column');
+        $dir = $request->input('dir');
+        $searchValue = $request->input('search');
+        
+        $query = Cargo::select('id', 'nombre', 'descripcion', 'area_id')->with('Area')->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $query->where(function($query) use ($searchValue) {
+                $query->where('nombre', 'like', '%' . $searchValue . '%')
+                ->orWhere('descripcion', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $cargos = $query->paginate($length);
+        return ['data' => $cargos, 'draw' => $request->input('draw')];
+         
+      } catch (\Throwable $th) {
+        return $th;
+      }
+    }
+
     public function create()
     {
-        //
+        $areas = Area::select('id', 'nombre')->get()->toArray();
+        return view('empresa.cargo.create', compact('areas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+     
+        $this->validate($request, [
+            'nombre' => 'required|string',
+            'descripcion' => 'required|string',
+            'area_id' => 'required',
+        ]);
+        try {
+          
+          $cargo = new Cargo();
+          $cargo->nombre = $request->nombre;
+          $cargo->descripcion = $request->descripcion;
+          $cargo->area_id = $request->area_id;
+          $cargo->save();
+          
+          $toast = array(
+            'title'   => 'Cargo creado: ',
+            'message' => $cargo->nombre,
+            'type'    => 'success'
+          );
+
+          return [$cargo, $toast];
+          
+        } catch (\Throwable $th) {
+          Log::info($th);
+            $toast = array(
+              'title'   => 'Error',
+              'message' => $th,
+              'type'    => 'error'
+            );
+            return [$request, $toast];
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
     public function show(Cargo $cargo)
     {
-        //
+        return view('empresa.cargo.show', compact('cargo'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Cargo $cargo)
     {
-        //
+      $areas = Area::select('id', 'nombre')->get()->toArray();
+      return view('empresa.cargo.edit', compact('cargo', 'areas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Cargo $cargo)
     {
-        //
+      $this->validate($request, [
+        'nombre' => 'required|string',
+        'descripcion' => 'required|string',
+        'area_id' => 'required'
+        ]);
+        
+      try {
+        $cargo->nombre = $request->nombre;
+        $cargo->descripcion = $request->descripcion;
+        $cargo->encargado = $request->encargado;
+        $cargo->departamento_id = $request->departamento_id;
+        $cargo->save();
+        
+        $toast = array(
+            'title'   => 'Cargo modificado: ',
+            'message' => $cargo->nombre,
+            'type'    => 'success'
+        );
+
+        return [$cargo ,$toast];
+       
+      } catch (\Throwable $th) {
+        $toast = array(
+          'title'   => 'Error: ',
+          'message' => 'Error inesperado, contacte al administrador, '.$th,
+          'type'    => 'error'
+      );
+
+      return [$request ,$toast];
+      }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Cargo $cargo)
     {
-        //
+      if($cargo->empleado()->count())
+      {
+        $toast = array(
+          'title'   => 'Error: ',
+          'message' => 'No se puede quitar, cargo tiene empleados dependientes',
+          'type'    => 'error'
+        );
+        return $toast;
+      }
+      $cargo->delete();
+
+      $toast = array(
+        'type'    => 'success',
+        'title'   => 'Cargo eliminado: ',
+        'message' => '',
+      );
+      return $toast;
     }
 }

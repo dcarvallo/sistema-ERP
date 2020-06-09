@@ -15,7 +15,7 @@ class CreateRecursoshumanosTable extends Migration
     {
         Schema::create('recursoshumanos', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
