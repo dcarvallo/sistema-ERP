@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 //Recursos humanos
-Route::get('rrhh', 'C_RRHH\RecursoshumanoController@index')->name('rrhh.index')
-		->middleware('can:rrhh.index');
+Route::get('rrhh', 'C_RRHH\RecursoshumanoController@index')->name('rrhh.index');
+		// ->middleware('can:rrhh.index');
 
 // Route::resource('rrhh', 'C_RRHH\RecursoshumanoController');
 // Route::resource('empleados', 'C_RRHH\EmpleadoController');

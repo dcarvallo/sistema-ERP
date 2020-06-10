@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Recursoshumano;
 use Illuminate\Http\Request;
 
+use App\User;
+
 class RecursoshumanoController extends Controller
 {
     /**
@@ -21,7 +23,14 @@ class RecursoshumanoController extends Controller
 
     public function index()
     {
-        
+      if ($users = cache()->get('llave')) {
+        return json_decode($users);
+      }
+      $users = User::all();
+
+      cache()->put('llave', $users);
+
+      return $users;
     }
 
     /**
