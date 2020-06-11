@@ -22,7 +22,7 @@
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
             <tbody>
-                <tr  v-for="ubicacion in ubicaciones" :key="ubicacion.id">
+                <tr v-for="ubicacion in ubicaciones" :key="ubicacion.id">
                     <td class="col-3">{{ubicacion.nombre}}</td>
                     <td class="col-6 text-justify">{{ubicacion.descripcion}}</td>
                     <td class="col-2">{{ubicacion.locacion}}</td>

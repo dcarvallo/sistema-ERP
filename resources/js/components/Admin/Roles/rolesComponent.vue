@@ -28,7 +28,7 @@
                 <tr v-for="rol in roles" :key="rol.id">
                     <td class="col-sm-4">{{rol.name}}</td>
                     <td class="col-md-5">{{rol.description}}</td>
-                    <td class="col-sm-3">{{rol.special}}</td>
+                    <td class="col-sm-3">{{rol.category}}</td>
                     <td class="col-sm- text-center">                        
                       <a class="btn btn-outline-info" :href="'/roles/'+rol.id"><i class=" far fa-eye"></i></a>
                     </td>
@@ -69,7 +69,7 @@ export default {
       let columns = [
           {label: 'Nombre', name: 'name' },
           {label: 'Descripcion', name: 'description'},
-          {label: 'Permiso especial', name: 'special'},
+          {label: 'Categoria', name: 'category'},
           {label: 'Ver', name: 'ver'},
           {label: 'Editar', name: 'editar'},
           {label: 'Eliminar', name: 'eliminar'}

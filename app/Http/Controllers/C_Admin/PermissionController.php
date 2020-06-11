@@ -4,7 +4,7 @@ namespace App\Http\Controllers\C_Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Caffeinated\Shinobi\Models\Permission;
+use Spatie\Permission\Models\Permission;
 use Log;
 use DB;
 
@@ -22,14 +22,14 @@ class PermissionController extends Controller
 
     public function obtenerpermisos(Request $request)
     {
-        $columns = ['category','name', 'slug','description','ver', 'editar', 'eliminar'];
+        $columns = ['category','name', 'guard_name','description','ver', 'editar', 'eliminar'];
 
         $length = $request->input('length');
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
 
-        $query = Permission::select('id', 'name', 'slug','description','category')->orderBy($columns[$column], $dir);
+        $query = Permission::select('id', 'name', 'guard_name','description','category')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
@@ -64,15 +64,15 @@ class PermissionController extends Controller
     {
 
       $this->validate($request, [
-        'name' => 'required|string, nombre',
-        'slug' => 'required|string, slug',
-        'description' => 'required|string, descripcion',
-        'category' => 'required|string, categoria',
+        'name' => 'required|string',
+        'guard_name' => 'required|string',
+        'description' => 'required|string',
+        'category' => 'required|string',
         ]);
         try {
           $permiso = new Permission();
           $permiso->name = $request->name;
-          $permiso->slug = $request->slug;
+          $permiso->guard_name = $request->guard_name;
           $permiso->description = $request->description;
           $permiso->category = $request->category;
          
@@ -105,7 +105,8 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        //
+      $permiso = Permission::find($id);
+      return view('admin.permisos.show', compact('permiso'));
     }
 
     /**

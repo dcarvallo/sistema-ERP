@@ -11,7 +11,7 @@
                         </select>
                     </div>
                     <div class="w-auto">
-                          <a class="btn btn-success" href="/cargos/create">Crear Área</a>
+                          <a class="btn btn-success" href="/cargos/create">Crear Cargo</a>
                       </div>
                 </div>
 

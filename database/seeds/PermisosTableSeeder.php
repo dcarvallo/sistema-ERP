@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Caffeinated\Shinobi\Models\permissions;
 
 class PermisosTableSeeder extends Seeder
 {
@@ -13,34 +12,40 @@ class PermisosTableSeeder extends Seeder
     public function run()
     {
         //usuarios
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-admin',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos dashborad admin',
+          'category'      => 'Admin'
+        ]);
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar usuarios',
-            'slug'          => 'users.index',
+            'name'          => 'Navegar-usuarios',
+            'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los usuarios de la empresa',
             'category'      => 'Usuarios'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Ver detalle de usuarios',
-            'slug'          => 'users.show',
+            'name'          => 'Ver-usuarios',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle usuario de la empresa',
             'category'      => 'Usuarios'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de usuario',
-            'slug'          => 'users.edit',
+            'name'          => 'Editar-usuarios',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de un usuario de la empresa',
             'category'      => 'Usuarios'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar usuario',
-            'slug'          => 'users.destroy',
+            'name'          => 'Eliminar-usuarios',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier usuario de la empresa',
             'category'      => 'Usuarios'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear usuarios',
-            'slug'          => 'users.create',
+            'name'          => 'Crear-usuarios',
+            'guard_name'    => 'web',
             'description'   => 'Crear usuario de la empresa',
             'category'      => 'Usuarios'
         ]);
@@ -48,65 +53,65 @@ class PermisosTableSeeder extends Seeder
         //roles
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar roles',
-            'slug'          => 'roles.index',
+            'name'          => 'Navegar-roles',
+            'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los roles de la empresa',
             'category'      => 'Roles'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Ver detalle de roles',
-            'slug'          => 'roles.show',
+            'name'          => 'Ver-roles',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle rol',
             'category'      => 'Roles'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de roles',
-            'slug'          => 'roles.edit',
+            'name'          => 'Editar-roles',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de un rol de la empresa',
             'category'      => 'Roles'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar roles',
-            'slug'          => 'roles.destroy',
+            'name'          => 'Eliminar-roles',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier rol de la empresa',
             'category'      => 'Roles'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear roles',
-            'slug'          => 'roles.create',
-            'description'   => 'Crea roles de la empresa',
+            'name'          => 'Crear-roles',
+            'guard_name'    => 'web',
+            'description'   => 'Crea rol de la empresa',
             'category'      => 'Roles'
         ]);
 
         //permisos
 
         DB::table('permissions')->insert([
-          'name'          => 'Navegar permisos',
-          'slug'          => 'permisos.index',
+          'name'          => 'Navegar-permisos',
+          'guard_name'    => 'web',
           'description'   => 'Lista y navega todos los permisos de la empresa',
           'category'      => 'Permisos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Ver detalle de permiso',
-            'slug'          => 'permisos.show',
-            'description'   => 'Ver en detalle cada permiso de la empresa',
+            'name'          => 'Ver-permisos',
+            'guard_name'    => 'web',
+            'description'   => 'Ver en detalle de permiso de la empresa',
             'category'      => 'Permisos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de permisos',
-            'slug'          => 'permisos.edit',
+            'name'          => 'Editar-permisos',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de un permiso de la empresa',
             'category'      => 'Permisos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar permiso',
-            'slug'          => 'permisos.destroy',
+            'name'          => 'Eliminar-permisos',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier permiso de la empresa',
             'category'      => 'Permisos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear permmiso',
-            'slug'          => 'permisos.create',
+            'name'          => 'Crear-permmisos',
+            'guard_name'    => 'web',
             'description'   => 'Crea permisos de la empresa',
             'category'      => 'Permisos'
         ]);
@@ -114,32 +119,32 @@ class PermisosTableSeeder extends Seeder
         //Empresa
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar empresas',
-            'slug'          => 'empresas.index',
+            'name'          => 'Navegar-empresas',
+            'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los empresas de la empresa',
             'category'      => 'Empresas'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'ver detalle de empresas',
-            'slug'          => 'empresas.show',
+            'name'          => 'Ver-empresas',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle cada empresas de la empresa',
             'category'      => 'Empresas'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de empresas',
-            'slug'          => 'empresas.edit',
+            'name'          => 'Editar-empresas',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de una empresas de la empresa',
             'category'      => 'Empresas'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar empresas',
-            'slug'          => 'empresas.destroy',
+            'name'          => 'Eliminar-empresas',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier empresas de la empresa',
             'category'      => 'Empresas'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear empresas',
-            'slug'          => 'empresas.create',
+            'name'          => 'Crear-empresas',
+            'guard_name'    => 'web',
             'description'   => 'Crea empresa de la empresa',
             'category'      => 'Empresas'
         ]);
@@ -147,32 +152,32 @@ class PermisosTableSeeder extends Seeder
         //Ubicacion
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar ubicaciones',
-            'slug'          => 'ubicaciones.index',
+            'name'          => 'Navegar-ubicaciones',
+            'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los ubicaciones de la empresa',
             'category'      => 'Ubicaciones'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'ver detalle de ubicaciones',
-            'slug'          => 'ubicaciones.show',
+            'name'          => 'Ver-ubicaciones',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle cada ubicacion de la empresa',
             'category'      => 'Ubicaciones'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de ubicaciones',
-            'slug'          => 'ubicaciones.edit',
+            'name'          => 'Editar-ubicaciones',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de una ubicacion de la empresa',
             'category'      => 'Ubicaciones'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar ubicaciones',
-            'slug'          => 'ubicaciones.destroy',
+            'name'          => 'Eliminar-ubicaciones',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier ubicacion de la empresa',
             'category'      => 'Ubicaciones'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear ubicaciones',
-            'slug'          => 'ubicaciones.create',
+            'name'          => 'Crear-ubicaciones',
+            'guard_name'    => 'web',
             'description'   => 'Crear ubicaciones de la empresa',
             'category'      => 'Ubicaciones'
         ]);
@@ -180,65 +185,65 @@ class PermisosTableSeeder extends Seeder
         //Departamento
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar departamentos',
-            'slug'          => 'departamentos.index',
+            'name'          => 'Navegar-departamentos',
+            'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los departamentos de la empresa',
             'category'      => 'Departamentos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Ver detalle de departamentos',
-            'slug'          => 'departamentos.show',
+            'name'          => 'Ver-departamentos',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle cada departamento de la empresa',
             'category'      => 'Departamentos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de departamentos',
-            'slug'          => 'departamentos.edit',
+            'name'          => 'Editar-departamentos',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de un departamento de la empresa',
             'category'      => 'Departamentos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar departamentos',
-            'slug'          => 'departamentos.destroy',
+            'name'          => 'Eliminar-departamentos',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier departamento de la empresa',
             'category'      => 'Departamentos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear departamentos',
-            'slug'          => 'departamentos.create',
-            'description'   => 'Crea  departamentos de la empresa',
+            'name'          => 'Crear-departamentos',
+            'guard_name'    => 'web',
+            'description'   => 'Crea departamentos de la empresa',
             'category'      => 'Departamentos'
         ]);
 
         //Area
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar áreas',
-            'slug'          => 'areas.index',
+            'name'          => 'Navegar-areas',
+            'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los áreas de la empresa',
             'category'      => 'Areas'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Ver detalle de áreas',
-            'slug'          => 'areas.show',
+            'name'          => 'Ver-areas',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle cada área de la empresa',
             'category'      => 'Areas' 
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de areas',
-            'slug'          => 'areas.edit',
+            'name'          => 'Editar-areas',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de un área de la empresa',
             'category'      => 'Areas'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar areas',
-            'slug'          => 'areas.destroy',
+            'name'          => 'Eliminar-areas',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier área de la empresa',
             'category'      => 'Areas'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear áreas',
-            'slug'          => 'areas.create',
+            'name'          => 'Crear-areas',
+            'guard_name'    => 'web',
             'description'   => 'Crea áreas de la empresa',
             'category'      => 'Areas'
         ]);
@@ -246,32 +251,32 @@ class PermisosTableSeeder extends Seeder
         //Cargos
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar cargos',
-            'slug'          => 'cargos.index',
+            'name'          => 'Navegar-cargos',
+            'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los cargos del sistema',
             'category'      => 'Cargos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Ver detalle de cargos',
-            'slug'          => 'cargos.show',
+            'name'          => 'Ver-cargos',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle cada area del sistema',
             'category'      => 'Cargos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de cargos',
-            'slug'          => 'cargos.edit',
+            'name'          => 'Editar-cargos',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de un cargo del sistema',
             'category'      => 'Cargos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar cargos',
-            'slug'          => 'cargos.destroy',
+            'name'          => 'Eliminar-cargos',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier cargo del sistema',
             'category'      => 'Cargos'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear cargos',
-            'slug'          => 'cargos.create',
+            'name'          => 'Crear-cargos',
+            'guard_name'    => 'web',
             'description'   => 'Crea los cargos de la empresa',
             'category'      => 'Cargos'
         ]);
@@ -279,36 +284,72 @@ class PermisosTableSeeder extends Seeder
         //Empleado
 
         DB::table('permissions')->insert([
-            'name'          => 'Navegar empleados',
-            'slug'          => 'empleados.index',
-            'description'   => 'Lista y navega todos los empleados de la mepresa',
+            'name'          => 'Navegar-empleados',
+            'guard_name'    => 'web',
+            'description'   => 'Lista y navega todos los empleados de la empresa',
             'category'      => 'Empleados'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Ver detalle de empleados',
-            'slug'          => 'empleados.show',
+            'name'          => 'Ver-empleados',
+            'guard_name'    => 'web',
             'description'   => 'Ver en detalle cada empleados de la empresa',
             'category'      => 'Empleados'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Edición de empleados',
-            'slug'          => 'empleados.edit',
+            'name'          => 'Editar-empleados',
+            'guard_name'    => 'web',
             'description'   => 'Editar cualquier dato de una empleados de la empresa',
             'category'      => 'Empleados'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Eliminar empleados',
-            'slug'          => 'empleados.destroy',
+            'name'          => 'Eliminar-empleados',
+            'guard_name'    => 'web',
             'description'   => 'Eliminar cuaquier empleados de la emprsea',
             'category'      => 'Empleados'
         ]);
         DB::table('permissions')->insert([
-            'name'          => 'Crear empleados',
-            'slug'          => 'empleados.create',
+            'name'          => 'Crear-empleados',
+            'guard_name'    => 'web',
             'description'   => 'Crear empleados de la empresa',
             'category'      => 'Empleados'
         ]);
 
+
+        //Tesoreria
+
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-tesoreria',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos los modulos de la tesoreria',
+          'category'      => 'Tesoreria'
+        ]);
+
+        //Contabilidad
+
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-contabilidad',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos los modulos de contabilidad',
+          'category'      => 'Contabilidad'
+        ]);
+
+        //Almacenes
+
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-almacen',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos los modulos de contabilidad',
+          'category'      => 'Almacen'
+        ]);
+
+        //Helpdesk
+
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-helpdesk',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos los modulos de helpdesk',
+          'category'      => 'Helpdesk'
+        ]);
 
     }
 }

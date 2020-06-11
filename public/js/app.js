@@ -1959,7 +1959,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       permiso: {
         name: '',
-        slug: '',
+        guard_name: '',
         description: '',
         category: ''
       },
@@ -1974,13 +1974,13 @@ __webpack_require__.r(__webpack_exports__);
       this.errors = [];
       var formData = new FormData();
       formData.append('name', this.permiso.name);
-      formData.append('slug', this.permiso.slug);
+      formData.append('guard_name', this.permiso.guard_name);
       formData.append('description', this.permiso.description);
-      formData.append('special', this.permiso.category);
+      formData.append('category', this.permiso.category);
       axios.post('/permisos/store', formData).then(function (res) {
         var datos = res.data;
         _this.permiso.name = '';
-        _this.permiso.slug = '';
+        _this.permiso.guard_name = '';
         _this.permiso.description = '';
         _this.permiso.category = '';
         toastsuccess.fire({
@@ -2426,11 +2426,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['permisos', 'categorias'],
@@ -2442,7 +2437,6 @@ __webpack_require__.r(__webpack_exports__);
       value: null,
       rol: {
         name: '',
-        slug: '',
         description: '',
         category: '',
         special: ''
@@ -2451,7 +2445,7 @@ __webpack_require__.r(__webpack_exports__);
       expand: false,
       nombres: [],
       permiso: {
-        slug: []
+        name: []
       },
       nueva: false,
       errors: []
@@ -2495,9 +2489,7 @@ __webpack_require__.r(__webpack_exports__);
       this.errors = [];
       var formData = new FormData();
       formData.append('name', this.rol.name);
-      formData.append('slug', this.rol.slug);
       formData.append('description', this.rol.description);
-      formData.append('special', this.rol.special);
 
       if (this.nueva) {
         formData.append('category', this.rol.category);
@@ -2506,7 +2498,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.rol.special == '') {
-        formData.append('permisos', this.permiso.slug);
+        formData.append('permisos', this.permiso.name);
       }
 
       console.log(formData);
@@ -2515,11 +2507,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.nombres = [];
         _this.nueva = false;
         _this.rol.name = '';
-        _this.rol.slug = '';
         _this.rol.description = '';
-        _this.rol.special = '';
         _this.rol.category = '';
-        _this.permiso.slug = [];
+        _this.permiso.name = [];
         toastsuccess.fire({
           title: datos[1].title + ' ' + datos[1].message
         });
@@ -2663,9 +2653,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['permisos', 'rol', 'permisosseleccionados', 'categorias'],
@@ -2694,7 +2681,7 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     for (var i = 0; i < this.permisosseleccionados.length; i++) {
-      this.perseleccionaados[i] = this.permisosseleccionados[i].slug;
+      this.perseleccionaados[i] = this.permisosseleccionados[i].name;
     }
   },
   methods: {
@@ -2720,9 +2707,7 @@ __webpack_require__.r(__webpack_exports__);
       this.errors = [];
       var formData = new FormData();
       formData.append('name', this.rolmod.name);
-      formData.append('slug', this.rolmod.slug);
       formData.append('description', this.rolmod.description);
-      formData.append('special', this.rolmod.special);
 
       if (this.nueva) {
         formData.append('category', this.rolmod.category);
@@ -2847,8 +2832,8 @@ __webpack_require__.r(__webpack_exports__);
       label: 'Descripcion',
       name: 'description'
     }, {
-      label: 'Permiso especial',
-      name: 'special'
+      label: 'Categoria',
+      name: 'category'
     }, {
       label: 'Ver',
       name: 'ver'
@@ -3466,7 +3451,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     for (var i = 0; i < this.rolesusuario.length; i++) {
-      this.rolesSeleccionados[i] = this.rolesusuario[i].slug;
+      this.rolesSeleccionados[i] = this.rolesusuario[i].name;
     }
 
     for (var k in this.roles) {
@@ -3572,6 +3557,156 @@ __webpack_require__.r(__webpack_exports__);
           _this4.errors = error.response.data.errors;
         }
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['usuario', 'roles', 'rolesusuario'],
+  data: function data() {
+    return {
+      botonmail: 'Guardar',
+      botonpass: 'Guardar',
+      expand: false,
+      nombres: [],
+      test: [],
+      errors: [],
+      enlace: '/storage/' + this.usuario.fotografia,
+      usuariomod: this.usuario,
+      rolesSeleccionados: []
+    };
+  },
+  created: function created() {
+    for (var i = 0; i < this.rolesusuario.length; i++) {
+      this.rolesSeleccionados[i] = this.rolesusuario[i].name;
+    }
+
+    for (var k in this.roles) {
+      this.test.push(k);
+    }
+  },
+  methods: {
+    expandirTodos: function expandirTodos() {
+      if (this.expand) {
+        this.nombres = this.test;
+      } else this.nombres = [];
+    },
+    funcion: function funcion(el) {
+      if (this.nombres.includes(el)) {
+        var index = this.nombres.indexOf(el);
+
+        if (index > -1) {
+          this.nombres.splice(index, 1);
+        }
+      } else {
+        this.nombres.push(el);
+      }
     }
   }
 });
@@ -4821,64 +4956,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['departamentos', 'cargos', 'area'],
+  props: ['cargo', 'areas'],
   components: {
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   data: function data() {
     return {
       errors: [],
-      area_mod: this.area
+      cargo_mod: this.cargo
     };
   },
   created: function created() {
     var _this = this;
 
-    this.cargos.forEach(function (column) {
-      if (column.nombre == _this.area.encargado) {
-        _this.area_mod.encargado = column;
-      }
-    });
-    this.departamentos.forEach(function (column) {
-      if (column.id == _this.area.departamento_id) {
-        _this.area_mod.departamento_id = column;
+    this.areas.forEach(function (column) {
+      if (column.id == _this.cargo.area_id) {
+        _this.cargo_mod.area_id = column;
       }
     });
   },
   methods: {
-    editararea: function editararea() {
+    editarcargo: function editarcargo() {
       var _this2 = this;
 
       this.errors = [];
       var formData = new FormData();
-      formData.append('nombre', this.area_mod.nombre);
-      formData.append('descripcion', this.area_mod.descripcion);
-
-      if (this.area_mod.encargado) {
-        formData.append('encargado', this.area_mod.encargado.nombre);
-      }
-
-      formData.append('departamento_id', this.area_mod.departamento_id.id);
+      formData.append('nombre', this.cargo_mod.nombre);
+      formData.append('descripcion', this.cargo_mod.descripcion);
+      formData.append('area_id', this.cargo_mod.area_id.id);
       formData.append('_method', 'put');
-      axios.post('/areas/' + this.area_mod.id, formData).then(function (res) {
+      axios.post('/cargos/' + this.cargo_mod.id, formData).then(function (res) {
         var datos = res.data;
         toastsuccess.fire({
           title: datos[1].title + ' ' + datos[1].message
@@ -46120,26 +46229,26 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.permiso.slug,
-                    expression: "permiso.slug"
+                    value: _vm.permiso.guard_name,
+                    expression: "permiso.guard_name"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: { type: "text" },
-                domProps: { value: _vm.permiso.slug },
+                domProps: { value: _vm.permiso.guard_name },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.permiso, "slug", $event.target.value)
+                    _vm.$set(_vm.permiso, "guard_name", $event.target.value)
                   }
                 }
               }),
               _vm._v(" "),
-              _vm.errors.slug
+              _vm.errors.guard_name
                 ? _c("label", { staticClass: "alert-danger" }, [
-                    _vm._v(_vm._s(_vm.errors.slug[0]))
+                    _vm._v(_vm._s(_vm.errors.guard_name[0]))
                   ])
                 : _vm._e()
             ]),
@@ -46736,38 +46845,6 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _c("label", [_vm._v("Slug (abreviacion)*")]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.rol.slug,
-                        expression: "rol.slug"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.rol.slug },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.rol, "slug", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.slug
-                    ? _c("label", { staticClass: "alert-danger" }, [
-                        _vm._v(_vm._s(_vm.errors.slug[0]))
-                      ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
                   _c("label", [_vm._v("Descripcion*")]),
                   _vm._v(" "),
                   _c("textarea", {
@@ -46898,66 +46975,11 @@ var render = function() {
                 )
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "card" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body text-center" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.rol.special,
-                        expression: "rol.special"
-                      }
-                    ],
-                    staticClass: "form-control col-md-4",
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.rol,
-                          "special",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v(" Personalizado ")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "all-access" } }, [
-                      _vm._v("Acceso Total")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "no-access" } }, [
-                      _vm._v("Ningun Acceso")
-                    ])
-                  ]
-                )
-              ])
-            ])
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card" }, [
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _vm.rol.special == ""
             ? _c("div", { staticClass: "card-body" }, [
@@ -47046,8 +47068,8 @@ var render = function() {
                                             {
                                               name: "model",
                                               rawName: "v-model",
-                                              value: _vm.permiso.slug,
-                                              expression: "permiso.slug"
+                                              value: _vm.permiso.name,
+                                              expression: "permiso.name"
                                             }
                                           ],
                                           attrs: {
@@ -47055,38 +47077,38 @@ var render = function() {
                                             id: elemento.id
                                           },
                                           domProps: {
-                                            value: elemento.slug,
+                                            value: elemento.name,
                                             checked: Array.isArray(
-                                              _vm.permiso.slug
+                                              _vm.permiso.name
                                             )
                                               ? _vm._i(
-                                                  _vm.permiso.slug,
-                                                  elemento.slug
+                                                  _vm.permiso.name,
+                                                  elemento.name
                                                 ) > -1
-                                              : _vm.permiso.slug
+                                              : _vm.permiso.name
                                           },
                                           on: {
                                             change: function($event) {
-                                              var $$a = _vm.permiso.slug,
+                                              var $$a = _vm.permiso.name,
                                                 $$el = $event.target,
                                                 $$c = $$el.checked
                                                   ? true
                                                   : false
                                               if (Array.isArray($$a)) {
-                                                var $$v = elemento.slug,
+                                                var $$v = elemento.name,
                                                   $$i = _vm._i($$a, $$v)
                                                 if ($$el.checked) {
                                                   $$i < 0 &&
                                                     _vm.$set(
                                                       _vm.permiso,
-                                                      "slug",
+                                                      "name",
                                                       $$a.concat([$$v])
                                                     )
                                                 } else {
                                                   $$i > -1 &&
                                                     _vm.$set(
                                                       _vm.permiso,
-                                                      "slug",
+                                                      "name",
                                                       $$a
                                                         .slice(0, $$i)
                                                         .concat(
@@ -47097,7 +47119,7 @@ var render = function() {
                                               } else {
                                                 _vm.$set(
                                                   _vm.permiso,
-                                                  "slug",
+                                                  "name",
                                                   $$c
                                                 )
                                               }
@@ -47167,14 +47189,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h5", [_c("strong", [_vm._v(" Rol ")])])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h5", [_vm._v("Permisos Eseciales")])
     ])
   },
   function() {
@@ -47253,33 +47267,13 @@ var render = function() {
                         _vm.$set(_vm.rolmod, "name", $event.target.value)
                       }
                     }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", [_vm._v("Slug (abreviacion)*")]),
+                  }),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.rolmod.slug,
-                        expression: "rolmod.slug"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.rolmod.slug },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.rolmod, "slug", $event.target.value)
-                      }
-                    }
-                  })
+                  _vm.errors.name
+                    ? _c("label", { staticClass: "alert-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.name[0]))
+                      ])
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
@@ -47305,7 +47299,13 @@ var render = function() {
                         _vm.$set(_vm.rolmod, "description", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.description
+                    ? _c("label", { staticClass: "alert-danger" }, [
+                        _vm._v(_vm._s(_vm.errors.description[0]))
+                      ])
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c(
@@ -47411,80 +47411,11 @@ var render = function() {
                 )
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "card" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.rolmod.special,
-                        expression: "rolmod.special"
-                      }
-                    ],
-                    staticClass: "form-control col-md-4",
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.rolmod,
-                          "special",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v(" Personalizado ")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "option",
-                      {
-                        attrs: { value: "all-access" },
-                        domProps: {
-                          selected: _vm.rolmod.special == "all-access"
-                        }
-                      },
-                      [_vm._v("Acceso Total")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "option",
-                      {
-                        attrs: { value: "no-access" },
-                        domProps: {
-                          selected: _vm.rolmod.special == "no-access"
-                        }
-                      },
-                      [_vm._v("Ningun Acceso")]
-                    )
-                  ]
-                )
-              ])
-            ])
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card" }, [
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _vm.rolmod.special == ""
             ? _c("div", { staticClass: "card-body" }, [
@@ -47537,6 +47468,7 @@ var render = function() {
                         _c(
                           "label",
                           {
+                            staticClass: "bg-cyan w-100 rounded px-1",
                             style: { cursor: "pointer" },
                             on: {
                               click: function($event) {
@@ -47581,13 +47513,13 @@ var render = function() {
                                             id: elemento.id
                                           },
                                           domProps: {
-                                            value: elemento.slug,
+                                            value: elemento.name,
                                             checked: Array.isArray(
                                               _vm.perseleccionaados
                                             )
                                               ? _vm._i(
                                                   _vm.perseleccionaados,
-                                                  elemento.slug
+                                                  elemento.name
                                                 ) > -1
                                               : _vm.perseleccionaados
                                           },
@@ -47599,7 +47531,7 @@ var render = function() {
                                                   ? true
                                                   : false
                                               if (Array.isArray($$a)) {
-                                                var $$v = elemento.slug,
+                                                var $$v = elemento.name,
                                                   $$i = _vm._i($$a, $$v)
                                                 if ($$el.checked) {
                                                   $$i < 0 &&
@@ -47683,14 +47615,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h5", [_c("strong", [_vm._v("Editar Rol ")])])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h5", [_vm._v("Permisos Eseciales")])
     ])
   },
   function() {
@@ -47847,7 +47771,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "col-sm-3" }, [
-                    _vm._v(_vm._s(rol.special))
+                    _vm._v(_vm._s(rol.category))
                   ]),
                   _vm._v(" "),
                   _c("td", { staticClass: "col-sm- text-center" }, [
@@ -49330,13 +49254,13 @@ var render = function() {
                                               id: elemento.id
                                             },
                                             domProps: {
-                                              value: elemento.slug,
+                                              value: elemento.name,
                                               checked: Array.isArray(
                                                 _vm.rolesSeleccionados
                                               )
                                                 ? _vm._i(
                                                     _vm.rolesSeleccionados,
-                                                    elemento.slug
+                                                    elemento.name
                                                   ) > -1
                                                 : _vm.rolesSeleccionados
                                             },
@@ -49349,7 +49273,7 @@ var render = function() {
                                                     ? true
                                                     : false
                                                 if (Array.isArray($$a)) {
-                                                  var $$v = elemento.slug,
+                                                  var $$v = elemento.name,
                                                     $$i = _vm._i($$a, $$v)
                                                   if ($$el.checked) {
                                                     $$i < 0 &&
@@ -49477,6 +49401,261 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h5", [_vm._v("Restablecer password")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h5", [_vm._v("Roles")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("div", { staticClass: "tab-content", attrs: { id: "nav-tabContent" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade show active",
+          staticStyle: { "min-height": "50vh" },
+          attrs: {
+            id: "nav-home",
+            role: "tabpanel",
+            "aria-labelledby": "nav-home-tab"
+          }
+        },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-header" }, [
+                    _c("h5", [
+                      _vm._v(
+                        _vm._s(_vm.usuariomod.nombres) +
+                          " " +
+                          _vm._s(_vm.usuariomod.apellidos) +
+                          " "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "card-body", attrs: { id: "usuarioedit" } },
+                    [
+                      _c("div", [
+                        _c("p", { staticClass: "mb-0" }, [
+                          _vm._v(" " + _vm._s(_vm.usuariomod.nombres) + "  ")
+                        ]),
+                        _vm._v(" "),
+                        _c("hr", { staticClass: "my-0" }),
+                        _vm._v(" "),
+                        _c("label", [_vm._v("Nombres")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("p", { staticClass: "mb-0" }, [
+                          _vm._v(" " + _vm._s(_vm.usuariomod.apellidos) + "  ")
+                        ]),
+                        _vm._v(" "),
+                        _c("hr", { staticClass: "my-0" }),
+                        _vm._v(" "),
+                        _c("label", [_vm._v("Apellidos")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("p", { staticClass: "mb-0" }, [
+                          _vm._v(" " + _vm._s(_vm.usuariomod.username) + "  ")
+                        ]),
+                        _vm._v(" "),
+                        _c("hr", { staticClass: "my-0" }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "username" } }, [
+                          _vm._v("Nombre de usuario")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("p", { staticClass: "mb-0" }, [
+                          _vm._v(
+                            " " +
+                              _vm._s(
+                                _vm.usuariomod.email
+                                  ? _vm.usuariomod.email
+                                  : "N/A"
+                              ) +
+                              "  "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("hr", { staticClass: "my-0" }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "username" } }, [
+                          _vm._v("Email")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("p", { staticClass: "mb-0" }, [
+                          _vm._v(
+                            " " +
+                              _vm._s(_vm.usuariomod.activo ? "Si" : "No") +
+                              "  "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("hr", { staticClass: "my-0" }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "username" } }, [
+                          _vm._v("Activo")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("p", { staticClass: "mb-0" }, [
+                          _vm._v(" " + _vm._s(_vm.usuariomod.created_at) + "  ")
+                        ]),
+                        _vm._v(" "),
+                        _c("hr", { staticClass: "my-0" }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "username" } }, [
+                          _vm._v("Fecha Creacion")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group col-md-12 px-0" }, [
+                        _c("label", { attrs: { for: "fotografia" } }, [
+                          _vm._v("Fotografia de usuario")
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "text-center" }, [
+                          _c("img", {
+                            staticClass: "img",
+                            staticStyle: { width: "15em" },
+                            attrs: { src: _vm.enlace, alt: "Imagen de usuario" }
+                          })
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          staticStyle: { "min-height": "50vh" },
+          attrs: {
+            id: "nav-profile",
+            role: "tabpanel",
+            "aria-labelledby": "nav-profile-tab"
+          }
+        },
+        [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "card-body" },
+                _vm._l(_vm.rolesusuario, function(rol, index) {
+                  return _c("li", { key: index }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(rol.name) +
+                        "\n                  "
+                    )
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("nav", [
+      _c(
+        "div",
+        {
+          staticClass: "nav nav-tabs",
+          attrs: { id: "nav-tab", role: "tablist" }
+        },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "nav-item nav-link active",
+              attrs: {
+                id: "nav-home-tab",
+                "data-toggle": "tab",
+                href: "#nav-home",
+                role: "tab",
+                "aria-controls": "nav-home",
+                "aria-selected": "true"
+              }
+            },
+            [_vm._v("Información")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "nav-item nav-link",
+              attrs: {
+                id: "nav-profile-tab",
+                "data-toggle": "tab",
+                href: "#nav-profile",
+                role: "tab",
+                "aria-controls": "nav-profile",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("Roles")]
+          )
+        ]
+      )
     ])
   },
   function() {
@@ -50853,7 +51032,7 @@ var staticRenderFns = [
       _c(
         "a",
         { staticClass: "btn btn-success", attrs: { href: "/cargos/create" } },
-        [_vm._v("Crear Área")]
+        [_vm._v("Crear Cargo")]
       )
     ])
   }
@@ -51077,8 +51256,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.area_mod.nombre,
-                        expression: "area_mod.nombre"
+                        value: _vm.cargo_mod.nombre,
+                        expression: "cargo_mod.nombre"
                       }
                     ],
                     staticClass: "form-control",
@@ -51087,13 +51266,13 @@ var render = function() {
                       name: "nombre",
                       placeholder: "Nombre Area"
                     },
-                    domProps: { value: _vm.area_mod.nombre },
+                    domProps: { value: _vm.cargo_mod.nombre },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.area_mod, "nombre", $event.target.value)
+                        _vm.$set(_vm.cargo_mod, "nombre", $event.target.value)
                       }
                     }
                   }),
@@ -51115,8 +51294,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.area_mod.descripcion,
-                        expression: "area_mod.descripcion"
+                        value: _vm.cargo_mod.descripcion,
+                        expression: "cargo_mod.descripcion"
                       }
                     ],
                     staticClass: "form-control",
@@ -51125,14 +51304,14 @@ var render = function() {
                       name: "descripcion",
                       placeholder: "Descripción"
                     },
-                    domProps: { value: _vm.area_mod.descripcion },
+                    domProps: { value: _vm.cargo_mod.descripcion },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
                         _vm.$set(
-                          _vm.area_mod,
+                          _vm.cargo_mod,
                           "descripcion",
                           $event.target.value
                         )
@@ -51151,54 +51330,15 @@ var render = function() {
                   "div",
                   { staticClass: "form-group" },
                   [
-                    _c("label", [_vm._v("Encargado del area")]),
-                    _vm._v(" "),
-                    _c(
-                      "multiselect",
-                      {
-                        attrs: {
-                          options: _vm.cargos,
-                          searchable: true,
-                          placeholder: "Seleccione una opcion",
-                          selectLabel: "",
-                          selectedLabel: "Seleccionado",
-                          deselectLabel: "",
-                          noOptions: "",
-                          label: "nombre"
-                        },
-                        model: {
-                          value: _vm.area_mod.encargado,
-                          callback: function($$v) {
-                            _vm.$set(_vm.area_mod, "encargado", $$v)
-                          },
-                          expression: "area_mod.encargado"
-                        }
-                      },
-                      [
-                        _c(
-                          "span",
-                          { attrs: { slot: "noResult" }, slot: "noResult" },
-                          [_vm._v("No existen cargos.")]
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group" },
-                  [
                     _c("label", { attrs: { for: "ubicacion_id" } }, [
-                      _vm._v("Ubicacion*")
+                      _vm._v("Area*")
                     ]),
                     _vm._v(" "),
                     _c(
                       "multiselect",
                       {
                         attrs: {
-                          options: _vm.departamentos,
+                          options: _vm.areas,
                           searchable: true,
                           placeholder: "Seleccione una opcion",
                           selectLabel: "",
@@ -51208,18 +51348,18 @@ var render = function() {
                           label: "nombre"
                         },
                         model: {
-                          value: _vm.area_mod.departamento_id,
+                          value: _vm.cargo_mod.area_id,
                           callback: function($$v) {
-                            _vm.$set(_vm.area_mod, "departamento_id", $$v)
+                            _vm.$set(_vm.cargo_mod, "area_id", $$v)
                           },
-                          expression: "area_mod.departamento_id"
+                          expression: "cargo_mod.area_id"
                         }
                       },
                       [
                         _c(
                           "span",
                           { attrs: { slot: "noResult" }, slot: "noResult" },
-                          [_vm._v("No existe departamento.")]
+                          [_vm._v("No existe area.")]
                         )
                       ]
                     )
@@ -51237,11 +51377,11 @@ var render = function() {
                 on: {
                   click: function($event) {
                     $event.preventDefault()
-                    return _vm.editararea($event)
+                    return _vm.editarcargo($event)
                   }
                 }
               },
-              [_vm._v("Crear")]
+              [_vm._v("Guardar")]
             )
           ])
         ])
@@ -51255,7 +51395,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h5", [_vm._v("Información de Área")])
+      _c("h5", [_vm._v("Información de Cargo")])
     ])
   }
 ]
@@ -66592,6 +66732,7 @@ Vue.component('editarcargo', __webpack_require__(/*! ./components/Empresa/cargo/
 
 Vue.component('usuarios', __webpack_require__(/*! ./components/Admin/Usuarios/usuariosComponent.vue */ "./resources/js/components/Admin/Usuarios/usuariosComponent.vue")["default"]);
 Vue.component('editarusuario', __webpack_require__(/*! ./components/Admin/Usuarios/editarusuarioComponent.vue */ "./resources/js/components/Admin/Usuarios/editarusuarioComponent.vue")["default"]);
+Vue.component('mostrarusuario', __webpack_require__(/*! ./components/Admin/Usuarios/mostrarusuarioComponent.vue */ "./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue")["default"]);
 Vue.component('crearusuario', __webpack_require__(/*! ./components/Admin/Usuarios/crearusuarioComponent.vue */ "./resources/js/components/Admin/Usuarios/crearusuarioComponent.vue")["default"]); //roles
 
 Vue.component('roles', __webpack_require__(/*! ./components/Admin/Roles/rolesComponent.vue */ "./resources/js/components/Admin/Roles/rolesComponent.vue")["default"]);
@@ -67254,6 +67395,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editarusuarioComponent_vue_vue_type_template_id_b6c2958e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editarusuarioComponent_vue_vue_type_template_id_b6c2958e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mostrarusuarioComponent_vue_vue_type_template_id_48cdd8b0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0& */ "./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0&");
+/* harmony import */ var _mostrarusuarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mostrarusuarioComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _mostrarusuarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _mostrarusuarioComponent_vue_vue_type_template_id_48cdd8b0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _mostrarusuarioComponent_vue_vue_type_template_id_48cdd8b0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mostrarusuarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./mostrarusuarioComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mostrarusuarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0& ***!
+  \***********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mostrarusuarioComponent_vue_vue_type_template_id_48cdd8b0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/Usuarios/mostrarusuarioComponent.vue?vue&type=template&id=48cdd8b0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mostrarusuarioComponent_vue_vue_type_template_id_48cdd8b0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mostrarusuarioComponent_vue_vue_type_template_id_48cdd8b0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

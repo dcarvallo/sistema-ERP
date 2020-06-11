@@ -207,7 +207,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        @can('admin.index')
+        @can('Navegar-admin')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -217,7 +217,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @can('users.index')
+              @can('Navegar-usuarios')
               <li class="nav-item  {{ request()->is("route('users.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('users.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -225,7 +225,7 @@
                 </a>
               </li>
               @endcan
-              @can('roles.index')
+              @can('Navegar-roles')
               <li class="nav-item  {{ request()->is("route('roles.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('roles.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -233,7 +233,7 @@
                 </a>
               </li>
               @endcan
-              @can('permisos.index')
+              @can('Navegar-permisos')
               <li class="nav-item  {{ request()->is("route('permisos.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('permisos.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -241,7 +241,7 @@
                 </a>
               </li>
               @endcan
-              @can('contactos.index')
+              @can('Navegar-contactos')
               <li class="nav-item {{ request()->is('contactos') ? 'bg-blue' : ''}}">
                 <a href="/contactos" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -252,7 +252,7 @@
             </ul>
           </li>
           @endcan
-          @can('empresas.index')
+          @can('Navegar-empresas')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
@@ -302,7 +302,7 @@
             
           </li>
           @endcan
-          @can('rrhh.index')
+          @can('Navegar-rrhh')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-friends"></i>
@@ -358,7 +358,7 @@
             
           </li>
           @endcan
-          @can('contabilidad.index')
+          @can('Navegar-contabilidad')
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-receipt"></i>
@@ -390,7 +390,7 @@
             
             </li>
             @endcan
-            @can('almacen.index')
+            @can('Navegar-almacen')
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-box"></i>
@@ -428,7 +428,7 @@
             
               </li>
               @endcan
-              @can('tesoreria.index')
+              @can('Navegar-tesoreria')
                 <li class="nav-item has-treeview">
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-cash-register"></i>
@@ -461,7 +461,7 @@
             
                 </li>
                 @endcan
-                @can('helpdesk.index')
+                @can('Navegar-helpdesk')
                   <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                       <i class="nav-icon far fa-life-ring"></i>

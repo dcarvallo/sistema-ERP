@@ -16,11 +16,6 @@
                 <label v-if="errors.name" class="alert-danger">{{errors.name[0]}}</label>
             </div>
             <div class="form-group">
-                <label>Slug (abreviacion)*</label>
-                <input class="form-control" type="text" v-model="rol.slug">
-                 <label v-if="errors.slug" class="alert-danger">{{errors.slug[0]}}</label>
-            </div>
-            <div class="form-group">
                 <label>Descripcion*</label>
                 <textarea class="form-control" type="text" v-model="rol.description"></textarea>
                  <label v-if="errors.description" class="alert-danger">{{errors.description[0]}}</label>
@@ -55,7 +50,7 @@
 
 
       </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="card">
             <div class="card-header">
                 <h5>Permisos Eseciales</h5>
@@ -68,7 +63,7 @@
               </select>
             </div>
           </div>
-        </div>
+        </div> -->
     </div>
       
 
@@ -90,7 +85,7 @@
               <div v-for="elemento in categoria" :key="elemento.id"> 
                 <transition name="fade">
                   <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
-                    <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="permiso.slug">
+                    <input type="checkbox" :id="elemento.id" :value="elemento.name" v-model="permiso.name">
                     <span>{{elemento.name}}</span> 
                   </label>
                 </transition>
@@ -124,7 +119,6 @@ export default {
       value: null,
       rol: {
         name: '',
-        slug: '',
         description: '',
         category: '',
         special: '',
@@ -133,7 +127,7 @@ export default {
       expand: false,
       nombres: [],
       permiso: {
-        slug: [],
+        name: [],
       },
       nueva: false,
       errors: [],
@@ -185,9 +179,7 @@ export default {
       this.errors = [];
       let formData = new FormData();
       formData.append('name', this.rol.name);
-      formData.append('slug', this.rol.slug);
       formData.append('description', this.rol.description);
-      formData.append('special', this.rol.special);
       if(this.nueva)
       {
         formData.append('category', this.rol.category);
@@ -197,7 +189,7 @@ export default {
       }
       if(this.rol.special == '')
       {
-        formData.append('permisos', this.permiso.slug);
+        formData.append('permisos', this.permiso.name);
       }
       console.log(formData);
       axios.post('/roles/store',formData)
@@ -206,11 +198,9 @@ export default {
         this.nombres = [];
         this.nueva = false;
         this.rol.name = '';
-        this.rol.slug = '';
         this.rol.description = '';
-        this.rol.special = '';
         this.rol.category = '';
-        this.permiso.slug = [];
+        this.permiso.name = [];
         toastsuccess.fire({
           title: datos[1].title+' '+datos[1].message
         })

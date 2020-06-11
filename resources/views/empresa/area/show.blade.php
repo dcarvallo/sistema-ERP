@@ -26,27 +26,27 @@
               </div>
             <div class="card-body">
               <div>
+                <p class="mb-0">{{$area->nombre}}</p>
+                <hr class="my-0">
                 <label><strong>Nombre</strong> </label>
-                <hr class="my-0">
-                <label>{{$area->nombre}}</label>
               </div>
               <br>
               <div>
+                <p class="mb-0">{{$area->descripcion}}</p>
+                <hr class="my-0">
                 <label class="" for="nombre">Descripción</label>
-                <hr class="my-0">
-                <label>{{$area->descripcion}}</label>
               </div>
               <br>
               <div>
+                <p class="mb-0">{{$area->encargado}}</p>
+                <hr class="my-0">
                 <label class="" for="nombre">Encargado del Área</label>
-                <hr class="my-0">
-                <label>{{$area->encargado}}</label>
               </div>
               <br>
               <div>
-                <label class="" for="nombre">Departamento</label>
+                <p class="mb-0">{{$area->departamento->nombre}}</p>
                 <hr class="my-0">
-                <label>{{$area->departamento->nombre}}</label>
+                <label class="" for="nombre">Departamento</label>
               </div>
               
 

@@ -15,8 +15,8 @@
             </div>
             <div class="form-group">
                 <label>Slug (abreviacion)*</label>
-                <input class="form-control" type="text" v-model="permiso.slug">
-                <label class="alert-danger" v-if="errors.slug" >{{errors.slug[0]}}</label>
+                <input class="form-control" type="text" v-model="permiso.guard_name">
+                <label class="alert-danger" v-if="errors.guard_name" >{{errors.guard_name[0]}}</label>
             </div>
             <div class="form-group">
                 <label>Descripcion*</label>
@@ -51,7 +51,7 @@ export default {
     return{
       permiso: {
         name: '',
-        slug: '',
+        guard_name: '',
         description: '',
         category: '',
       },
@@ -67,14 +67,14 @@ export default {
       this.errors = [];
       let formData = new FormData();
       formData.append('name', this.permiso.name);
-      formData.append('slug', this.permiso.slug);
+      formData.append('guard_name', this.permiso.guard_name);
       formData.append('description', this.permiso.description);
-      formData.append('special', this.permiso.category);
+      formData.append('category', this.permiso.category);
       axios.post('/permisos/store',formData)
       .then(res => {
         let datos = res.data;
         this.permiso.name = '';
-        this.permiso.slug = '';
+        this.permiso.guard_name = '';
         this.permiso.description = '';
         this.permiso.category = '';
         toastsuccess.fire({

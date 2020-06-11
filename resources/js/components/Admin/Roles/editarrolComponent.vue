@@ -13,14 +13,12 @@
             <div class="form-group">
                 <label>Nombre*</label>
                 <input class="form-control" type="text" v-model="rolmod.name">
-            </div>
-            <div class="form-group">
-                <label>Slug (abreviacion)*</label>
-                <input class="form-control" type="text" v-model="rolmod.slug">
+                <label v-if="errors.name" class="alert-danger">{{errors.name[0]}}</label>
             </div>
             <div class="form-group">
                 <label>Descripcion*</label>
                 <textarea class="form-control" type="text" v-model="rolmod.description"></textarea>
+                <label v-if="errors.description" class="alert-danger">{{errors.description[0]}}</label>
             </div>
             <div class="form-group">
               <label class="mr-2"> Categoria*</label> 
@@ -39,7 +37,6 @@
                 :selectedLabel="'Seleccionado'" 
                 :deselectLabel="''"
                 :noOptions="''"
-                
                 >
                 <span slot="noResult">No existe categoria, agregue nueva categoria.</span>
                 </multiselect>
@@ -51,7 +48,7 @@
         
     </div>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="card">
             <div class="card-header">
                 <h5>Permisos Eseciales</h5>
@@ -64,7 +61,7 @@
               </select>
             </div>
           </div>
-        </div>
+        </div> -->
     </div>
       
 
@@ -78,8 +75,8 @@
               <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
           <div class="row">
 
-               <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="index">
-                  <label @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
+               <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="index" > 
+                  <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
                     <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
                     <i v-else class="far fa-plus-square"></i>
                     <span class="bold">  {{index}} </span>
@@ -87,7 +84,7 @@
                     <div v-for="elemento in categoria" :key="elemento.id"> 
                       <transition name="fade">
                         <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
-                          <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="perseleccionaados">
+                          <input type="checkbox" :id="elemento.id" :value="elemento.name" v-model="perseleccionaados">
                           <span>{{elemento.name}}</span> 
                           </label>
                       </transition>
@@ -139,7 +136,7 @@ export default {
 
     for(let i=0; i< this.permisosseleccionados.length; i++)
     {
-      this.perseleccionaados[i] = this.permisosseleccionados[i].slug; 
+      this.perseleccionaados[i] = this.permisosseleccionados[i].name; 
     }
 
   },
@@ -171,9 +168,7 @@ export default {
       this.errors = [];
       let formData = new FormData();
       formData.append('name', this.rolmod.name);
-      formData.append('slug', this.rolmod.slug);
       formData.append('description', this.rolmod.description);
-      formData.append('special', this.rolmod.special);
       if(this.nueva)
       {
         formData.append('category', this.rolmod.category);

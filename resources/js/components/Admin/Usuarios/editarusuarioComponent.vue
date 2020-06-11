@@ -131,7 +131,7 @@
                   <!-- <ul>
                     <li v-for="rol in roles" :key="rol.id">
                       <label>
-                        <input type="checkbox" :value="rol.slug" v-model="rolesSeleccionados">
+                        <input type="checkbox" :value="rol.name" v-model="rolesSeleccionados">
                         <span>{{rol.name}}</span>
                         <em>{{rol.description}}</em>
                       </label>
@@ -150,7 +150,7 @@
                           <div v-for="elemento in categoria" :key="elemento.id"> 
                             <transition name="fade">
                               <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
-                                <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="rolesSeleccionados">
+                                <input type="checkbox" :id="elemento.id" :value="elemento.name" v-model="rolesSeleccionados">
                                 <span>{{elemento.name}}</span> 
                                 </label>
                             </transition>
@@ -203,7 +203,7 @@ export default {
     
     for(let i=0; i< this.rolesusuario.length; i++)
     {
-      this.rolesSeleccionados[i] = this.rolesusuario[i].slug; 
+      this.rolesSeleccionados[i] = this.rolesusuario[i].name; 
     }
     for(var k in this.roles) {
         this.test.push(k);

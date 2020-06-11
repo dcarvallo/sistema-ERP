@@ -4,8 +4,8 @@ namespace App\Http\Controllers\C_Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Caffeinated\Shinobi\Models\Role;
-use Caffeinated\Shinobi\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Log;
 use DB;
 
@@ -19,18 +19,19 @@ class RoleController extends Controller
 
     public function obtenerroles(Request $request)
     {
-        $columns = ['name', 'description', 'special', 'ver', 'editar', 'eliminar'];
+        $columns = ['name', 'description', 'category', 'ver', 'editar', 'eliminar'];
 
         $length = $request->input('length');
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
-        $query = Role::select('id', 'name', 'description','special')->orderBy($columns[$column], $dir);
+        $query = Role::select('id', 'name', 'description','category')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
                 $query->where('name', 'like', '%' . $searchValue . '%')
-                ->orWhere('description', 'like', '%' . $searchValue . '%');
+                ->orWhere('description', 'like', '%' . $searchValue . '%')
+                ->orWhere('category', 'like', '%' . $searchValue . '%');
             });
         }
 
@@ -59,21 +60,15 @@ class RoleController extends Controller
 
       $this->validate($request, [
         'name' => 'required|string',
-        'slug' => 'required|string',
         'description' => 'required|string',
         'category' => 'required|string',
         ]);
         try {
           $rol = new Role();
           $rol->name = $request->name;
-          $rol->slug = $request->slug;
+          $rol->guard_name = 'web';
           $rol->description = $request->description;
           $rol->category = $request->category;
-          
-          if($request->special)
-          {
-            $rol->special = $request->special;
-          }
           
           $rol->save();
 
@@ -81,7 +76,8 @@ class RoleController extends Controller
           if($request->permisos)
           {
             $array = explode(",", $request->permisos);
-            $rol->givePermissionTo($array);
+            
+            $rol->syncPermissions($array);
           }
           
           $toast = array(
@@ -101,9 +97,9 @@ class RoleController extends Controller
 
     }
 
-    public function show($id)
+    public function show(Role $role)
     {
-        //
+      return view('admin.roles.show', compact('role'));   
     }
 
     public function edit($id)
@@ -124,23 +120,18 @@ class RoleController extends Controller
         
       $this->validate($request, [
         'name' => 'required|string',
-        'slug' => 'required|string',
         'description' => 'required|string',
         'category' => 'required|string',
         ]);
         try {
           $rol = Role::find($id);
           $rol->name = $request->name;
-          $rol->slug = $request->slug;
           $rol->description = $request->description;
           $rol->category = $request->category;
-          if($request->special)
-          {
-            $rol->special = $request->special;
-          }
           
           $rol->save();
 
+          Log::info($request);
           if($request->permisos)
           {
             $array = explode(",", $request->permisos);

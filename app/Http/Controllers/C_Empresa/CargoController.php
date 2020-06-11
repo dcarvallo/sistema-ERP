@@ -114,8 +114,7 @@ class CargoController extends Controller
       try {
         $cargo->nombre = $request->nombre;
         $cargo->descripcion = $request->descripcion;
-        $cargo->encargado = $request->encargado;
-        $cargo->departamento_id = $request->departamento_id;
+        $cargo->area_id = $request->area_id;
         $cargo->save();
         
         $toast = array(

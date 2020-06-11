@@ -1,14 +1,14 @@
 @extends('layouts.adminlayout')
 
 @section('icono')
-  <i class="fas fa-search-location"></i> 
+  {{-- <i class="fas fa-user-tie"></i> --}}
 @endsection
 
-@section('vista', 'Ver departamento')
+@section('vista', 'Ver Permiso')
 
 @section('breadcrumb')  
-  <li class="breadcrumb-item"><a href="{{route('departamentos.index')}}">Departamentos</a></li>
-  <li class="breadcrumb-item active">Mostrar Departamento</li>
+  <li class="breadcrumb-item"><a href="{{route('permisos.index')}}">Permisos</a></li>
+  <li class="breadcrumb-item active">Mostrar Permiso</li>
 @endsection
 
 @section('content')
@@ -22,31 +22,25 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                  <h5>Información de Ubicación</h5>
+                  <h5>Información del Permiso</h5>
               </div>
             <div class="card-body">
               <div>
-                <p class="mb-0">{{$departamento->nombre}}</p>
+                <p class="mb-0">{{$permiso->name}}</p>
                 <hr class="my-0">
-                <label><strong>Nombre</strong> </label>
+                <label>Nombre </label>
               </div>
               <br>
               <div>
-                <p class="mb-0">{{$departamento->descripcion}}</p>
+                <p class="mb-0">{{$permiso->description}}</p>
                 <hr class="my-0">
                 <label class="" for="nombre">Descripción</label>
               </div>
               <br>
               <div>
-                <p class="mb-0">{{$departamento->encargado}}</p>
+                <p class="mb-0">{{$permiso->category}}</p>
                 <hr class="my-0">
-                <label class="" for="nombre">Encargado del departamento</label>
-              </div>
-              <br>
-              <div>
-                <p class="mb-0">{{$departamento->ubicacion->nombre}}</p>
-                <hr class="my-0">
-                <label class="" for="nombre">Ubicacion</label>
+                <label class="" for="nombre">Categoria</label>
               </div>
               
 

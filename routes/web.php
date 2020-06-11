@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\M_Empresa\Empresa;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 Route::get('licence', function(){
+  Role::create(['name' => 'Admin']);
+  Permission::create(['name' => 'admin.index']);
   return view('licence');
 });
 

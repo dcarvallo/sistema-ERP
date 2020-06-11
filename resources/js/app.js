@@ -153,6 +153,7 @@ Vue.component('editarcargo', require('./components/Empresa/cargo/editarcargoComp
 //usuarios
 Vue.component('usuarios', require('./components/Admin/Usuarios/usuariosComponent.vue').default);
 Vue.component('editarusuario', require('./components/Admin/Usuarios/editarusuarioComponent.vue').default);
+Vue.component('mostrarusuario', require('./components/Admin/Usuarios/mostrarusuarioComponent.vue').default);
 Vue.component('crearusuario', require('./components/Admin/Usuarios/crearusuarioComponent.vue').default);
 //roles
 Vue.component('roles', require('./components/Admin/Roles/rolesComponent.vue').default);

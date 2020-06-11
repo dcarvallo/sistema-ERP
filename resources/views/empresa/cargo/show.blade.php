@@ -26,21 +26,21 @@
               </div>
             <div class="card-body">
               <div>
+                <p class="mb-0">{{$cargo->nombre}}</p>
+                <hr class="my-0">
                 <label><strong>Nombre</strong> </label>
-                <hr class="my-0">
-                <label>{{$cargo->nombre}}</label>
               </div>
               <br>
               <div>
+                <p class="mb-0">{{$cargo->descripcion}}</p>
+                <hr class="my-0">
                 <label class="" for="nombre">Descripción</label>
-                <hr class="my-0">
-                <label>{{$cargo->descripcion}}</label>
               </div>
               <br>
               <div>
-                <label class="" for="nombre">Area</label>
+                <p class="mb-0">{{$cargo->area->nombre}}</p>
                 <hr class="my-0">
-                <label>{{$cargo->area->nombre}}</label>
+                <label class="" for="nombre">Área</label>
               </div>
               
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
-use Caffeinated\Shinobi\Models\Role;
+use Spatie\Permission\Models\Role;
 use App\Http\Requests\Usuarios\StoreUsuario;
 use App\Http\Requests\Usuarios\ResetPassword;
 use App\Http\Requests\Usuarios\UpdateUsuario;
@@ -129,7 +129,10 @@ class UserController extends Controller
 
     public function show($id)
     {
-        //
+      $roles = Role::all()->groupBy('category')->toArray();
+      ksort($roles);
+      $usuario = User::find($id);
+      return view('usuarios.show', compact('usuario', 'roles'));
     }
 
     public function edit($id)

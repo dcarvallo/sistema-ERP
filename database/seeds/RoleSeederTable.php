@@ -12,10 +12,17 @@ class RoleSeederTable extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
-            'name'          => 'Admin',
-            'slug'          => 'admin',
+            'name'          => 'Super Admin',
+            'guard_name'    => 'Acceso super administrador',
             'description'   => 'Acceso a todos los modulo del sistema',
-            'special'       => 'all-access'
+            'category'      => 'Admin'
         ]);
+
+        DB::table('roles')->insert([
+          'name'          => 'Inactivo',
+          'guard_name'    => 'Ningun acceso',
+          'description'   => 'Acceso a ningun modulo del sistema',
+          'category'      => 'Inactivo'
+      ]);
     }
 }
