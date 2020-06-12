@@ -13,9 +13,9 @@
 
 @section('content')
 
-  <section class="content mb-4">
-    <creararea :departamentos="{{json_encode($departamentos) }}" :cargos="{{json_encode($cargos)}}"/>
-  </section>
+    <section class="content mb-4">
+      <creararea :departamentos="{{json_encode($departamentos) }}" :cargos="{{json_encode($cargos)}}"/>
+    </section>
 
 @endsection
 

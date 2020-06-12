@@ -6,6 +6,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
 	
 
-Route::get('almacen', 'C_Almacen\AlmacenController@index')->name('almacen.index')
-		->middleware('can:almacen.index');
+Route::get('almacen', 'C_Almacen\AlmacenController@index')->name('almacen.index');
 });

@@ -54,6 +54,7 @@
                 >
                 <span slot="noResult">No existe ubicacion.</span>
                 </multiselect>
+                <label class="alert-danger py-0" v-if="errors.ubicacion" >{{errors.ubicacion[0]}}</label>
               </div>
 
             </div>
@@ -94,8 +95,14 @@ methods: {
       let formData = new FormData();
       formData.append('nombre', this.departamento.nombre);
       formData.append('descripcion', this.departamento.descripcion);
-      formData.append('encargado', this.departamento.encargado.nombre);
-      formData.append('ubicacion_id', this.departamento.ubicacion_id.id);
+      if(this.departamento.encargado)
+      {
+        formData.append('encargado', this.departamento.encargado.nombre);
+      }
+      if(this.departamento.ubicacion_id)
+      {
+        formData.append('ubicacion', this.departamento.ubicacion_id.id);
+      }
       axios.post('/departamentos/store',formData)
       .then(res => {
         let datos = res.data;

@@ -6,24 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Models\M_Empresa\Area;
 use App\Models\M_Empresa\Cargo;
 use Illuminate\Http\Request;
-
-use Log;
+use Auth;
 
 class CargoController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
+      if(!Auth::user()->can('permisos', 'Navegar-cargos'))
+      {
+          abort(403);
+      }
         return view('empresa.cargo.index');
     }
 
     public function obtenercargos(Request $request)
     {
+      if(!Auth::user()->can('permisos', 'Navegar-cargos'))
+      {
+          abort(403);
+      }
       try {
       
         $columns = ['nombre', 'descripcion', 'area_id', 'ver','editar', 'eliminar'];
@@ -52,24 +54,31 @@ class CargoController extends Controller
 
     public function create()
     {
+      if(!Auth::user()->can('permisos', 'Crear-cargos'))
+      {
+          abort(403);
+      }
         $areas = Area::select('id', 'nombre')->get()->toArray();
         return view('empresa.cargo.create', compact('areas'));
     }
 
     public function store(Request $request)
     {
-     
+      if(!Auth::user()->can('permisos', 'Crear-cargos'))
+      {
+          abort(403);
+      }
         $this->validate($request, [
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
-            'area_id' => 'required',
+            'area' => 'required',
         ]);
         try {
           
           $cargo = new Cargo();
           $cargo->nombre = $request->nombre;
           $cargo->descripcion = $request->descripcion;
-          $cargo->area_id = $request->area_id;
+          $cargo->area_id = $request->area;
           $cargo->save();
           
           $toast = array(
@@ -81,7 +90,6 @@ class CargoController extends Controller
           return [$cargo, $toast];
           
         } catch (\Throwable $th) {
-          Log::info($th);
             $toast = array(
               'title'   => 'Error',
               'message' => $th,
@@ -94,27 +102,39 @@ class CargoController extends Controller
 
     public function show(Cargo $cargo)
     {
+      if(!Auth::user()->can('permisos', 'Ver-cargos'))
+      {
+          abort(403);
+      }
         return view('empresa.cargo.show', compact('cargo'));
     }
 
     public function edit(Cargo $cargo)
     {
+      if(!Auth::user()->can('permisos', 'Editar-cargos'))
+      {
+          abort(403);
+      }
       $areas = Area::select('id', 'nombre')->get()->toArray();
       return view('empresa.cargo.edit', compact('cargo', 'areas'));
     }
 
     public function update(Request $request, Cargo $cargo)
     {
+      if(!Auth::user()->can('permisos', 'Editar-cargos'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'nombre' => 'required|string',
         'descripcion' => 'required|string',
-        'area_id' => 'required'
+        'area' => 'required'
         ]);
         
       try {
         $cargo->nombre = $request->nombre;
         $cargo->descripcion = $request->descripcion;
-        $cargo->area_id = $request->area_id;
+        $cargo->area_id = $request->area;
         $cargo->save();
         
         $toast = array(
@@ -138,6 +158,10 @@ class CargoController extends Controller
 
     public function destroy(Cargo $cargo)
     {
+      if(!Auth::user()->can('permisos', 'Eliminar-cargos'))
+      {
+          abort(403);
+      }
       if($cargo->empleado()->count())
       {
         $toast = array(

@@ -39,7 +39,7 @@
 
               </div>
               <div class="form-group">
-                <label for="ubicacion_id">Ubicacion*</label>
+                <label for="ubicacion_id">Departamento*</label>
                 
                <multiselect v-model="area_mod.departamento_id"
                 :options= departamentos
@@ -54,6 +54,7 @@
                 <span slot="noResult">No existe departamento.</span>
                 </multiselect>
               </div>
+              <label class="alert-danger py-0" v-if="errors.departamento" >{{errors.departamento[0]}}</label>
 
             </div>
           </div>
@@ -101,7 +102,10 @@ methods: {
       {
         formData.append('encargado', this.area_mod.encargado.nombre);
       }
-      formData.append('departamento_id', this.area_mod.departamento_id.id);
+      if(this.area_mod.departamento_id)
+      {
+        formData.append('departamento', this.area_mod.departamento_id.id);
+      }
       formData.append('_method', 'put');
       axios.post('/areas/'+this.area_mod.id,formData)
       .then(res => {

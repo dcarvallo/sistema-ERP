@@ -15,7 +15,7 @@
                 <p class="text-muted text-center">Cargo: Software Engineer</p>
 
                
-                  <a class="btn btn-success btn-block" href="password/reset">
+                  <a class="btn btn-primary btn-block" href="password/reset">
                     Cambiar contraseña
                 </a>
 

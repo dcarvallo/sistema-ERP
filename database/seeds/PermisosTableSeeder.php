@@ -20,6 +20,13 @@ class PermisosTableSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+          'name'          => 'Administrador-archivos',
+          'guard_name'    => 'web',
+          'description'   => 'Administra archivos subidos en carpeta publica',
+          'category'      => 'Admin'
+        ]);
+
+        DB::table('permissions')->insert([
             'name'          => 'Navegar-usuarios',
             'guard_name'    => 'web',
             'description'   => 'Lista y navega todos los usuarios de la empresa',

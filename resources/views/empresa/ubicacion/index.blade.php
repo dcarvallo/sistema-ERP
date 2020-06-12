@@ -13,7 +13,12 @@
 @section('content')
 
   <section>
-    <ubicaciones/>
+    <ubicaciones
+      can_crear="{{ Auth::user()->can('permisos', 'Crear-ubicaciones') ? true : false }}"
+      can_ver="{{ Auth::user()->can('permisos', 'Ver-ubicaciones') ? true : false }}"
+      can_editar="{{ Auth::user()->can('permisos', 'Editar-ubicaciones') ? true : false }}"
+      can_eliminar="{{ Auth::user()->can('permisos', 'Eliminar-ubicaciones') ? true : false }}"
+    />
   </section>
     
 @endsection

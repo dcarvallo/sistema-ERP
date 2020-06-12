@@ -13,7 +13,12 @@ Route::get('licence', function(){
 });
 
   View::composer(['layouts.adminlayout', 'layouts.template'], function($view){
-    $empresa = Empresa::first();
+    $empresa = cache()->get('datos-empresa');
+  
+    if ($empresa == null) {
+      $empresa = Empresa::first();
+      cache()->put('datos-empresa', $empresa);
+    }
 
     if($empresa)
     {
@@ -22,6 +27,21 @@ Route::get('licence', function(){
     else{
       $view->with('globalimagenempresa', '')->with('globalnombreempresa', '');
     }
+
+
+    $permisosusuario = cache()->tags('permisos')->get('usuario_'.Auth::user()->id);
+
+        if ($permisosusuario == null ) {
+          
+          $perobj = Auth::user()->getAllPermissions();
+          $permisosarray = array();
+          foreach($perobj as $permisos){
+            array_push($permisosarray, $permisos->name);
+          }
+
+          cache()->tags('permisos')->put('usuario_'.Auth::user()->id, $permisosarray);
+
+        }
 
   });
 

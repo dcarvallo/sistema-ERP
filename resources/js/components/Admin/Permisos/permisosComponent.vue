@@ -10,12 +10,12 @@
                           <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
                       </select>
                     </div>
-                      <div class="w-auto">
+                      <!-- <div class="w-auto">
                           <a class="btn btn-success" :href="'/permisos/create'">
-                          <i class="far fa-plus-square"></i>
+                            <i class="far fa-plus-square"></i>
                             Crear
                           </a>
-                      </div>
+                      </div> -->
                   </div>
 
                 <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
@@ -26,18 +26,11 @@
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
             <tbody class="text-center">
                 <tr v-for="permiso in permisos" :key="permiso.id">
-                    <td>{{permiso.category}}</td>
-                    <td>{{permiso.name}}</td>
-                    <td>{{permiso.slug}}</td>
-                    <td>{{permiso.description}}</td>
-                    <td style="width: 10px" class="text-white">                        
-                      <a class="btn btn-outline-info" :href="'/permisos/'+permiso.id"><i class=" far fa-eye"></i></a>
-                    </td>
-                    <td style="width: 10px">
-                      <a class="btn btn-warning" :href="'/permisos/'+permiso.id+'/edit'"><i class="far fa-edit"></i></a>
-                    </td>
-                    <td style="width: 10px">
-                      <a class="btn text-white btn-danger" @click.prevent="eliminarpermisos(permiso.id)"><i class="far fa-trash-alt"></i></a>
+                    <td class="col-2">{{permiso.category}}</td>
+                    <td class="col-2">{{permiso.name}}</td>
+                    <td class="col-8">{{permiso.description}}</td>
+                    <td class="text-white">                        
+                      <a class="btn btn-primary text-white" :href="'/permisos/'+permiso.id"><i class=" far fa-eye"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -69,18 +62,17 @@ export default {
         let columns = [
             {label: 'Categoria', name: 'category'},
             {label: 'Nombre', name: 'name' },
-            {label: 'Slug', name: 'slug' },
             {label: 'Descripcion', name: 'description'},
-            {label: 'Ver', name: 'ver'},
-            {label: 'Editar', name: 'editar'},
-            {label: 'Eliminar', name: 'eliminar'}
+            {label: 'Ver', name: 'ver'}
         ];
+        var columnasPrincipales = columns.length - 1 ;
         columns.forEach((column) => {
            sortOrders[column.name] = -1;
         });
         return {
             permisos: [],
             columns: columns,
+            columnasPrincipales:columnasPrincipales,
             sortKey: 'category',
             sortOrders: sortOrders,
             perPage: ['10', '20', '50'],
@@ -119,21 +111,21 @@ export default {
                     console.log(errors);
                 });
         },
-        eliminarpermiso(permisosid) {
-            this.tableData.draw++;
-            axios.delete('/permisos/'+permisoid, {params: this.tableData})
-                .then(response => {
-                    let data = response.data;
-                    this.parametrostabla = data;
-                    if (this.tableData.draw == data.draw) {
-                        this.permisos = data.data.data;
-                        this.configPagination(data.data);
-                    }
-                })
-                .catch(errors => {
-                    console.log(errors);
-                });
-        },
+        // eliminarpermiso(permisosid) {
+        //     this.tableData.draw++;
+        //     axios.delete('/permisos/'+permisoid, {params: this.tableData})
+        //         .then(response => {
+        //             let data = response.data;
+        //             this.parametrostabla = data;
+        //             if (this.tableData.draw == data.draw) {
+        //                 this.permisos = data.data.data;
+        //                 this.configPagination(data.data);
+        //             }
+        //         })
+        //         .catch(errors => {
+        //             console.log(errors);
+        //         });
+        // },
         configPagination(data) {
             this.pagination.lastPage = data.last_page;
             this.pagination.currentPage = data.current_page;
@@ -149,6 +141,7 @@ export default {
             this.sortOrders[key] = this.sortOrders[key] * -1;
             this.tableData.column = this.getIndex(this.columns, 'name', key);
             this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
+            if(this.tableData.column <= this.columnasPrincipales)
             this.getpermisos();
         },
         getIndex(array, key, value) {

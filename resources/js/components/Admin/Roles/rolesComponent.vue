@@ -10,10 +10,16 @@
                     <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
                 </select>
               </div>
-                <div class="w-auto">
+                <div v-if="can_crear" class="w-auto mr-1">
                   <a class="btn btn-success" :href="'/roles/create'">
-                  <i class="far fa-plus-square"></i>
+                    <i class="far fa-plus-square"></i>
                     Crear
+                  </a>
+                </div>
+                <div class="w-auto">
+                  <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalexportar">
+                    <i class=" fas fa-file-download"></i>
+                    Exportar
                   </a>
                 </div>
               </div>
@@ -29,13 +35,13 @@
                     <td class="col-sm-4">{{rol.name}}</td>
                     <td class="col-md-5">{{rol.description}}</td>
                     <td class="col-sm-3">{{rol.category}}</td>
-                    <td class="col-sm- text-center">                        
-                      <a class="btn btn-outline-info" :href="'/roles/'+rol.id"><i class=" far fa-eye"></i></a>
+                    <td v-if="can_ver" class=" text-center">                        
+                      <a class="btn btn-primary text-white" :href="'/roles/'+rol.id"><i class=" far fa-eye"></i></a>
                     </td>
-                    <td class="col-sm- text-center">
+                    <td v-if="can_editar" class="col-sm- text-center">
                       <a class="btn btn-warning" :href="'/roles/'+rol.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
-                    <td class="col-sm- text-center">
+                    <td v-if="can_eliminar" class="text-center">
                       <a class="btn text-white btn-danger" @click="eliminarrol(rol.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
@@ -63,23 +69,32 @@ export default {
     created() {
       this.getroles();
     },
+    props:['can_crear','can_ver', 'can_editar','can_eliminar'],
     data() {
       let sortOrders = {};
       let parametrostabla = {};
       let columns = [
           {label: 'Nombre', name: 'name' },
           {label: 'Descripcion', name: 'description'},
-          {label: 'Categoria', name: 'category'},
-          {label: 'Ver', name: 'ver'},
-          {label: 'Editar', name: 'editar'},
-          {label: 'Eliminar', name: 'eliminar'}
+          {label: 'Categoria', name: 'category'}
       ];
+      var columnasPrincipales = columns.length - 1 ;
       columns.forEach((column) => {
           sortOrders[column.name] = -1;
       });
+      if(this.can_ver){
+        columns.push({label: 'Ver', name: 'ver'});
+      }
+      if(this.can_editar){
+        columns.push({label: 'Editar', name: 'editar'});
+      }
+      if(this.can_eliminar){
+        columns.push({label: 'Eliminar', name: 'eliminar'});
+      }
       return {
         roles: [],
         columns: columns,
+        columnasPrincipales:columnasPrincipales,
         sortKey: 'name',
         sortOrders: sortOrders,
         perPage: ['15', '30', '50'],
@@ -164,6 +179,7 @@ export default {
           this.sortOrders[key] = this.sortOrders[key] * -1;
           this.tableData.column = this.getIndex(this.columns, 'name', key);
           this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
+          if(this.tableData.column <= this.columnasPrincipales)
           this.getroles();
         },
         getIndex(array, key, value) {

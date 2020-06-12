@@ -5,31 +5,34 @@ namespace App\Http\Controllers\C_Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
-use Log;
 use DB;
+use Auth;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+      if(!Auth::user()->can('permisos', 'Navegar-permisos'))
+      {
+          abort(403);
+      }
         return view('admin.permisos.index');
     }
 
     public function obtenerpermisos(Request $request)
     {
-        $columns = ['category','name', 'guard_name','description','ver', 'editar', 'eliminar'];
+      if(!Auth::user()->can('permisos', 'Navegar-permisos'))
+      {
+          abort(403);
+      }
+        $columns = ['category','name','description'];
 
         $length = $request->input('length');
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
 
-        $query = Permission::select('id', 'name', 'guard_name','description','category')->orderBy($columns[$column], $dir);
+        $query = Permission::select('id', 'name','description','category')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
             $query->where(function($query) use ($searchValue) {
@@ -42,37 +45,31 @@ class PermissionController extends Controller
         return ['data' => $permisos, 'draw' => $request->input('draw')];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-
+      if(!Auth::user()->can('permisos', 'Crear-permisos'))
+      {
+          abort(403);
+      }
         $permisos = Permission::orderBy('name', 'asc')->get();
         return view('admin.permisos.create', compact('permisos'));;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
+      if(!Auth::user()->can('permisos', 'Crear-permisos'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'name' => 'required|string',
-        'guard_name' => 'required|string',
         'description' => 'required|string',
         'category' => 'required|string',
         ]);
         try {
           $permiso = new Permission();
           $permiso->name = $request->name;
-          $permiso->guard_name = $request->guard_name;
+          $permiso->guard_name = 'web';
           $permiso->description = $request->description;
           $permiso->category = $request->category;
          
@@ -97,84 +94,79 @@ class PermissionController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
+      if(!Auth::user()->can('permisos', 'Ver-permisos'))
+      {
+          abort(403);
+      }
       $permiso = Permission::find($id);
       return view('admin.permisos.show', compact('permiso'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-      $permiso = Permission::find($id);
-      return view('admin.permisos.edit', compact('permiso'));
-    }
+    // public function edit($id)
+    // {
+      // if(!Auth::user()->can('permisos', 'Editar-permisos'))
+      // {
+      //     abort(403);
+      // }
+    //   $permiso = Permission::find($id);
+    //   return view('admin.permisos.edit', compact('permiso'));
+    // }
 
-    public function update(Request $request, $id)
-    {
+    // public function update(Request $request, $id)
+    // {
+      // if(!Auth::user()->can('permisos', 'Editar-permisos'))
+      // {
+      //     abort(403);
+      // }
+    //   $this->validate($request, [
+    //     'name' => 'required|string',
+    //     'description' => 'required|string',
+    //     'category' => 'required|string',
+    //   ]);
+    //   try {
+    //     $permiso = Permission::find($id);
+    //     $permiso->name = $request->name;
+    //     $permiso->description = $request->description;
+    //     $permiso->category = $request->category;
         
-      $this->validate($request, [
-        'name' => 'required|string',
-        'description' => 'required|string',
-        'category' => 'required|string',
-        ]);
-        try {
-          $permiso = Permission::find($id);
-          $permiso->name = $request->name;
-          $permiso->description = $request->description;
-          $permiso->category = $request->category;
-          
-          $permiso->save();
-          
-          $toast = array(
-            'title'   => 'permiso modificado: ',
-            'message' => $request->name,
-            'type'    => 'success'
-          );
-          
-          return [$permiso,$toast];
-          
-        // } catch (\Throwable $th) {
-        } catch (\Illuminate\Database\QueryException $e) {
-          Log::info($e->errorInfo);
+    //     $permiso->save();
+        
+    //     $toast = array(
+    //       'title'   => 'permiso modificado: ',
+    //       'message' => $request->name,
+    //       'type'    => 'success'
+    //     );
+        
+    //     return [$permiso,$toast];
+        
+    //   // } catch (\Throwable $th) {
+    //   } catch (\Illuminate\Database\QueryException $e) {
 
-          $toast = array(
-            'title'   => 'permiso no modificado: ',
-            'message' => $e->errorInfo,
-            'type'    => 'error'
-          );
-          return [$request,$toast,$e->errorInfo];
-        }
+    //     $toast = array(
+    //       'title'   => 'permiso no modificado: ',
+    //       'message' => $e->errorInfo,
+    //       'type'    => 'error'
+    //     );
+    //     return [$request,$toast,$e->errorInfo];
+    //   }
 
-    }
+    // }
     
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-      $permiso = Permission::find($id);
-        $permiso->delete();
-        $toast = array(
-          'title'   => 'permiso eliminado: ',
-          'message' => '',
-          'type'    => 'success'
-        );
-        return $toast;
-    }
+    // public function destroy($id)
+    // {
+      // if(!Auth::user()->can('permisos', 'Eliminar-permisos'))
+      // {
+      //     abort(403);
+      // }
+    //   $permiso = Permission::find($id);
+    //     $permiso->delete();
+    //     $toast = array(
+    //       'title'   => 'permiso eliminado: ',
+    //       'message' => '',
+    //       'type'    => 'success'
+    //     );
+    //     return $toast;
+    // }
 }

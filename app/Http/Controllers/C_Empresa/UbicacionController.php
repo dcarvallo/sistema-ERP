@@ -7,25 +7,29 @@ use App\Models\M_Empresa\Empresa;
 use App\Models\M_Empresa\Ubicacion;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 
 class UbicacionController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
+      if(!Auth::user()->can('permisos', 'Navegar-ubicaciones'))
+      {
+          abort(403);
+      }
         return view('empresa.ubicacion.index');
     }
 
     public function obtenerubicaciones(Request $request)
     {
+      if(!Auth::user()->can('permisos', 'Navegar-ubicaciones'))
+      {
+          abort(403);
+      }
       try {
       
-        $columns = ['nombre', 'descripcion', 'locacion', 'empresa','editar', 'eliminar'];
+        $columns = ['nombre', 'descripcion', 'locacion'];
 
         $length = $request->input('length');
         $column = $request->input('column');
@@ -52,12 +56,19 @@ class UbicacionController extends Controller
 
     public function create()
     {
+      if(!Auth::user()->can('permisos', 'Crear-ubicaciones'))
+      {
+          abort(403);
+      }
         return view('empresa.ubicacion.create');
     }
 
     public function store(Request $request)
     {
-
+      if(!Auth::user()->can('permisos', 'Crear-ubicaciones'))
+      {
+          abort(403);
+      }
         $this->validate($request, [
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
@@ -105,6 +116,10 @@ class UbicacionController extends Controller
 
     public function show(Ubicacion $ubicacion)
     {
+      if(!Auth::user()->can('permisos', 'Editar-ubicaciones'))
+      {
+          abort(403);
+      }
         return view('empresa.ubicacion.show', compact('ubicacion'));
     }
 
@@ -115,6 +130,10 @@ class UbicacionController extends Controller
 
     public function update(Request $request, Ubicacion $ubicacion)
     {
+      if(!Auth::user()->can('permisos', 'Editar-ubicaciones'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'nombre' => 'required|string',
         'descripcion' => 'required|string',
@@ -147,6 +166,10 @@ class UbicacionController extends Controller
 
     public function destroy(Ubicacion $ubicacion)
     {
+      if(!Auth::user()->can('permisos', 'Eliminar-ubicaciones'))
+      {
+          abort(403);
+      }
       if($ubicacion->departamentos()->count())
       {
         $toast = array(

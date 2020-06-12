@@ -6,25 +6,34 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Log;
 use DB;
+use Auth;
 
 class RoleController extends Controller
 {
     
     public function index()
     {
+      if(!Auth::user()->can('permisos', 'Navegar-roles'))
+      {
+          abort(403);
+      }
         return view('admin.roles.index');
     }
 
     public function obtenerroles(Request $request)
     {
+      if(!Auth::user()->can('permisos', 'Navegar-roles'))
+      {
+          abort(403);
+      }
         $columns = ['name', 'description', 'category', 'ver', 'editar', 'eliminar'];
 
         $length = $request->input('length');
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
+
         $query = Role::select('id', 'name', 'description','category')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
@@ -41,7 +50,10 @@ class RoleController extends Controller
 
     public function create()
     {
-
+      if(!Auth::user()->can('permisos', 'Crear-roles'))
+      {
+          abort(403);
+      }
         $permisos = Permission::all()->groupBy('category')->toArray();
         ksort($permisos);
         $cat = Role::select('category')->groupBy('category')->get();
@@ -56,8 +68,10 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-
-
+      if(!Auth::user()->can('permisos', 'Crear-roles'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'name' => 'required|string',
         'description' => 'required|string',
@@ -76,8 +90,8 @@ class RoleController extends Controller
           if($request->permisos)
           {
             $array = explode(",", $request->permisos);
-            
             $rol->syncPermissions($array);
+            cache()->tags('permisos')->flush();
           }
           
           $toast = array(
@@ -99,11 +113,19 @@ class RoleController extends Controller
 
     public function show(Role $role)
     {
+      if(!Auth::user()->can('permisos', 'Ver-roles'))
+      {
+          abort(403);
+      }
       return view('admin.roles.show', compact('role'));   
     }
 
     public function edit($id)
     {
+      if(!Auth::user()->can('permisos', 'Editar-roles'))
+      {
+          abort(403);
+      }
       $rol = Role::find($id);
       $permisos = Permission::all()->groupBy('category')->toArray();
       ksort($permisos);
@@ -117,7 +139,10 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
-        
+      if(!Auth::user()->can('permisos', 'Editar-roles'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'name' => 'required|string',
         'description' => 'required|string',
@@ -131,11 +156,11 @@ class RoleController extends Controller
           
           $rol->save();
 
-          Log::info($request);
           if($request->permisos)
           {
             $array = explode(",", $request->permisos);
             $rol->syncPermissions($array);
+            cache()->tags('permisos')->flush();
           }
           
           $toast = array(
@@ -157,6 +182,10 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
+      if(!Auth::user()->can('permisos', 'Eliminar-roles'))
+      {
+          abort(403);
+      }
       $rol = Role::find($id);
         $rol->delete();
         $toast = array(

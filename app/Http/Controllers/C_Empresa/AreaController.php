@@ -7,27 +7,29 @@ use App\Models\M_Empresa\Departamento;
 use App\Models\M_Empresa\Area;
 use App\Models\M_Empresa\Cargo;
 use Illuminate\Http\Request;
-
-use Log;
+use Auth;
 
 class AreaController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
+      if(!Auth::user()->can('permisos', 'Navegar-areas'))
+      {
+          abort(403);
+      }
         return view('empresa.area.index');
     }
 
     public function obtenerareas(Request $request)
     {
+      if(!Auth::user()->can('permisos', 'Navegar-areas'))
+      {
+          abort(403);
+      }
       try {
       
-        $columns = ['nombre', 'descripcion', 'encargado', 'departamento_id', 'ver','editar', 'eliminar'];
+        $columns = ['nombre', 'descripcion', 'encargado', 'departamento_id'];
 
         $length = $request->input('length');
         $column = $request->input('column');
@@ -54,6 +56,10 @@ class AreaController extends Controller
 
     public function create()
     {
+      if(!Auth::user()->can('permisos', 'Crear-areas'))
+      {
+          abort(403);
+      }
         $cargos = Cargo::select('nombre')->get()->toArray();
         $departamentos = Departamento::select('id', 'nombre')->get()->toArray();
         return view('empresa.area.create', compact('departamentos', 'cargos'));
@@ -61,37 +67,40 @@ class AreaController extends Controller
 
     public function store(Request $request)
     {
-     
+      if(!Auth::user()->can('permisos', 'Crear-areas'))
+      {
+          abort(403);
+      }
         $this->validate($request, [
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
             'encargado' => 'string|nullable',
-            'departamento_id' => 'required'
+            'departamento' => 'required'
         ]);
         try {
-          
+
           $area = new Area();
           $area->nombre = $request->nombre;
           $area->descripcion = $request->descripcion;
           $area->encargado = $request->encargado;
-          $area->departamento_id = $request->departamento_id;
+          $area->departamento_id = $request->departamento;
           $area->save();
           
           $toast = array(
             'title'   => 'Area creada: ',
-            'message' => $area->nombre,
-            'type'    => 'success'
+            'messagess' => $area->nombre,
           );
 
-          return [$area,$toast];
+          return [$area, $toast];
           
         } catch (\Throwable $th) {
-          Log::info($th);
+
             $toast = array(
               'title'   => 'Error',
-              'message' => $th,
-              'type'    => 'error'
+              'messagess' => $th,
+              'type'    => 'error',
             );
+
             return [$request, $toast];
         }
 
@@ -99,11 +108,19 @@ class AreaController extends Controller
 
     public function show(Area $area)
     {
+      if(!Auth::user()->can('permisos', 'Ver-areas'))
+      {
+          abort(403);
+      }
         return view('empresa.area.show', compact('area'));
     }
 
     public function edit(Area $area)
     {
+      if(!Auth::user()->can('permisos', 'Editar-areas'))
+      {
+          abort(403);
+      }
       $cargos = Cargo::select('nombre')->get()->toArray();
       $departamentos = Departamento::select('id', 'nombre')->get()->toArray();
       return view('empresa.area.edit', compact('area','cargos', 'departamentos'));
@@ -111,18 +128,22 @@ class AreaController extends Controller
 
     public function update(Request $request, Area $area)
     {
+      if(!Auth::user()->can('permisos', 'Editar-areas'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'nombre' => 'required|string',
         'descripcion' => 'required|string',
         'encargado' => 'string|nullable',
-        'departamento_id' => 'required'
+        'departamento' => 'required'
         ]);
         
       try {
         $area->nombre = $request->nombre;
         $area->descripcion = $request->descripcion;
         $area->encargado = $request->encargado;
-        $area->departamento_id = $request->departamento_id;
+        $area->departamento_id = $request->departamento;
         $area->save();
         
         $toast = array(
@@ -146,6 +167,10 @@ class AreaController extends Controller
 
     public function destroy(Area $area)
     {
+      if(!Auth::user()->can('permisos', 'Eliminar-areas'))
+      {
+          abort(403);
+      }
       if($area->cargos()->count())
       {
         $toast = array(

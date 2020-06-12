@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
 
-Route::get('helpdesk', 'C_Helpdesk\HelpdeskController@index')->name('helpdesk.index')
-		->middleware('can:helpdesk.index');
+Route::get('helpdesk', 'C_Helpdesk\HelpdeskController@index')->name('helpdesk.index');
 
 });

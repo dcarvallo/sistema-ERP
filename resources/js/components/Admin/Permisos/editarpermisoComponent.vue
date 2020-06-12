@@ -14,10 +14,6 @@
                 <label class="alert-danger py-0" v-if="errors.name" >{{errors.name[0]}}</label>
             </div>
             <div class="form-group">
-                <label>Slug (abreviacion)*</label>
-                <input disabled class="form-control" type="text" v-model="permiso.slug">
-            </div>
-            <div class="form-group">
                 <label>Descripcion*</label>
                 <textarea class="form-control" type="text" v-model="permisomod.description"></textarea>
                 <label class="alert-danger py-0" v-if="errors.description" >{{errors.description[0]}}</label>

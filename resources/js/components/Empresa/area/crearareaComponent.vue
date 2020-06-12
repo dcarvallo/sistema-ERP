@@ -40,7 +40,7 @@
 
               </div>
               <div class="form-group">
-                <label for="ubicacion_id">Departamento*</label>
+                <label>Departamento*</label>
                 
                <multiselect v-model="area.departamento_id"
                 :options= departamentos
@@ -54,6 +54,7 @@
                 >
                 <span slot="noResult">No existe departamento.</span>
                 </multiselect>
+                <label class="alert-danger py-0" v-if="errors.departamento" >{{errors.departamento[0]}}</label>
               </div>
 
             </div>
@@ -80,8 +81,8 @@ data() {
     area: {
       nombre: '',
       descripcion: '',
-      encargado: '',
-      departamento_id: '',
+      encargado: null,
+      departamento_id: null,
     },
   }
 },
@@ -94,32 +95,38 @@ methods: {
       let formData = new FormData();
       formData.append('nombre', this.area.nombre);
       formData.append('descripcion', this.area.descripcion);
-      formData.append('encargado', this.area.encargado.nombre);
-      formData.append('departamento_id', this.area.departamento_id.id);
+      if(this.area.encargado)
+      {
+        formData.append('encargado', this.area.encargado.nombre);
+      }
+      if(this.area.departamento_id)
+      {
+        formData.append('departamento', this.area.departamento_id.id);
+      }
       axios.post('/areas/store',formData)
       .then(res => {
         let datos = res.data;
-        this.area.nombre = '';
-        this.area.descripcion = '';
         this.area = [];
-        toastsuccess.fire({
-          title: datos[1].title+' '+datos[1].message
+        if(datos[1])
+        {
+          toastsuccess.fire({
+            title: datos[1].title+': '+datos[1].messagess
         })
+        }
       })
       .catch(error => {
         let datos = error.response;
-        console.log(error);
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
             toasterror.fire({
             title: 'Error en formulario, revise'
           })
-          }
-          if(datos[1]){
-            toasterror.fire({
-              title: datos[1].title+' '+datos[1].message
+        }
+        if(datos[1]){
+          toasterror.fire({
+            title: datos[1].title+' '+datos[1].message
           })
-          }
+        }
       })
     }
 },

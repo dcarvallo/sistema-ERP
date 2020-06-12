@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
 	
-Route::get('tesoreria', 'C_Tesoreria\TesoreriaController@index')->name('tesoreria.index')
-    ->middleware('can:tesoreria.index');
+Route::get('tesoreria', 'C_Tesoreria\TesoreriaController@index')->name('tesoreria.index');
     
 });

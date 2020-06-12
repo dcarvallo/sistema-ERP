@@ -10,9 +10,18 @@
                             <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
                         </select>
                     </div>
+                    <div v-if="can_crear" class="w-auto mr-1">
+                      <a class="btn btn-success" href="/cargos/create">
+                        <i class="far fa-plus-square"></i>
+                        Crear
+                      </a>
+                    </div>
                     <div class="w-auto">
-                          <a class="btn btn-success" href="/cargos/create">Crear Cargo</a>
-                      </div>
+                      <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalexportar">
+                        <i class=" fas fa-file-download"></i>
+                        Exportar
+                      </a>
+                    </div>
                 </div>
 
                 <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
@@ -26,13 +35,13 @@
                     <td class="col-3">{{cargo.nombre}}</td>
                     <td class="col-6 text-justify">{{cargo.descripcion}}</td>
                     <td class="col-3">{{cargo.area.nombre}}</td>
-                    <td class="text-center">
-                      <a class="btn btn-info text-white" :href="'/cargos/'+cargo.id"><i class="far fa-eye"></i></a>
+                    <td v-if="can_ver" class="text-center">
+                      <a class="btn btn-primary text-white" :href="'/cargos/'+cargo.id"><i class="far fa-eye"></i></a>
                     </td>
-                    <td class="text-center">
+                    <td v-if="can_editar" class="text-center">
                       <a class="btn btn-warning" :href="'/cargos/'+cargo.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
-                    <td class="text-center">
+                    <td v-if="can_eliminar" class="text-center">
                       <a class="btn btn-danger text-white" @click="eliminarcargo(cargo.id)"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
@@ -59,23 +68,32 @@ export default {
     created() {
       this.getCargos();
     },
+    props:['can_crear','can_ver', 'can_editar','can_eliminar'],
     data() {
       let sortOrders = {};
       let parametrostabla = {};
       let columns = [
         {label: 'Nombre', name: 'nombre' },
         {label: 'Descripcion', name: 'descripcion'},
-        {label: 'Area', name: 'area_id'},
-        {label: 'Ver', name: 'ver'},
-        {label: 'Editar', name: 'editar'},
-        {label: 'Eliminar', name: 'eliminar'}
+        {label: 'Area', name: 'area_id'}
       ];
-      columns.forEach((column) => {
-        sortOrders[column.name] = -1;
-      });
+      var columnasPrincipales = columns.length - 1 ;
+        columns.forEach((column) => {
+          sortOrders[column.name] = -1;
+        });
+      if(this.can_ver){
+        columns.push({label: 'Ver', name: 'ver'});
+      }
+      if(this.can_editar){
+        columns.push({label: 'Editar', name: 'editar'});
+      }
+      if(this.can_eliminar){
+        columns.push({label: 'Eliminar', name: 'eliminar'});
+      }
       return {
         cargos: [],
         columns: columns,
+        columnasPrincipales:columnasPrincipales,
         sortKey: 'nombre',
         sortOrders: sortOrders,
         perPage: ['15', '30', '50'],
@@ -164,6 +182,7 @@ export default {
           this.sortOrders[key] = this.sortOrders[key] * -1;
           this.tableData.column = this.getIndex(this.columns, 'name', key);
           this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
+          if(this.tableData.column <= this.columnasPrincipales)
           this.getCargos();
         },
         getIndex(array, key, value) {

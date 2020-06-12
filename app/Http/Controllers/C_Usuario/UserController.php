@@ -11,55 +11,64 @@ use Spatie\Permission\Models\Role;
 use App\Http\Requests\Usuarios\StoreUsuario;
 use App\Http\Requests\Usuarios\ResetPassword;
 use App\Http\Requests\Usuarios\UpdateUsuario;
+use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\M_RRHH\Empleado;
-use Log;
 use Storage;
 use File;
 use Session;
 use Auth;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class UserController extends Controller
 {
-    
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
+  
     public function index()
     {
+      if(!Auth::user()->can('permisos', 'Navegar-usuarios'))
+      {
+          abort(403);
+      }
         return view('usuarios.index');
+      
     }
 
     public function obtenerusuarios(Request $request)
     {
-        $columns = ['name', 'username', 'email', 'activo'];
+      if(!Auth::user()->can('permisos', 'Navegar-usuarios'))
+      {
+          abort(403);
+      }
+      $columns = ['name', 'username', 'email', 'activo'];
+      
+      $length = $request->input('length');
+      $column = $request->input('column');
+      $dir = $request->input('dir');
+      $searchValue = $request->input('search');
+      
+      $query = User::select('id', 'name', 'username', 'email', 'activo')->orderBy($columns[$column], $dir);
 
-        $length = $request->input('length');
-        $column = $request->input('column');
-        $dir = $request->input('dir');
-        $searchValue = $request->input('search');
+      if ($searchValue) {
+          $query->where(function($query) use ($searchValue) {
+              $query->where('name', 'like', '%' . $searchValue . '%')
+              ->orWhere('username', 'like', '%' . $searchValue . '%')
+              ->orWhere('email', 'like', '%' . $searchValue . '%');
+          });
+      }
 
-        $query = User::select('id', 'name', 'username', 'email', 'activo')->orderBy($columns[$column], $dir);
-
-        if ($searchValue) {
-            $query->where(function($query) use ($searchValue) {
-                $query->where('name', 'like', '%' . $searchValue . '%')
-                ->orWhere('username', 'like', '%' . $searchValue . '%')
-                ->orWhere('email', 'like', '%' . $searchValue . '%');
-            });
-        }
-
-        $usuarios = $query->paginate($length);
-        return ['data' => $usuarios, 'draw' => $request->input('draw')];
+      $usuarios = $query->paginate($length);
+      return ['data' => $usuarios, 'draw' => $request->input('draw')];
+    
     }
 
     public function create()
     {
-      $empleados = Empleado::select('id', 'nombres', 'apellidos', 'ci')->get();
-      // $roles = Role::orderBy('name', 'asc')->get();
+     
+      if(!Auth::user()->can('permisos', 'Crear-usuarios'))
+      {
+          abort(403);
+      }
 
+      $empleados = Empleado::select('id', 'nombres', 'apellidos', 'ci')->get();
+      
       $roles = Role::all()->groupBy('category')->toArray();
       ksort($roles);
 
@@ -68,6 +77,12 @@ class UserController extends Controller
 
     public function store(StoreUsuario $request)
     {
+
+      if(!Auth::user()->can('permisos', 'Crear-usuarios'))
+      {
+          abort(403);
+      }
+
       try {
         $usuario = new User();
         $usuario->nombres = $request->nombres;
@@ -129,6 +144,10 @@ class UserController extends Controller
 
     public function show($id)
     {
+      if(!Auth::user()->can('permisos', 'Ver-usuarios'))
+      {
+          abort(403);
+      }
       $roles = Role::all()->groupBy('category')->toArray();
       ksort($roles);
       $usuario = User::find($id);
@@ -137,6 +156,10 @@ class UserController extends Controller
 
     public function edit($id)
     {
+      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
+      {
+          abort(403);
+      }
         $roles = Role::all()->groupBy('category')->toArray();
         ksort($roles);
         $usuario = User::find($id);
@@ -146,6 +169,10 @@ class UserController extends Controller
     public function update(UpdateUsuario $request, $id)
     {
       
+      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
+      {
+          abort(403);
+      }
       try {
         $usuario = User::find($id);
         $usuario->nombres = $request->nombres;
@@ -198,7 +225,10 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-
+      if(!Auth::user()->can('permisos', 'Eliminar-usuarios'))
+      {
+          abort(403);
+      }
       $usuario = User::find($id);
        $usuario->delete();
        $toast = array(
@@ -210,6 +240,10 @@ class UserController extends Controller
 
     public function updatepass(Request $request, $id)
     {
+      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'password' => 'string|min:6'
       ]);
@@ -243,6 +277,10 @@ class UserController extends Controller
 
     public function updateemail(Request $request, $id)
     {
+      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
+      {
+          abort(403);
+      }
       $this->validate($request, [
         'email' => 'email|unique:users',
       ]);
@@ -275,6 +313,10 @@ class UserController extends Controller
 
     public function updaterol(Request $request, $id)
     {
+      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
+      {
+          abort(403);
+      }
       try {
         
         $usuario = User::find($id);
@@ -319,6 +361,10 @@ class UserController extends Controller
     public function importardatousuario(Request $request, $id)
     {
 
+      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
+      {
+          abort(403);
+      }
         try {
             $usuario = User::find($id);
             $usuario->activo = 1;

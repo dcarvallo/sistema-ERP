@@ -37,6 +37,7 @@
                 >
                 <span slot="noResult">No existe area.</span>
                 </multiselect>
+                <label class="alert-danger py-0" v-if="errors.area" >{{errors.area[0]}}</label>
               </div>
 
             </div>
@@ -76,7 +77,10 @@ methods: {
       let formData = new FormData();
       formData.append('nombre', this.cargo_mod.nombre);
       formData.append('descripcion', this.cargo_mod.descripcion);
-      formData.append('area_id', this.cargo_mod.area_id.id);
+      if(this.cargo_mod.area_id)
+      {
+        formData.append('area', this.cargo_mod.area_id.id);
+      }
       formData.append('_method', 'put');
       axios.post('/cargos/'+this.cargo_mod.id,formData)
       .then(res => {

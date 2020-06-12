@@ -7,101 +7,135 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
- 
+
 import swal from 'sweetalert2';
 window.swal = swal;
 
 //toast
-// const toastsuccess = swal.mixin({
-//     toast: true,
-//     position: 'top-end',
-//     showConfirmButton: false,
-//     background: '#e1f6d0',
-//     icon: 'success',
-//     timer: 5000,
-//     // timerProgressBar: true,
-//     onOpen: (toast) => {
-//       toast.addEventListener('mouseenter', swal.stopTimer)
-//       toast.addEventListener('mouseleave', swal.resumeTimer)
-//     }
-// })
-
-// const toasterror = swal.mixin({
-//   toast: true,
-//   position: 'top-end',
-//   showConfirmButton: false,
-//   background: '#edc3c3',
-//   icon: 'error',
-//   timer: 5000,
-//   // timerProgressBar: true,
-//   onOpen: (toast) => {
-//     toast.addEventListener('mouseenter', swal.stopTimer)
-//     toast.addEventListener('mouseleave', swal.resumeTimer)
-//   }
-// })
-
-// const toastinfo = swal.mixin({
-//   toast: true,
-//   position: 'top-end',
-//   showConfirmButton: false,
-//   background: '#d0e0f4',
-//   icon: 'info',
-//   iconHtml: '<i style="font-size: 0.9rem;" class="far fa-flag"></i>',
-//   timer: 5000,
-//   // timerProgressBar: true,
-//   onOpen: (toast) => {
-//     toast.addEventListener('mouseenter', swal.stopTimer)
-//     toast.addEventListener('mouseleave', swal.resumeTimer)
-//   }
-// })
-
-// modales
-const toastsuccess = swal.mixin({
-  showConfirmButton: true,
-  icon: 'success',
+const toast = swal.mixin({
+  toast: true,
+  position: 'top',
+  showConfirmButton: false,
   timer: 5000,
-  timerProgressBar: true,
+  // timerProgressBar: true,
   onOpen: (toast) => {
     toast.addEventListener('mouseenter', swal.stopTimer)
     toast.addEventListener('mouseleave', swal.resumeTimer)
   }
+})
+
+const toastsuccess = swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    background: '#e1f6d0',
+    icon: 'success',
+    timer: 5000,
+    // timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', swal.stopTimer)
+      toast.addEventListener('mouseleave', swal.resumeTimer)
+    }
 })
 
 const toasterror = swal.mixin({
-showConfirmButton: true,
-background: '#eddad8',
-icon: 'error',
-timer: 5000,
-timerProgressBar: true,
-onOpen: (toast) => {
-  toast.addEventListener('mouseenter', swal.stopTimer)
-  toast.addEventListener('mouseleave', swal.resumeTimer)
-}
-})
-
-const toastinfo = swal.mixin({
-showConfirmButton: true,
-background: '#d0e0f4',
-icon: 'info',
-timer: 5000,
-timerProgressBar: true,
-onOpen: (toast) => {
-  toast.addEventListener('mouseenter', swal.stopTimer)
-  toast.addEventListener('mouseleave', swal.resumeTimer)
-}
-})
-
-const toastwarning = swal.mixin({
-  showConfirmButton: true,
-  icon: 'warning',
-  background: '#ffe28c',
+  toast: true,
+  position: 'top',
+  showConfirmButton: false,
+  background: '#edc3c3',
+  icon: 'error',
   timer: 5000,
-  timerProgressBar: true,
+  // timerProgressBar: true,
   onOpen: (toast) => {
     toast.addEventListener('mouseenter', swal.stopTimer)
     toast.addEventListener('mouseleave', swal.resumeTimer)
   }
 })
+
+const toastwarning = swal.mixin({
+  toast: true,
+  position: 'top',
+  showConfirmButton: false,
+  icon: 'warning',
+  timer: 5000,
+  // timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', swal.stopTimer)
+    toast.addEventListener('mouseleave', swal.resumeTimer)
+  }
+})
+
+const toastinfo = swal.mixin({
+  toast: true,
+  position: 'top',
+  showConfirmButton: false,
+  background: '#d0e0f4',
+  icon: 'info',
+  timer: 5000,
+  // timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', swal.stopTimer)
+    toast.addEventListener('mouseleave', swal.resumeTimer)
+  }
+})
+
+// modales
+// const toastsuccess = swal.mixin({
+//   showConfirmButton: true,
+//   icon: 'success',
+//   timer: 5000,
+//   timerProgressBar: true,
+//   onOpen: (toast) => {
+//     toast.addEventListener('mouseenter', swal.stopTimer)
+//     toast.addEventListener('mouseleave', swal.resumeTimer)
+//   }
+// })
+
+// const toasterror = swal.mixin({
+// showConfirmButton: true,
+// background: '#eddad8',
+// icon: 'error',
+// timer: 5000,
+// timerProgressBar: true,
+// onOpen: (toast) => {
+//   toast.addEventListener('mouseenter', swal.stopTimer)
+//   toast.addEventListener('mouseleave', swal.resumeTimer)
+// }
+// })
+
+// const toastinfo = swal.mixin({
+// showConfirmButton: true,
+// background: '#d0e0f4',
+// icon: 'info',
+// timer: 5000,
+// timerProgressBar: true,
+// onOpen: (toast) => {
+//   toast.addEventListener('mouseenter', swal.stopTimer)
+//   toast.addEventListener('mouseleave', swal.resumeTimer)
+// }
+// })
+
+// const toastwarning = swal.mixin({
+//   showConfirmButton: true,
+//   icon: 'warning',
+//   background: '#ffe28c',
+//   timer: 5000,
+//   timerProgressBar: true,
+//   onOpen: (toast) => {
+//     toast.addEventListener('mouseenter', swal.stopTimer)
+//     toast.addEventListener('mouseleave', swal.resumeTimer)
+//   }
+// })
+
+// const toast = swal.mixin({
+//   showConfirmButton: true,
+//   timer: 5000,
+//   timerProgressBar: true,
+//   onOpen: (toast) => {
+//     toast.addEventListener('mouseenter', swal.stopTimer)
+//     toast.addEventListener('mouseleave', swal.resumeTimer)
+//   }
+// })
 
 const modalconfirm = swal.mixin({
   showConfirmButton: true,
@@ -110,16 +144,6 @@ const modalconfirm = swal.mixin({
   confirmButtonColor: '#007bff',
   cancelButtonColor: '#dc3545',
   // background: '#f8f3e5',
-})
-
-const toast = swal.mixin({
-  showConfirmButton: true,
-  timer: 5000,
-  timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', swal.stopTimer)
-    toast.addEventListener('mouseleave', swal.resumeTimer)
-  }
 })
 
 window.toastsuccess = toastsuccess;

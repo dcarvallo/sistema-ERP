@@ -204,10 +204,15 @@
     <div class="sidebar">
       <!-- Sidebar Menu -->
       <nav class="mt-2 min-vh-100 ">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        @can('Navegar-admin')
+          {{-- @if(['permisos', 'Navegar-admin'],['permisos', 'Navegar-usuarios'],['permisos','Navegar-roles'],['permisos','Navegar-permisos']) --}}
+          @if(Gate::check('permisos','Navegar-admin') || 
+              Gate::check('permisos', 'Navegar-usuarios') ||
+              Gate::check('permisos', 'Navegar-roles') ||
+              Gate::check('permisos', 'Navegar-permisos')
+          )
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -217,7 +222,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @can('Navegar-usuarios')
+              @can('permisos', 'Navegar-usuarios')
               <li class="nav-item  {{ request()->is("route('users.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('users.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -225,7 +230,7 @@
                 </a>
               </li>
               @endcan
-              @can('Navegar-roles')
+              @can('permisos', 'Navegar-roles')
               <li class="nav-item  {{ request()->is("route('roles.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('roles.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -233,7 +238,7 @@
                 </a>
               </li>
               @endcan
-              @can('Navegar-permisos')
+              @can('permisos', 'Navegar-permisos')
               <li class="nav-item  {{ request()->is("route('permisos.index')") ? 'bg-blue' : ''}}">
                 <a href="{{route('permisos.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -241,7 +246,7 @@
                 </a>
               </li>
               @endcan
-              @can('Navegar-contactos')
+              @can('permisos', 'Navegar-contactos')
               <li class="nav-item {{ request()->is('contactos') ? 'bg-blue' : ''}}">
                 <a href="/contactos" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -251,8 +256,14 @@
               @endcan
             </ul>
           </li>
-          @endcan
-          @can('Navegar-empresas')
+          @endif
+          {{-- @canany('permisos', ['Navegar-empresas','Navegar-ubicaciones', 'Navegar-departamentos', 'Navegar-areas','Navegar-cargos']) --}}
+          @if(Gate::check('permisos','Navegar-empresas') || 
+              Gate::check('permisos', 'Navegar-ubicaciones') ||
+              Gate::check('permisos', 'Navegar-departamentos') ||
+              Gate::check('permisos', 'Navegar-areas') ||
+              Gate::check('permisos', 'Navegar-cargos')
+             )
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
@@ -262,47 +273,59 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('empresas.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Empresa</p>
-                </a>
-              </li>
+              @can('permisos', 'Navegar-estructura')
               <li class="nav-item">
                 <a href="{{ route('ubicaciones.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Estructura organizativa</p>
                 </a>
               </li>
+              @endcan
+              @can('permisos', 'Navegar-empresas')
+              <li class="nav-item">
+                <a href="{{route('empresas.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Empresa</p>
+                </a>
+              </li>
+              @endcan
+              @can('permisos', 'Navegar-ubicaciones')
               <li class="nav-item">
                 <a href="{{ route('ubicaciones.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Ubicaciones</p>
                 </a>
               </li>
+              @endcan
+              @can('permisos', 'Navegar-departamentos')
               <li class="nav-item">
                 <a href="{{route('departamentos.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Departamentos</p>
                 </a>
               </li>
+              @endcan
+              @can('permisos', 'Navegar-areas')
               <li class="nav-item">
                 <a href="{{route('areas.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Áreas</p>
                 </a>
               </li>
+              @endcan
+              @can('permisos', 'Navegar-cargos')
               <li class="nav-item">
                 <a href="{{route('cargos.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Cargos</p>
                 </a>
               </li>
+              @endcan
             </ul>
             
           </li>
-          @endcan
-          @can('Navegar-rrhh')
+          @endif
+          @can('permisos', 'Navegar-rrhh')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user-friends"></i>
@@ -358,7 +381,7 @@
             
           </li>
           @endcan
-          @can('Navegar-contabilidad')
+          @can('permisos', 'Navegar-contabilidad')
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-receipt"></i>
@@ -390,7 +413,7 @@
             
             </li>
             @endcan
-            @can('Navegar-almacen')
+            @can('permisos', 'Navegar-almacen')
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-box"></i>
@@ -428,7 +451,7 @@
             
               </li>
               @endcan
-              @can('Navegar-tesoreria')
+              @can('permisos', 'Navegar-tesoreria')
                 <li class="nav-item has-treeview">
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-cash-register"></i>
@@ -461,7 +484,7 @@
             
                 </li>
                 @endcan
-                @can('Navegar-helpdesk')
+                @can('permisos', 'Navegar-helpdesk')
                   <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                       <i class="nav-icon far fa-life-ring"></i>

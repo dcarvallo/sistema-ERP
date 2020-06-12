@@ -53,6 +53,7 @@
                 >
                 <span slot="noResult">No existe ubicacion.</span>
                 </multiselect>
+                <label class="alert-danger py-0" v-if="errors.ubicacion" >{{errors.ubicacion[0]}}</label>
               </div>
 
             </div>
@@ -101,7 +102,10 @@ methods: {
       {
         formData.append('encargado', this.depa_mod.encargado.nombre);
       }
-      formData.append('ubicacion_id', this.depa_mod.ubicacion_id.id);
+      if(this.depa_mod.ubicacion_id)
+      {
+        formData.append('ubicacion', this.depa_mod.ubicacion_id.id);
+      }
       formData.append('_method', 'put');
       axios.post('/departamentos/'+this.depa_mod.id,formData)
       .then(res => {

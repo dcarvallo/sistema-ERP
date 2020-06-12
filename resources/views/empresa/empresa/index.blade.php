@@ -13,11 +13,12 @@
 
 @section('breadcrumb')  
   @if($empresa == null)
-    @can('empresa.create')
+    @can('permisos', 'Crear-empresas')
       <li class="breadcrumb-item"><a class="btn btn-primary text-white" href="{{route('empresas.create')}}">Crear Empresa</a></li>
     @endcan
   @else
-    @can('empresa.edit')
+    {{-- @can('Editar-empresas') --}}
+    @can('permisos', 'Editar-empresas')
       <li class="breadcrumb-item"><a class="btn btn-warning text-darker" href="{{route('empresas.edit', [$empresa->id])}}" >Editar</a></li>
     @endcan
   @endif

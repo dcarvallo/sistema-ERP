@@ -16,7 +16,13 @@
   <div class="card card-solid">
     <div class="card-body ">
 
-      <roles></roles>
+      <roles
+        can_crear="{{ Auth::user()->can('permisos', 'Crear-roles') ? true : false }}"
+        can_ver="{{ Auth::user()->can('permisos', 'Ver-roles') ? true : false }}"
+        can_editar="{{ Auth::user()->can('permisos', 'Editar-roles') ? true : false }}"
+        can_eliminar="{{ Auth::user()->can('permisos', 'Eliminar-roles') ? true : false }}"
+      >
+    </roles>
 
     </div>
   </div>

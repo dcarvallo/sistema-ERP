@@ -10,7 +10,8 @@
                           <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
                       </select>
                     </div>
-                      <div class="w-auto mr-2">
+
+                      <div v-if="can_crear" class="w-auto mr-1">
                           <a class="btn btn-success" href="/users/create">
                             <i class="far fa-plus-square"></i>
                             Crear
@@ -48,21 +49,18 @@
           
             <tbody>
                 <tr v-for="(usuario) in usuarios" :key="usuario.id">
-                    <td class="col-sm-4 py-2">{{usuario.name}}</td>
-                    <td class="col-sm-3 py-2" >{{usuario.username}}</td>
-                    <td class="col-sm-3 py-2" >{{usuario.email}}</td>
-                    <td class="col-sm-1 py-2 text-center" v-if="usuario.activo">SI</td>
-                    <td class="col-sm-1 py-2 text-center" v-else>NO</td>
-                    <td class="py-2 text-center">
-                      <!-- < form @submit.prevent>
-                        <a class="btn btn-warning mx-2" @click="importardatousuario(usuario)">Importar de Dominio</a>
-                      </form> -->
-                        <a class="btn btn-info" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
+                    <td class="col-4 py-2">{{usuario.name}}</td>
+                    <td class="col-3 py-2" >{{usuario.username}}</td>
+                    <td class="col-3 py-2" >{{usuario.email}}</td>
+                    <td class="col-1 py-2 text-center" v-if="usuario.activo">SI</td>
+                    <td class="col-1 py-2 text-center" v-else>NO</td>
+                    <td class="text-center" v-if="can_ver" >
+                        <a class="btn btn-primary text-white" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
                     </td>
-                    <td>
+                    <td class="text-center" v-if="can_editar" >
                         <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
-                    <td>
+                    <td class="text-center" v-if="can_eliminar" >
                         <a class="btn btn-danger text-white" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
@@ -125,6 +123,7 @@ export default {
     created() {
         this.getUsuarios();
     },
+    props:['can_crear','can_ver', 'can_editar','can_eliminar'],
     data() {
         let sortOrders = {};
         let parametrostabla = {};
@@ -132,14 +131,22 @@ export default {
             {label: 'Nombre Completo', name: 'name' },
             {label: 'Nombre de usuario', name: 'username'},
             {label: 'Email', name: 'email'},
-            {label: 'Activo', name: 'activo'},
-            {label: 'Ver', name: 'ver'},
-            {label: 'Editar', name: 'editar'},
-            {label: 'Eliminar', name: 'eliminar'}
+            {label: 'Activo', name: 'activo'},            
         ];
-        columns.forEach((column) => {
-           sortOrders[column.name] = -1;
-        });
+        const columnasPrincipales = columns.length - 1 ;
+          columns.forEach((column) => {
+             sortOrders[column.name] = -1;
+          });
+        if(this.can_ver){
+          columns.push({label: 'Ver', name: 'ver'});
+        }
+        if(this.can_editar){
+          columns.push({label: 'Editar', name: 'editar'});
+        }
+        if(this.can_eliminar){
+          columns.push({label: 'Eliminar', name: 'eliminar'});
+        }
+
         return {
             usuarios: [],
             exportar: [],
@@ -152,6 +159,7 @@ export default {
             ],
             expanded: false,
             columns: columns,
+            columnasPrincipales:columnasPrincipales,
             sortKey: 'name',
             sortOrders: sortOrders,
             perPage: ['15', '30', '50'],
@@ -197,7 +205,7 @@ export default {
             
         modalconfirm.fire({
         title: '¿Está seguro que desea eliminar este usuario?',
-        text: "El usuairo ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        text: "El usuario ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
         confirmButtonText: 'Si, eliminar',
         cancelButtonText: 'Cancelar',
         preConfirm: (login) => {
@@ -238,10 +246,11 @@ export default {
             this.pagination.to = data.to;
         },
         sortBy(key) {
-            this.sortKey = key;
+          this.sortKey = key;
             this.sortOrders[key] = this.sortOrders[key] * -1;
             this.tableData.column = this.getIndex(this.columns, 'name', key);
             this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
+            if(this.tableData.column <= this.columnasPrincipales)
             this.getUsuarios();
         },
         getIndex(array, key, value) {
