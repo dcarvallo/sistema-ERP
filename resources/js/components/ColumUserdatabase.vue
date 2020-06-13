@@ -27,3 +27,11 @@
     }
     
 </script>
+<style>
+  table.table-bordered > tbody > tr > td{
+    border:1px solid rgb(153, 153, 153);
+  }
+  table.table-bordered > thead > tr > th{
+    border:1px solid rgb(177, 177, 177);
+  }
+</style>

@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
+                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar"
                     @input="getDepartamentos()">
 
             </div>

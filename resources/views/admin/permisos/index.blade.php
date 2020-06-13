@@ -13,7 +13,8 @@
 @section('content')
 
     <section>
-      <permisos />
+      <permisos
+      />
     </section>
 
 @endsection

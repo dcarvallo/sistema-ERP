@@ -32,7 +32,7 @@
         <a href="/admin" class="nav-link">Inicio</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contactos</a>
+        <a href="/limpiar" class="nav-link">Limpiar telescope</a>
       </li>
       @can('admin.archivos')
       <li class="nav-item d-none d-sm-inline-block">

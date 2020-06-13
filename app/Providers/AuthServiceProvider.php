@@ -31,27 +31,28 @@ class AuthServiceProvider extends ServiceProvider
       Gate::before(function ($user, $ability) {
         return $user->hasRole('Super Admin') ? true : null;
       });
-
-      // Gate::define('permiso',function ($permiso) {
-      //   $permisosusuario = Auth::user()->getAllPermissions();
-      //   return $permisosusuario->include($permiso);
-      // });
       
+      //para almacenar usuario en cache()
+      //   Gate::before(function ($user, $ability) {
+      //     $user = cache()->tags('usuarios')->get('usuario_'.$user->id);
+      //     if ($user == null ) {
+      //       cache()->tags('usuarios')->put('permisos'.Auth::user()->id, Auth::user() );
+      //       $user = cache()->tags('permisos')->get('usuario_'.Auth::user()->id);
+      //     }
+      //   return $user;
+      // });
 
+      //para verificar permisos en cache redis @can('permisos', 'el permiso)
       Gate::define('permisos',function ($user, $permiso) {
-        logger($permiso);
-        $permisosusuario = cache()->tags('permisos')->get('usuario_'.Auth::user()->id);
-        logger($permisosusuario);
+        $permisosusuario = cache()->tags('permisos')->get('usuario_'.$user->id);
         if ($permisosusuario == null ) {
-          
           $perobj = $user->getAllPermissions();
           $permisosarray = array();
           foreach($perobj as $permisos){
             array_push($permisosarray, $permisos->name);
           }
-
-          cache()->put('permisos'.$user->id, $permisosarray);
-          $permisosusuario = cache()->tags('permisos')->get('usuario_'.Auth::user()->id);
+          cache()->tags('permisos')->put('permisos'.$user->id, $permisosarray);
+          $permisosusuario = cache()->tags('permisos')->get('usuario_'.$user->id);
         }
         
         return in_array($permiso, $permisosusuario);

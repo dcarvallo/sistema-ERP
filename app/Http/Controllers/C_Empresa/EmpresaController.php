@@ -128,6 +128,8 @@ class EmpresaController extends Controller
         
         $empresa->save();
 
+        cache()->flush('datos-empresa');
+
         return redirect('/empresas')->with('toast', $empresa->nombre.': Informacion modificada');
     }
 

@@ -29,9 +29,9 @@
                     <td class="col-2">{{permiso.category}}</td>
                     <td class="col-2">{{permiso.name}}</td>
                     <td class="col-8">{{permiso.description}}</td>
-                    <td class="text-white">                        
+                    <!-- <td v-if="can_ver" class="text-white">                        
                       <a class="btn btn-primary text-white" :href="'/permisos/'+permiso.id"><i class=" far fa-eye"></i></a>
-                    </td>
+                    </td> -->
                 </tr>
             </tbody>
         </datatable>
@@ -56,6 +56,7 @@ export default {
     created() {
         this.getpermisos();
     },
+    props: ['can_ver'],
     data() {
         let sortOrders = {};
         let parametrostabla = {};
@@ -63,7 +64,6 @@ export default {
             {label: 'Categoria', name: 'category'},
             {label: 'Nombre', name: 'name' },
             {label: 'Descripcion', name: 'description'},
-            {label: 'Ver', name: 'ver'}
         ];
         var columnasPrincipales = columns.length - 1 ;
         columns.forEach((column) => {
@@ -75,10 +75,10 @@ export default {
             columnasPrincipales:columnasPrincipales,
             sortKey: 'category',
             sortOrders: sortOrders,
-            perPage: ['10', '20', '50'],
+            perPage: ['15', '30', '50'],
             tableData: {
                 draw: 0,
-                length: 10,
+                length: 15,
                 search: '',
                 column: 0,
                 dir: 'asc',

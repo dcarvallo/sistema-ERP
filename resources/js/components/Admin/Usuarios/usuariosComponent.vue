@@ -49,11 +49,11 @@
           
             <tbody>
                 <tr v-for="(usuario) in usuarios" :key="usuario.id">
-                    <td class="col-4 py-2">{{usuario.name}}</td>
-                    <td class="col-3 py-2" >{{usuario.username}}</td>
-                    <td class="col-3 py-2" >{{usuario.email}}</td>
-                    <td class="col-1 py-2 text-center" v-if="usuario.activo">SI</td>
-                    <td class="col-1 py-2 text-center" v-else>NO</td>
+                    <td class="col-4">{{usuario.name}}</td>
+                    <td class="col-3" >{{usuario.username}}</td>
+                    <td class="col-3" >{{usuario.email}}</td>
+                    <td class="col-1 text-center" v-if="usuario.activo">SI</td>
+                    <td class="col-1 text-center" v-else>NO</td>
                     <td class="text-center" v-if="can_ver" >
                         <a class="btn btn-primary text-white" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
                     </td>
