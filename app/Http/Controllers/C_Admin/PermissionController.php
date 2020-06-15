@@ -12,55 +12,47 @@ class PermissionController extends Controller
 {
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-permisos'))
-      {
-          abort(403);
-      }
-        return view('admin.permisos.index');
+      if(!Auth::user()->can('permisos', 'Navegar-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('admin.permisos.index');
     }
 
     public function obtenerpermisos(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Navegar-permisos'))
-      {
-          abort(403);
+      if(!Auth::user()->can('permisos', 'Navegar-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      $columns = ['category','name','description'];
+
+      $length = $request->input('length');
+      $column = $request->input('column');
+      $dir = $request->input('dir');
+      $searchValue = $request->input('search');
+
+      $query = Permission::select('id', 'name','description','category')->orderBy($columns[$column], $dir);
+
+      if ($searchValue) {
+          $query->where(function($query) use ($searchValue) {
+              $query->where('category', 'like', '%' . $searchValue . '%')
+              ->orWhere('description', 'like', '%' . $searchValue . '%');
+          });
       }
-        $columns = ['category','name','description'];
 
-        $length = $request->input('length');
-        $column = $request->input('column');
-        $dir = $request->input('dir');
-        $searchValue = $request->input('search');
-
-        $query = Permission::select('id', 'name','description','category')->orderBy($columns[$column], $dir);
-
-        if ($searchValue) {
-            $query->where(function($query) use ($searchValue) {
-                $query->where('category', 'like', '%' . $searchValue . '%')
-                ->orWhere('description', 'like', '%' . $searchValue . '%');
-            });
-        }
-
-        $permisos = $query->paginate($length);
-        return ['data' => $permisos, 'draw' => $request->input('draw')];
+      $permisos = $query->paginate($length);
+      return ['data' => $permisos, 'draw' => $request->input('draw')];
     }
 
     public function create()
     {
-      if(!Auth::user()->can('permisos', 'Crear-permisos'))
-      {
-          abort(403);
-      }
-        $permisos = Permission::orderBy('name', 'asc')->get();
-        return view('admin.permisos.create', compact('permisos'));;
+      if(!Auth::user()->can('permisos', 'Crear-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      $permisos = Permission::orderBy('name', 'asc')->get();
+      return view('admin.permisos.create', compact('permisos'));;
     }
 
     public function store(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Crear-permisos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Crear-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $this->validate($request, [
         'name' => 'required|string',
         'description' => 'required|string',
@@ -96,30 +88,24 @@ class PermissionController extends Controller
 
     public function show($id)
     {
-      if(!Auth::user()->can('permisos', 'Ver-permisos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Ver-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $permiso = Permission::find($id);
       return view('admin.permisos.show', compact('permiso'));
     }
 
     // public function edit($id)
     // {
-      // if(!Auth::user()->can('permisos', 'Editar-permisos'))
-      // {
-      //     abort(403);
-      // }
+      // if(!Auth::user()->can('permisos', 'Editar-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
     //   $permiso = Permission::find($id);
     //   return view('admin.permisos.edit', compact('permiso'));
     // }
 
     // public function update(Request $request, $id)
     // {
-      // if(!Auth::user()->can('permisos', 'Editar-permisos'))
-      // {
-      //     abort(403);
-      // }
+      // if(!Auth::user()->can('permisos', 'Editar-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
     //   $this->validate($request, [
     //     'name' => 'required|string',
     //     'description' => 'required|string',
@@ -156,10 +142,8 @@ class PermissionController extends Controller
     
     // public function destroy($id)
     // {
-      // if(!Auth::user()->can('permisos', 'Eliminar-permisos'))
-      // {
-      //     abort(403);
-      // }
+      // if(!Auth::user()->can('permisos', 'Eliminar-permisos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
     //   $permiso = Permission::find($id);
     //     $permiso->delete();
     //     $toast = array(

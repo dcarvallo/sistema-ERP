@@ -14,19 +14,15 @@ class AreaController extends Controller
 
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-areas'))
-      {
-          abort(403);
-      }
-        return view('empresa.area.index');
+      if(!Auth::user()->can('permisos', 'Navegar-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
+      return view('empresa.area.index');
     }
 
     public function obtenerareas(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Navegar-areas'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       try {
       
         $columns = ['nombre', 'descripcion', 'encargado', 'departamento_id'];
@@ -56,21 +52,17 @@ class AreaController extends Controller
 
     public function create()
     {
-      if(!Auth::user()->can('permisos', 'Crear-areas'))
-      {
-          abort(403);
-      }
-        $cargos = Cargo::select('nombre')->get()->toArray();
-        $departamentos = Departamento::select('id', 'nombre')->get()->toArray();
-        return view('empresa.area.create', compact('departamentos', 'cargos'));
+      if(!Auth::user()->can('permisos', 'Crear-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      $cargos = Cargo::select('nombre')->get()->toArray();
+      $departamentos = Departamento::select('id', 'nombre')->get()->toArray();
+      return view('empresa.area.create', compact('departamentos', 'cargos'));
     }
 
     public function store(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Crear-areas'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Crear-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
         $this->validate($request, [
             'nombre' => 'required|string',
             'descripcion' => 'required|string',
@@ -108,19 +100,15 @@ class AreaController extends Controller
 
     public function show(Area $area)
     {
-      if(!Auth::user()->can('permisos', 'Ver-areas'))
-      {
-          abort(403);
-      }
-        return view('empresa.area.show', compact('area'));
+      if(!Auth::user()->can('permisos', 'Ver-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.area.show', compact('area'));
     }
 
     public function edit(Area $area)
     {
-      if(!Auth::user()->can('permisos', 'Editar-areas'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $cargos = Cargo::select('nombre')->get()->toArray();
       $departamentos = Departamento::select('id', 'nombre')->get()->toArray();
       return view('empresa.area.edit', compact('area','cargos', 'departamentos'));
@@ -128,10 +116,8 @@ class AreaController extends Controller
 
     public function update(Request $request, Area $area)
     {
-      if(!Auth::user()->can('permisos', 'Editar-areas'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $this->validate($request, [
         'nombre' => 'required|string',
         'descripcion' => 'required|string',
@@ -167,10 +153,8 @@ class AreaController extends Controller
 
     public function destroy(Area $area)
     {
-      if(!Auth::user()->can('permisos', 'Eliminar-areas'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Eliminar-areas') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
       if($area->cargos()->count())
       {
         $toast = array(

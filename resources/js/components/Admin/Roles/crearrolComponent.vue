@@ -71,12 +71,13 @@
         <div class="card-header">
           <h5>Permisos</h5>
         </div>
-        <div v-if="rol.special == ''" class="card-body">
+        <div v-if="rol.special == ''" class="card-body row">
+          <div class="col-md-9">
           <label v-if="expand" @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Contraer todos</label>
           <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
           <div class="row">
 
-            <div class="col-md-2 my-2" v-for="(categoria,index) in permisos" :key="index">
+            <div class="col-md-3 my-2" v-for="(categoria,index) in permisos" :key="index">
               <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
                 <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
                 <i v-else class="far fa-plus-square"></i>
@@ -84,8 +85,8 @@
               </label>
               <div v-for="elemento in categoria" :key="elemento.id"> 
                 <transition name="fade">
-                  <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
-                    <input type="checkbox" :id="elemento.id" :value="elemento.name" v-model="permiso.name">
+                  <label v-if="nombres.includes(elemento.category)" :style="{cursor: 'pointer'}">
+                    <input type="checkbox" :id="elemento.id" :value="[elemento.name,elemento.description]" v-model="permiso.name">
                     <span>{{elemento.name}}</span> 
                   </label>
                 </transition>
@@ -93,11 +94,21 @@
             </div> 
 
           </div>
+          </div>
+          <div class="col-md-3">
+
+            <ul>
+            <label> Permisos seleccionados</label>
+              <li v-for="(item, index) in permiso.name" :key="index">
+                
+                  <strong>{{item[0]}}</strong> <br/> 
+                    <span> {{item[1]}}</span>
+                
+              </li>
+            </ul>
+          </div>
+
               
-        </div>
-        <div v-else class="card-body">
-              <p v-if="rol.special == 'all-access'"> <i class="far fa-check-square"></i> Acceso total a el CRUD de los modulos</p>
-              <p v-if="rol.special == 'no-access'"> <i class="far fa-check-square"></i> Ningun Acceso a los modulos</p>
         </div>
       </div>
     
@@ -124,7 +135,7 @@ export default {
         special: '',
       },
       test:[],
-      expand: false,
+      expand: true,
       nombres: [],
       permiso: {
         name: [],
@@ -137,6 +148,7 @@ export default {
      for(var k in this.permisos) {
         this.test.push(k);
       }
+    this.nombres = this.test;
   },
   methods:{
     expandirTodos()
@@ -187,10 +199,13 @@ export default {
       {
         formData.append('category', this.value);
       }
-      if(this.rol.special == '')
-      {
-        formData.append('permisos', this.permiso.name);
-      }
+
+      let arraypermisos = [];
+      this.permiso.name.forEach(function(elemento){
+        arraypermisos.push(elemento[0]);
+      });
+      formData.append('permisos', arraypermisos);
+      
       console.log(formData);
       axios.post('/roles/store',formData)
       .then(res => {

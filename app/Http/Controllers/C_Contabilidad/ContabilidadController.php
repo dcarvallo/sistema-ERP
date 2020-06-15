@@ -11,10 +11,8 @@ class ContabilidadController extends Controller
 {
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-contabilidad'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-contabilidad') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
     }
 
     public function create()

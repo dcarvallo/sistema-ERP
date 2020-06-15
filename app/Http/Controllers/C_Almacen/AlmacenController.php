@@ -11,10 +11,8 @@ class AlmacenController extends Controller
 {
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-almacen'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-almacen') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
     }
 
     public function create()

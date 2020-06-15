@@ -42,7 +42,15 @@
                 <hr class="my-0">
                 <label class="" for="nombre">Categoria</label>
               </div>
-              
+              <hr>
+              <div>
+                <label class="" for="nombre">Permisos</label>
+                <ul>
+                  @foreach($permisos as $permiso)  
+                    <li><strong>{{$permiso->name}}</strong>    - {{$permiso->description}}</li>
+                  @endforeach
+                </ul>
+              </div>
 
             </div>
           </div>

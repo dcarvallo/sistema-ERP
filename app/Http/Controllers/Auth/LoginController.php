@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Models\M_Empresa\Empresa;
+use Auth;
+use Session;
 
 class LoginController extends Controller
 {
@@ -49,14 +51,55 @@ class LoginController extends Controller
         return 'username';
     }
 
+    public function login(\Illuminate\Http\Request $request) {
+      $this->validateLogin($request);
+  
+      if ($this->hasTooManyLoginAttempts($request)) {
+          $this->fireLockoutEvent($request);
+          return $this->sendLockoutResponse($request);
+      }
+  
+      if ($this->guard()->validate($this->credentials($request))) {
+          $user = $this->guard()->getLastAttempted();
+  
+          if ($user->activo && $this->attemptLogin($request)) {
+            //luego de autenticado guardar/obtener en cache sus permisos
+            $permisosusuario = cache()->tags('permisos')->get('usuario_'.$user->id);
+
+            if ($permisosusuario == null ) {
+              $perobj = $user->getAllPermissions();
+              $permisosarray = array();
+              foreach($perobj as $permisos){
+                array_push($permisosarray, $permisos->name);
+              }
+              cache()->tags('permisos')->put('usuario_'.$user->id, $permisosarray);
+            }
+
+            return $this->sendLoginResponse($request);
+          } 
+          else {
+            $this->incrementLoginAttempts($request);
+            return redirect()
+                  ->back()
+                  ->withInput($request->only($this->username(), 'remember'))
+                  ->withErrors(['active' => 'Usuario inactivo.','username' => ' ']);
+          }
+      }
+      $this->incrementLoginAttempts($request);
+  
+      return $this->sendFailedLoginResponse($request);
+  }
+
     // public function redirectPath()
     // {
-    //     if (auth()->user()->hasRole(['admin'])) {
-    //         return 'paneladmin';
+    //     if (auth()->user()->hasRole('Inactivo')) {
+    //       $this->guard()->logout();
+
+    //         // return redirect('logout')->with('message', 'Usuario inactivo');
     //     }
-    //     else if (auth()->user()->hasRole(['rrhh'])) {
-    //         return 'gerente';
-    //     }
+    //     // else if (auth()->user()->hasRole(['rrhh'])) {
+    //     //     return 'gerente';
+    //     // }
     //     return property_exists($this, 'redirectTo') ? $this->redirectTo : 'home';
     // }
 

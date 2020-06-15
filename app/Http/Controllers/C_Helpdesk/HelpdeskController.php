@@ -12,10 +12,7 @@ class HelpdeskController extends Controller
 
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-helpdesk'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-helpdesk') || Auth::user()->hasRole('Inactivo')) abort(403);
     }
 
     public function create()

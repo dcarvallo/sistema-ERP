@@ -29,21 +29,6 @@
                     @input="getUsuarios()">
 
             </div>
-
-        <!-- <div class="px-0 offset-9 col-md-3" @mouseleave="expanded = false" >
-          <div class="form-control d-flex justify-content-between" style="cursor:pointer"  @click="expanded = !expanded">
-            <label style="cursor:pointer" > Filtrar columnas</label>
-            <span><i class="fas fa-arrow-down"></i></span>
-          </div>
-          <div v-if="expanded" class="w-100 rounded position-absolute border-dark bg-white">
-            <div class="form-control" v-for="(columnas, index) in columns" :key="index" style="cursor:pointer" >
-            <label class="mb-0 w-100" style="cursor:pointer" >
-             <input type="checkbox" :value="columnas.name" @click="filtro" v-model="checkbox" />
-              {{columnas.label}}
-            </label>
-            </div>
-          </div>
-        </div> -->
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
           
@@ -53,7 +38,7 @@
                     <td class="col-3" >{{usuario.username}}</td>
                     <td class="col-3" >{{usuario.email}}</td>
                     <td class="col-1 text-center" v-if="usuario.activo">SI</td>
-                    <td class="col-1 text-center" v-else>NO</td>
+                    <td class="col-1 text-center bg-info" v-else>NO</td>
                     <td class="text-center" v-if="can_ver" >
                         <a class="btn btn-primary text-white" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
                     </td>

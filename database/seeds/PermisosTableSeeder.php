@@ -11,7 +11,7 @@ class PermisosTableSeeder extends Seeder
      */
     public function run()
     {
-        //usuarios
+        
         DB::table('permissions')->insert([
           'name'          => 'Navegar-admin',
           'guard_name'    => 'web',
@@ -25,7 +25,15 @@ class PermisosTableSeeder extends Seeder
           'description'   => 'Administra archivos subidos en carpeta publica',
           'category'      => 'Admin'
         ]);
+        //inactivo
+        DB::table('permissions')->insert([
+          'name'          => 'Inactivo',
+          'guard_name'    => 'web',
+          'description'   => 'Sin actividad',
+          'category'      => 'Inactivo'
+        ]);
 
+        //usuarios
         DB::table('permissions')->insert([
             'name'          => 'Navegar-usuarios',
             'guard_name'    => 'web',
@@ -356,6 +364,15 @@ class PermisosTableSeeder extends Seeder
           'guard_name'    => 'web',
           'description'   => 'Lista y navega todos los modulos de helpdesk',
           'category'      => 'Helpdesk'
+        ]);
+
+        //Helpdesk
+
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-rrhh',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos los modulos de rrhh',
+          'category'      => 'RRHH'
         ]);
 
     }

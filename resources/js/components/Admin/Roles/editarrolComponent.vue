@@ -21,15 +21,16 @@
                 <label v-if="errors.description" class="alert-danger">{{errors.description[0]}}</label>
             </div>
             <div class="form-group">
-              <label class="mr-2"> Categoria*</label> 
-               <i class="far" :class="nueva ? 'fa-minus-square' : 'fa-plus-square'" 
-               :style="'cursor:pointer'" 
-               data-toggle="tooltip" data-placement="top" :title="!nueva ? 'Nueva categoria': 'Volver a existentes'" 
-               @click="nueva = !nueva">
-               </i>
+              <div class="d-flex justify-content-between">
+                <label class="mr-2"> Categoria*</label> 
+                  <i class="far fa-2x" :class="nueva ? 'fa-minus-square' : 'fa-plus-square'" 
+                  :style="'cursor:pointer'" 
+                  data-toggle="tooltip" data-placement="top" :title="!nueva ? 'Nueva categoria': 'Volver a existentes'" 
+                  @click="nueva = !nueva">
+                  </i>
+              </div>
               
-                <multiselect v-if="!nueva" v-model="value" 
-                :option="'Nueva categoria'"
+                <multiselect v-if="!nueva" v-model="value"
                 :options= categorias
                 :searchable="true" 
                 :placeholder="'Seleccione una opcion'" 
@@ -46,22 +47,8 @@
               </div>
           </div>
         
-    </div>
         </div>
-        <!-- <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-                <h5>Permisos Eseciales</h5>
-            </div>
-            <div class="card-body">
-              <select class="form-control col-md-4" v-model="rolmod.special">
-                  <option value=""> Personalizado </option>
-                  <option value="all-access" :selected="rolmod.special=='all-access'">Acceso Total</option>
-                  <option value="no-access" :selected="rolmod.special=='no-access'">Ningun Acceso</option>
-              </select>
-            </div>
-          </div>
-        </div> -->
+      </div>
     </div>
       
 
@@ -69,8 +56,8 @@
         <div class="card-header">
           <h5>Permisos</h5>
         </div>
-        <div v-if="rolmod.special == ''" class="card-body">
-              <!-- <i class="far fa-plus-square"></i> -->
+        <div class="card-body row">
+              <div class="col-md-9">
               <label v-if="expand" @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Contraer todos</label>
               <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
           <div class="row">
@@ -90,13 +77,20 @@
                       </transition>
                     </div>
                  </div> 
+            </div>
+          </div>
+          <div class="col-md-3">
+              <ul>
+                <label >Seleccionados</label>
+                <li v-for="(item, index) in perseleccionaados" :key="index">
+                    <span>{{item}}</span> <br>
+                  
+                </li>
+              </ul>
 
           </div>
+
               
-        </div>
-        <div v-else class="card-body">
-              <p v-if="rolmod.special == 'all-access'"> <i class="far fa-check-square"></i> Acceso total a el CRUD de los modulos</p>
-              <p v-if="rolmod.special == 'no-access'"> <i class="far fa-check-square"></i> Ningun Acceso a los modulos</p>
         </div>
       </div>
     
@@ -118,7 +112,7 @@ export default {
       rolmod: this.rol,
       nombres: [],
       test: [],
-      expand: false,
+      expand: true,
       errors: [],
       nueva: false,
       value: this.rol.category,
@@ -139,6 +133,7 @@ export default {
       this.perseleccionaados[i] = this.permisosseleccionados[i].name; 
     }
 
+    this.nombres = this.test;
   },
   methods:{
     expandirTodos()
@@ -176,12 +171,8 @@ export default {
       {
         formData.append('category', this.value);
       }
+      formData.append('permisos', this.perseleccionaados);
       formData.append('_method', 'put');
-      if(this.rolmod.special == '')
-      {
-        formData.append('permisos', this.perseleccionaados);
-      }
-      console.log(formData);
       axios.post('/roles/'+this.rol.id,formData)
       .then(res => {
         let datos = res.data;

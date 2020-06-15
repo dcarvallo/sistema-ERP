@@ -14,19 +14,15 @@ class DepartamentoController extends Controller
 
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-departamentos'))
-      {
-          abort(403);
-      }
-        return view('empresa.departamento.index');
+      if(!Auth::user()->can('permisos', 'Navegar-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.departamento.index');
     }
 
     public function obtenerdepartamentos(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Navegar-departamentos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       try {
       
         $columns = ['nombre', 'descripcion', 'encargado', 'ubicacion_id', 'ver','editar', 'eliminar'];
@@ -56,69 +52,61 @@ class DepartamentoController extends Controller
 
     public function create()
     {
-      if(!Auth::user()->can('permisos', 'Crear-departamentos'))
-      {
-          abort(403);
-      }
-        $cargos = Cargo::select('nombre')->get()->toArray();
-        $ubicaciones = Ubicacion::select('id', 'nombre')->get()->toArray();
-        return view('empresa.departamento.create', compact('ubicaciones', 'cargos'));
+      if(!Auth::user()->can('permisos', 'Crear-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      $cargos = Cargo::select('nombre')->get()->toArray();
+      $ubicaciones = Ubicacion::select('id', 'nombre')->get()->toArray();
+      return view('empresa.departamento.create', compact('ubicaciones', 'cargos'));
     }
 
     public function store(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Crear-departamentos'))
-      {
-          abort(403);
-      }
-        $this->validate($request, [
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string',
-            'ubicacion' => 'required'
-        ]);
-        try {
-          
-          $departamento = new Departamento();
-          $departamento->nombre = $request->nombre;
-          $departamento->descripcion = $request->descripcion;
-          $departamento->encargado = $request->encargado;
-          $departamento->ubicacion_id = $request->ubicacion;
-          $departamento->save();
-          
-          $toast = array(
-            'title'   => 'Departamento creado: ',
-            'message' => $departamento->nombre,
-            'type'    => 'success'
-          );
+      if(!Auth::user()->can('permisos', 'Crear-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-          return [$departamento,$toast];
-          
-        } catch (\Throwable $th) {
-            $toast = array(
-              'title'   => 'Error',
-              'message' => $th,
-              'type'    => 'error'
-            );
-            return [$request,$toast];
-        }
+      $this->validate($request, [
+          'nombre' => 'required|string',
+          'descripcion' => 'required|string',
+          'ubicacion' => 'required'
+      ]);
+      try {
+        
+        $departamento = new Departamento();
+        $departamento->nombre = $request->nombre;
+        $departamento->descripcion = $request->descripcion;
+        $departamento->encargado = $request->encargado;
+        $departamento->ubicacion_id = $request->ubicacion;
+        $departamento->save();
+        
+        $toast = array(
+          'title'   => 'Departamento creado: ',
+          'message' => $departamento->nombre,
+          'type'    => 'success'
+        );
+
+        return [$departamento,$toast];
+        
+      } catch (\Throwable $th) {
+          $toast = array(
+            'title'   => 'Error',
+            'message' => $th,
+            'type'    => 'error'
+          );
+          return [$request,$toast];
+      }
 
     }
 
     public function show(Departamento $departamento)
     {
-      if(!Auth::user()->can('permisos', 'Ver-departamentos'))
-      {
-          abort(403);
-      }
-        return view('empresa.departamento.show', compact('departamento'));
+      if(!Auth::user()->can('permisos', 'Ver-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.departamento.show', compact('departamento'));
     }
 
     public function edit(Departamento $departamento)
     {
-      if(!Auth::user()->can('permisos', 'Editar-departamentos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $cargos = Cargo::select('nombre')->get()->toArray();
       $ubicaciones = Ubicacion::select('id', 'nombre')->get()->toArray();
       return view('empresa.departamento.edit', compact('departamento','cargos', 'ubicaciones'));
@@ -126,10 +114,8 @@ class DepartamentoController extends Controller
 
     public function update(Request $request, Departamento $departamento)
     {
-      if(!Auth::user()->can('permisos', 'Editar-departamentos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $this->validate($request, [
         'nombre' => 'required|string',
         'descripcion' => 'required|string',
@@ -163,10 +149,8 @@ class DepartamentoController extends Controller
 
     public function destroy(Departamento $departamento)
     {
-      if(!Auth::user()->can('permisos', 'Eliminar-departamentos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Eliminar-departamentos') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
       if($departamento->areas()->count())
       {
         $toast = array(

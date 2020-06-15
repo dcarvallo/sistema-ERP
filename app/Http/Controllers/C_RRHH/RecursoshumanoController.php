@@ -13,19 +13,10 @@ class RecursoshumanoController extends Controller
 
     public function index()
     {
-      // if ($users = cache()->get('llave')) {
-      //   return json_decode($users);
-      // }
-      // $users = User::all();
+      
+      if(!Auth::user()->can('permisos', 'Navegar-rrhh') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-      // cache()->put('llave', $users);
-
-      // return $users;
-      if(!Auth::user()->can('permisos', 'Navegar-rrhh'))
-      {
-          abort(403);
-      }
-        return view('rrhh.index');
+      return view('rrhh.index');
     }
 
     public function create()

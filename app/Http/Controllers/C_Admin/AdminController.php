@@ -4,12 +4,15 @@ namespace App\Http\Controllers\C_Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class AdminController extends Controller
 {
 
     public function index()
     {
+      if(!Auth::user()->can('permisos', 'Navegar-admin') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       return view('admin.index');
     }
 
@@ -45,10 +48,8 @@ class AdminController extends Controller
 
     public function gestionararchivos()
     {
-      if(!Auth::user()->can('permisos', 'Administrador-archivos'))
-      {
-          abort(403);
-      }
-        return view('/filemanager');
+      if(!Auth::user()->can('permisos', 'Administrador-archivos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('/filemanager');
     }
 }

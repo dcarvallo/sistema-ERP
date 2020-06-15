@@ -43,15 +43,17 @@ class AuthServiceProvider extends ServiceProvider
       // });
 
       //para verificar permisos en cache redis @can('permisos', 'el permiso)
-      Gate::define('permisos',function ($user, $permiso) {
+      Gate::define('permisos',function ($user, $permiso) 
+      {
         $permisosusuario = cache()->tags('permisos')->get('usuario_'.$user->id);
+        
         if ($permisosusuario == null ) {
           $perobj = $user->getAllPermissions();
           $permisosarray = array();
           foreach($perobj as $permisos){
             array_push($permisosarray, $permisos->name);
           }
-          cache()->tags('permisos')->put('permisos'.$user->id, $permisosarray);
+          cache()->tags('permisos')->put('usuario_'.$user->id, $permisosarray);
           $permisosusuario = cache()->tags('permisos')->get('usuario_'.$user->id);
         }
         

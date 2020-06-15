@@ -108,7 +108,7 @@
             <!-- <div class="row">
               <div class="col-md-2" v-for="rol in roles" :key="rol.id">
                 <label>
-                  <input type="checkbox"  :id="rol.id" :value="rol.slug" v-model="rolesSeleccionados" :checked="rol.special == 'no-access'">
+                  <input type="checkbox"  :id="rol.id" :value="rol.guard_name" v-model="rolesSeleccionados" :checked="rol.special == 'no-access'">
                   <span :for="rol.name">{{rol.name}}: </span>
                   <em>{{rol.description}}</em>
                 </label>
@@ -127,7 +127,7 @@
                     <div v-for="elemento in categoria" :key="elemento.id"> 
                       <transition name="fade">
                         <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
-                          <input type="checkbox" :id="elemento.id" :value="elemento.slug" v-model="rol.slug">
+                          <input type="checkbox" :id="elemento.id" :value="elemento.name" v-model="rol.guard_name">
                           <span>{{elemento.name}}</span> 
                           </label>
                       </transition>
@@ -169,12 +169,12 @@ export default {
         imagen: '',
       },
       rol: {
-        slug: [],
+        guard_name: [],
       },
       vincular: false,
       nombres: [],
       test:[],
-      expand: false,
+      expand: true,
       errors: [],
     }
   },
@@ -182,6 +182,7 @@ export default {
     for(var k in this.roles) {
         this.test.push(k);
       }
+      this.nombres = this.test;
   },
   computed: {
     buscarempleado(){
@@ -233,7 +234,7 @@ export default {
       formData.append('activo', this.usuario.activo);
       formData.append('password', this.usuario.password);
       formData.append('imagen', this.usuario.imagen);
-      formData.append('roles', this.rol.slug);
+      formData.append('roles', this.rol.guard_name);
       if(this.empleado_id != ''){
         formData.append('empleado_id', this.empleado_id);
       }

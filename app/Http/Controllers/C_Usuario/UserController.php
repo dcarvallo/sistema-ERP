@@ -17,26 +17,24 @@ use Storage;
 use File;
 use Session;
 use Auth;
+use Log;
 
 class UserController extends Controller
 {
   
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-usuarios'))
-      {
-          abort(403);
-      }
-        return view('usuarios.index');
+      // dd(Auth::user()->hasRole('Inactivo', 'web'));
+      if(!Auth::user()->can('permisos', 'Navegar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
+      return view('usuarios.index');
       
     }
 
     public function obtenerusuarios(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Navegar-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $columns = ['name', 'username', 'email', 'activo'];
       
       $length = $request->input('length');
@@ -61,11 +59,7 @@ class UserController extends Controller
 
     public function create()
     {
-     
-      if(!Auth::user()->can('permisos', 'Crear-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Crear-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       $empleados = Empleado::select('id', 'nombres', 'apellidos', 'ci')->get();
       
@@ -77,11 +71,7 @@ class UserController extends Controller
 
     public function store(StoreUsuario $request)
     {
-
-      if(!Auth::user()->can('permisos', 'Crear-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Crear-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       try {
         $usuario = new User();
@@ -116,11 +106,17 @@ class UserController extends Controller
         }
 
         $usuario->save();
+
+        if($usuario->activo == 0){
+          $usuario->assignRole('Inactivo');
+        }else
+          $usuario->removeRole('Inactivo');
         
         if($request->roles)
         {
           $array = explode(",", $request->roles);
           $usuario->syncRoles($array);
+          cache()->tags('permisos')->flush();
         }
           
         $toast = array(
@@ -144,10 +140,8 @@ class UserController extends Controller
 
     public function show($id)
     {
-      if(!Auth::user()->can('permisos', 'Ver-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Ver-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $roles = Role::all()->groupBy('category')->toArray();
       ksort($roles);
       $usuario = User::find($id);
@@ -156,10 +150,8 @@ class UserController extends Controller
 
     public function edit($id)
     {
-      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+
         $roles = Role::all()->groupBy('category')->toArray();
         ksort($roles);
         $usuario = User::find($id);
@@ -169,27 +161,27 @@ class UserController extends Controller
     public function update(UpdateUsuario $request, $id)
     {
       
-      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       try {
         $usuario = User::find($id);
         $usuario->nombres = $request->nombres;
         $usuario->apellidos = $request->apellidos;
         $usuario->username = $request->username;
         $usuario->name = $request->nombres.' '.$request->apellidos;
+        
+        if($request->activo == 0){
+          $usuario->assignRole('Inactivo');
+        }else
+          $usuario->removeRole('Inactivo');
+
         $usuario->activo = $request->activo;
+        cache()->tags('permisos')->flush();
         
         if($request->imagen)
-        {
-          // $ext = $request->imagen->getClientOriginalExtension();
-          // $fileName = str_random().'.'.$ext;
-          // $request->imagen->storeAs('usuarios/', $fileName);
-          // $usuario->fotografia = 'usuarios/'.$fileName;
-
+        { 
           //laravel intervention
-
+          
           $ext = $request->imagen->getClientOriginalExtension();
           $fileName = str_random().'.'.$ext;
           //original
@@ -197,15 +189,17 @@ class UserController extends Controller
           //modificado
           $imagenmod = Image::make($request->imagen)->fit(300, 300);
           Storage::put('usuarios/thumbnail/'.$fileName, $imagenmod->encode() );
-
+          
           $usuario->fotografia = 'usuarios/thumbnail/'.$fileName;
-
+          
         }
         $usuario->save();
         
+        
+
         $toast = array(
-            'title'   => 'Usuario modificado: ',
-            'message' => $usuario->username,
+          'title'   => 'Usuario modificado: ',
+          'message' => $usuario->username,
             'type'    => 'success'
         );
 
@@ -225,10 +219,8 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-      if(!Auth::user()->can('permisos', 'Eliminar-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Eliminar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $usuario = User::find($id);
        $usuario->delete();
        $toast = array(
@@ -240,10 +232,8 @@ class UserController extends Controller
 
     public function updatepass(Request $request, $id)
     {
-      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $this->validate($request, [
         'password' => 'string|min:6'
       ]);
@@ -277,10 +267,8 @@ class UserController extends Controller
 
     public function updateemail(Request $request, $id)
     {
-      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $this->validate($request, [
         'email' => 'email|unique:users',
       ]);
@@ -313,34 +301,33 @@ class UserController extends Controller
 
     public function updaterol(Request $request, $id)
     {
-      if(!Auth::user()->can('permisos', 'Editar-usuarios'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+      Log::info($request);
       try {
         
         $usuario = User::find($id);
         if($request->roles)
         {
           $arrayderoles = explode(",", $request->roles);
-          $usuario->syncRoles($arrayderoles);
-          $toast = array(
+          $usuario->syncRoles([$arrayderoles]);
+          $toast2 = array(
             'title'   => 'roles modificados para: ',
             'message' => $usuario->username,
             'type'    => 'success'
           );
         }
         else{
+          Log::info($usuario->roles);
           $usuario->removeRoles($usuario->roles);
-          $toast = array(
+          $toast2 = array(
             'title'   => 'roles modificados para: ',
             'message' => $usuario->username,
             'type'    => 'success'
           );
         }
+        cache()->tags('permisos')->flush();
         
-        
-        return [$usuario,$toast];
+        return [$usuario,$toast2];
 
       } catch (\Throwable $th) {
           $toast = array(

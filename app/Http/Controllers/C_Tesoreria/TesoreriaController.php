@@ -12,10 +12,8 @@ class TesoreriaController extends Controller
   
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-tesorerias'))
-      {
-          abort(403);
-      }
+        
+      if(!Auth::user()->can('permisos', 'Navegar-tesorerias') || Auth::user()->hasRole('Inactivo')) abort(403);
 
     }
 

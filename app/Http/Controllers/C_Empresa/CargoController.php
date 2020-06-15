@@ -13,19 +13,15 @@ class CargoController extends Controller
 
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-cargos'))
-      {
-          abort(403);
-      }
-        return view('empresa.cargo.index');
+      if(!Auth::user()->can('permisos', 'Navegar-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.cargo.index');
     }
 
     public function obtenercargos(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Navegar-cargos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       try {
       
         $columns = ['nombre', 'descripcion', 'area_id', 'ver','editar', 'eliminar'];
@@ -54,77 +50,67 @@ class CargoController extends Controller
 
     public function create()
     {
-      if(!Auth::user()->can('permisos', 'Crear-cargos'))
-      {
-          abort(403);
-      }
-        $areas = Area::select('id', 'nombre')->get()->toArray();
-        return view('empresa.cargo.create', compact('areas'));
+      if(!Auth::user()->can('permisos', 'Crear-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      $areas = Area::select('id', 'nombre')->get()->toArray();
+      return view('empresa.cargo.create', compact('areas'));
     }
 
     public function store(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Crear-cargos'))
-      {
-          abort(403);
-      }
-        $this->validate($request, [
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string',
-            'area' => 'required',
-        ]);
-        try {
-          
-          $cargo = new Cargo();
-          $cargo->nombre = $request->nombre;
-          $cargo->descripcion = $request->descripcion;
-          $cargo->area_id = $request->area;
-          $cargo->save();
-          
-          $toast = array(
-            'title'   => 'Cargo creado: ',
-            'message' => $cargo->nombre,
-            'type'    => 'success'
-          );
+      if(!Auth::user()->can('permisos', 'Crear-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-          return [$cargo, $toast];
-          
-        } catch (\Throwable $th) {
-            $toast = array(
-              'title'   => 'Error',
-              'message' => $th,
-              'type'    => 'error'
-            );
-            return [$request, $toast];
-        }
+      $this->validate($request, [
+          'nombre' => 'required|string',
+          'descripcion' => 'required|string',
+          'area' => 'required',
+      ]);
+      try {
+        
+        $cargo = new Cargo();
+        $cargo->nombre = $request->nombre;
+        $cargo->descripcion = $request->descripcion;
+        $cargo->area_id = $request->area;
+        $cargo->save();
+        
+        $toast = array(
+          'title'   => 'Cargo creado: ',
+          'message' => $cargo->nombre,
+          'type'    => 'success'
+        );
+
+        return [$cargo, $toast];
+        
+      } catch (\Throwable $th) {
+          $toast = array(
+            'title'   => 'Error',
+            'message' => $th,
+            'type'    => 'error'
+          );
+          return [$request, $toast];
+      }
 
     }
 
     public function show(Cargo $cargo)
     {
-      if(!Auth::user()->can('permisos', 'Ver-cargos'))
-      {
-          abort(403);
-      }
-        return view('empresa.cargo.show', compact('cargo'));
+      if(!Auth::user()->can('permisos', 'Ver-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.cargo.show', compact('cargo'));
     }
 
     public function edit(Cargo $cargo)
     {
-      if(!Auth::user()->can('permisos', 'Editar-cargos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $areas = Area::select('id', 'nombre')->get()->toArray();
       return view('empresa.cargo.edit', compact('cargo', 'areas'));
     }
 
     public function update(Request $request, Cargo $cargo)
     {
-      if(!Auth::user()->can('permisos', 'Editar-cargos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $this->validate($request, [
         'nombre' => 'required|string',
         'descripcion' => 'required|string',
@@ -158,10 +144,8 @@ class CargoController extends Controller
 
     public function destroy(Cargo $cargo)
     {
-      if(!Auth::user()->can('permisos', 'Eliminar-cargos'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Eliminar-cargos') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
       if($cargo->empleado()->count())
       {
         $toast = array(

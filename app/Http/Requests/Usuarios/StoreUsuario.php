@@ -27,7 +27,7 @@ class StoreUsuario extends FormRequest
         return [
           'nombres' => 'required|string',
           'apellidos' => 'required|string',
-          'imagen' => 'image',
+          'imagen' => 'image|nullable',
           'username' => 'required|string',
           'email' => 'required|string|email',
           'password' => 'required|string|min:6'

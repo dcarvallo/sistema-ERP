@@ -14,19 +14,15 @@ class UbicacionController extends Controller
 
     public function index()
     {
-      if(!Auth::user()->can('permisos', 'Navegar-ubicaciones'))
-      {
-          abort(403);
-      }
-        return view('empresa.ubicacion.index');
+      if(!Auth::user()->can('permisos', 'Navegar-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.ubicacion.index');
     }
 
     public function obtenerubicaciones(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Navegar-ubicaciones'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Navegar-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       try {
       
         $columns = ['nombre', 'descripcion', 'locacion'];
@@ -56,84 +52,78 @@ class UbicacionController extends Controller
 
     public function create()
     {
-      if(!Auth::user()->can('permisos', 'Crear-ubicaciones'))
-      {
-          abort(403);
-      }
-        return view('empresa.ubicacion.create');
+      if(!Auth::user()->can('permisos', 'Crear-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.ubicacion.create');
     }
 
     public function store(Request $request)
     {
-      if(!Auth::user()->can('permisos', 'Crear-ubicaciones'))
-      {
-          abort(403);
-      }
-        $this->validate($request, [
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string',
-            'locacion' => 'required|string'
-        ]);
-        try {
-          $empresa = Empresa::first('id');
-          
-          if($empresa != null)
-          {   
-            $ubicacion = new Ubicacion();
-            $ubicacion->nombre = $request->nombre;
-            $ubicacion->descripcion = $request->descripcion;
-            $ubicacion->locacion = $request->locacion;
-            $ubicacion->empresa_id = $empresa->id;
-            $ubicacion->save();
-            
-            $toast = array(
-              'title'   => 'Ubicacion creada: ',
-              'message' => $ubicacion->nombre,
-              'type'    => 'success'
-            );
+      if(!Auth::user()->can('permisos', 'Crear-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-            return back()->with('toast', $toast);
-          }
-          else
-          {
-            $toast = array(
-              'title'   => 'error',
-              'message' => 'No existe empresa creada',
-              'type'    => 'error'
-            );
-            return back()->with('toast', $toast);
-          }
-        } catch (\Throwable $th) {
-            $toast = array(
-              'title'   => 'Error',
-              'message' => 'Error inesperado, contacte al administrador',
-              'type'    => 'error'
-            );
-            return back()->with('toast', $toast);
+      $this->validate($request, [
+          'nombre' => 'required|string',
+          'descripcion' => 'required|string',
+          'locacion' => 'required|string'
+      ]);
+      try {
+        $empresa = Empresa::first('id');
+        
+        if($empresa != null)
+        {   
+          $ubicacion = new Ubicacion();
+          $ubicacion->nombre = $request->nombre;
+          $ubicacion->descripcion = $request->descripcion;
+          $ubicacion->locacion = $request->locacion;
+          $ubicacion->empresa_id = $empresa->id;
+          $ubicacion->save();
+          
+          $toast = array(
+            'title'   => 'Ubicacion creada: ',
+            'message' => $ubicacion->nombre,
+            'type'    => 'success'
+          );
+
+          return back()->with('toast', $toast);
         }
+        else
+        {
+          $toast = array(
+            'title'   => 'error',
+            'message' => 'No existe empresa creada',
+            'type'    => 'error'
+          );
+          return back()->with('toast', $toast);
+        }
+      } catch (\Throwable $th) {
+          $toast = array(
+            'title'   => 'Error',
+            'message' => 'Error inesperado, contacte al administrador',
+            'type'    => 'error'
+          );
+          return back()->with('toast', $toast);
+      }
 
     }
 
     public function show(Ubicacion $ubicacion)
     {
-      if(!Auth::user()->can('permisos', 'Editar-ubicaciones'))
-      {
-          abort(403);
-      }
-        return view('empresa.ubicacion.show', compact('ubicacion'));
+      if(!Auth::user()->can('permisos', 'Ver-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.ubicacion.show', compact('ubicacion'));
     }
 
     public function edit(Ubicacion $ubicacion)
     {
+      if(!Auth::user()->can('permisos', 'Editar-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       return view('empresa.ubicacion.edit', compact('ubicacion'));
     }
 
     public function update(Request $request, Ubicacion $ubicacion)
     {
-      if(!Auth::user()->can('permisos', 'Editar-ubicaciones'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Editar-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
+
       $this->validate($request, [
         'nombre' => 'required|string',
         'descripcion' => 'required|string',
@@ -166,10 +156,8 @@ class UbicacionController extends Controller
 
     public function destroy(Ubicacion $ubicacion)
     {
-      if(!Auth::user()->can('permisos', 'Eliminar-ubicaciones'))
-      {
-          abort(403);
-      }
+      if(!Auth::user()->can('permisos', 'Eliminar-ubicaciones') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
       if($ubicacion->departamentos()->count())
       {
         $toast = array(
