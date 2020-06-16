@@ -64,11 +64,12 @@
   <script>
     var variable = {!! json_encode(Session::get('toast')) !!}
     swal.fire({
-      showConfirmButton: true,
+      toast: true,
+      showConfirmButton: false,
+      position: 'top',
       icon: variable.type,
       title: variable.title+' '+variable.message,
       timer: 5000,
-      timerProgressBar: true,
       onOpen: (toast) => {
         toast.addEventListener('mouseenter', swal.stopTimer)
         toast.addEventListener('mouseleave', swal.resumeTimer)

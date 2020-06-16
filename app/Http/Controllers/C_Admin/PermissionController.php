@@ -5,6 +5,7 @@ namespace App\Http\Controllers\C_Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
+use App\Bitacora;
 use DB;
 use Auth;
 
@@ -67,6 +68,12 @@ class PermissionController extends Controller
          
           $permiso->save();
 
+          $bitacora = new Bitacora();
+          $bitacora->mensaje = 'Se creó el permiso';
+          $bitacora->registro_id = $permiso->id;
+          $bitacora->user_id = Auth::user()->id;
+          $bitacora->save();
+
           $toast = array(
             'title'   => 'permiso creado: ',
             'message' => $request->name,
@@ -118,6 +125,12 @@ class PermissionController extends Controller
     //     $permiso->category = $request->category;
         
     //     $permiso->save();
+
+          // $bitacora = new Bitacora();
+          // $bitacora->mensaje = 'Se editó el permiso';
+          // $bitacora->registro_id = $permiso->id;
+          // $bitacora->user_id = Auth::user()->id;
+          // $bitacora->save();
         
     //     $toast = array(
     //       'title'   => 'permiso modificado: ',
@@ -146,6 +159,11 @@ class PermissionController extends Controller
 
     //   $permiso = Permission::find($id);
     //     $permiso->delete();
+          // $bitacora = new Bitacora();
+          // $bitacora->mensaje = 'Se eliminó el permiso';
+          // $bitacora->registro_id = $permiso->id;
+          // $bitacora->user_id = Auth::user()->id;
+          // $bitacora->save();
     //     $toast = array(
     //       'title'   => 'permiso eliminado: ',
     //       'message' => '',

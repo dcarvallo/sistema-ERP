@@ -13,6 +13,7 @@ use App\Http\Requests\Usuarios\ResetPassword;
 use App\Http\Requests\Usuarios\UpdateUsuario;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\M_RRHH\Empleado;
+use App\Bitacora;
 use Storage;
 use File;
 use Session;
@@ -118,6 +119,12 @@ class UserController extends Controller
           $usuario->syncRoles($array);
           cache()->tags('permisos')->flush();
         }
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se creó el usuario';
+        $bitacora->registro_id = $usuario->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
           
         $toast = array(
           'title'   => 'Usuario creado: ',
@@ -195,7 +202,11 @@ class UserController extends Controller
         }
         $usuario->save();
         
-        
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se editó el usuario';
+        $bitacora->registro_id = $usuario->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
 
         $toast = array(
           'title'   => 'Usuario modificado: ',
@@ -222,12 +233,19 @@ class UserController extends Controller
       if(!Auth::user()->can('permisos', 'Eliminar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       $usuario = User::find($id);
-       $usuario->delete();
-       $toast = array(
-         'title'   => 'usuario quitado. ',
-         'message' => '',
-       );
-       return $toast;
+      $usuario->delete();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se eliminó el usuario';
+      $bitacora->registro_id = $usuario->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
+
+      $toast = array(
+        'title'   => 'usuario quitado. ',
+        'message' => '',
+      );
+      return $toast;
     }
 
     public function updatepass(Request $request, $id)
@@ -247,6 +265,12 @@ class UserController extends Controller
         }
         
         $usuario->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se actualizó contraseña';
+        $bitacora->registro_id = $usuario->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         $toast = array(
             'title'   => 'Usuario modificado: ',
@@ -281,6 +305,12 @@ class UserController extends Controller
         }
         
         $usuario->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se editó email';
+        $bitacora->registro_id = $usuario->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         $toast = array(
             'title'   => 'Email modificado: ',
@@ -302,7 +332,7 @@ class UserController extends Controller
     public function updaterol(Request $request, $id)
     {
       if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
-      Log::info($request);
+
       try {
         
         $usuario = User::find($id);
@@ -317,7 +347,6 @@ class UserController extends Controller
           );
         }
         else{
-          Log::info($usuario->roles);
           $usuario->removeRoles($usuario->roles);
           $toast2 = array(
             'title'   => 'roles modificados para: ',
@@ -326,6 +355,12 @@ class UserController extends Controller
           );
         }
         cache()->tags('permisos')->flush();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se editó rol';
+        $bitacora->registro_id = $usuario->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         return [$usuario,$toast2];
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\M_Empresa\Empresa;
 use App\Models\M_Empresa\Ubicacion;
 use Illuminate\Http\Request;
+use App\Bitacora;
 use DB;
 use Auth;
 
@@ -77,6 +78,12 @@ class UbicacionController extends Controller
           $ubicacion->locacion = $request->locacion;
           $ubicacion->empresa_id = $empresa->id;
           $ubicacion->save();
+
+          $bitacora = new Bitacora();
+          $bitacora->mensaje = 'Se creó la ubicación';
+          $bitacora->registro_id = $ubicacion->id;
+          $bitacora->user_id = Auth::user()->id;
+          $bitacora->save();
           
           $toast = array(
             'title'   => 'Ubicacion creada: ',
@@ -134,6 +141,12 @@ class UbicacionController extends Controller
         $ubicacion->descripcion = $request->descripcion;
         $ubicacion->locacion = $request->locacion;
         $ubicacion->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se editó la ubicación';
+        $bitacora->registro_id = $ubicacion->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         $toast = array(
             'title'   => 'Ubicacion modificada: ',
@@ -169,6 +182,12 @@ class UbicacionController extends Controller
       }
 
       $ubicacion->delete();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se eliminó la ubicación';
+      $bitacora->registro_id = $ubicacion->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
 
       $toast = array(
         'title'   => 'ubicacion eliminada: ',

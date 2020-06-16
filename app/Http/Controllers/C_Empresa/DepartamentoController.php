@@ -7,6 +7,7 @@ use App\Models\M_Empresa\Departamento;
 use App\Models\M_Empresa\Ubicacion;
 use App\Models\M_Empresa\Cargo;
 use Illuminate\Http\Request;
+use App\Bitacora;
 use Auth;
 
 class DepartamentoController extends Controller
@@ -76,6 +77,12 @@ class DepartamentoController extends Controller
         $departamento->encargado = $request->encargado;
         $departamento->ubicacion_id = $request->ubicacion;
         $departamento->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se creó el departamento';
+        $bitacora->registro_id = $departamento->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         $toast = array(
           'title'   => 'Departamento creado: ',
@@ -128,6 +135,12 @@ class DepartamentoController extends Controller
         $departamento->ubicacion_id = $request->ubicacion_id;
         $departamento->save();
         
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se editó el departamento';
+        $bitacora->registro_id = $departamento->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
+
         $toast = array(
             'title'   => 'Departamento modificado: ',
             'message' => $departamento->nombre,
@@ -161,6 +174,12 @@ class DepartamentoController extends Controller
         return $toast;
       }
       $departamento->delete();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se eliminó el departamento';
+      $bitacora->registro_id = $departamento->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
 
       $toast = array(
         'type'    => 'success',

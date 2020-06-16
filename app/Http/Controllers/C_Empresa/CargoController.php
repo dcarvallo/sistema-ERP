@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\M_Empresa\Area;
 use App\Models\M_Empresa\Cargo;
 use Illuminate\Http\Request;
+use App\Bitacora;
 use Auth;
 
 class CargoController extends Controller
@@ -72,6 +73,12 @@ class CargoController extends Controller
         $cargo->descripcion = $request->descripcion;
         $cargo->area_id = $request->area;
         $cargo->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se creó el cargo';
+        $bitacora->registro_id = $cargo->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         $toast = array(
           'title'   => 'Cargo creado: ',
@@ -122,6 +129,12 @@ class CargoController extends Controller
         $cargo->descripcion = $request->descripcion;
         $cargo->area_id = $request->area;
         $cargo->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se editó el cargo';
+        $bitacora->registro_id = $cargo->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         $toast = array(
             'title'   => 'Cargo modificado: ',
@@ -156,6 +169,12 @@ class CargoController extends Controller
         return $toast;
       }
       $cargo->delete();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se eliminó el cargo';
+      $bitacora->registro_id = $cargo->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
 
       $toast = array(
         'type'    => 'success',

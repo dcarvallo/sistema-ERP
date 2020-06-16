@@ -5,6 +5,7 @@ namespace App\Http\Controllers\C_Empresa;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\M_Empresa\Empresa;
+use App\Bitacora;
 use Auth;
 
 use Illuminate\Support\Facades\Storage;
@@ -65,6 +66,12 @@ class EmpresaController extends Controller
       
       $empresa->save();
 
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se creó la empresa';
+      $bitacora->registro_id = $empresa->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
+
       return redirect('/empresas')->with('toast', $empresa->nombre.': Empresa creada');
     }
 
@@ -115,6 +122,12 @@ class EmpresaController extends Controller
       $empresa->fecha_creacion = $request->fecha_creacion;
       
       $empresa->save();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se editó la empresa';
+      $bitacora->registro_id = $empresa->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
 
       cache()->flush('datos-empresa');
 

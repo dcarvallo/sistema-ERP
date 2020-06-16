@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Bitacora;
 use DB;
 use Auth;
 
@@ -77,8 +78,8 @@ class RoleController extends Controller
         $rol->category = $request->category;
         
         $rol->save();
-        logger($request);
-        dd($request);
+        
+        
         if($request->permisos)
         {
           $array = explode(",", $request->permisos);
@@ -86,6 +87,12 @@ class RoleController extends Controller
           cache()->tags('permisos')->flush();
         }
         
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se creó el rol';
+        $bitacora->registro_id = $rol->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
+
         $toast = array(
           'title'   => 'Rol creado: ',
           'message' => $request->name,
@@ -146,10 +153,15 @@ class RoleController extends Controller
           {
             $array = explode(",", $request->permisos);
             $rol->syncPermissions($array);
-            logger($rol);
             cache()->tags('permisos')->flush();
           }
           
+          $bitacora = new Bitacora();
+          $bitacora->mensaje = 'Se editó el rol';
+          $bitacora->registro_id = $rol->id;
+          $bitacora->user_id = Auth::user()->id;
+          $bitacora->save();
+
           $toast = array(
             'title'   => 'Rol modificado: ',
             'message' => $request->name,
@@ -173,6 +185,13 @@ class RoleController extends Controller
       
       $rol = Role::find($id);
         $rol->delete();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se eliminó el rol';
+        $bitacora->registro_id = $rol->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
+
         $toast = array(
           'title'   => 'Rol eliminado: ',
           'message' => '',

@@ -7,6 +7,7 @@ use App\Models\M_Empresa\Departamento;
 use App\Models\M_Empresa\Area;
 use App\Models\M_Empresa\Cargo;
 use Illuminate\Http\Request;
+use App\Bitacora;
 use Auth;
 
 class AreaController extends Controller
@@ -83,6 +84,12 @@ class AreaController extends Controller
             'messagess' => $area->nombre,
           );
 
+          $bitacora = new Bitacora();
+          $bitacora->mensaje = 'Se creó el área';
+          $bitacora->registro_id = $area->id;
+          $bitacora->user_id = Auth::user()->id;
+          $bitacora->save();
+
           return [$area, $toast];
           
         } catch (\Throwable $th) {
@@ -131,6 +138,12 @@ class AreaController extends Controller
         $area->encargado = $request->encargado;
         $area->departamento_id = $request->departamento;
         $area->save();
+
+        $bitacora = new Bitacora();
+        $bitacora->mensaje = 'Se editó el área';
+        $bitacora->registro_id = $area->id;
+        $bitacora->user_id = Auth::user()->id;
+        $bitacora->save();
         
         $toast = array(
             'title'   => 'Area modificada: ',
@@ -165,6 +178,12 @@ class AreaController extends Controller
         return $toast;
       }
       $area->delete();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se eliminó el área';
+      $bitacora->registro_id = $area->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
 
       $toast = array(
         'type'    => 'success',
