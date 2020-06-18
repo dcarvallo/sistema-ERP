@@ -46,7 +46,7 @@
                         <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
                     <td class="text-center" v-if="can_eliminar" >
-                        <a class="btn btn-danger text-white" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
+                        <a class="btn btn-danger text-white" :id="usuario.id" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>

@@ -48475,6 +48475,7 @@ var render = function() {
                             staticClass: "form-control",
                             attrs: {
                               type: "password",
+                              name: "password",
                               placeholder: "password"
                             },
                             domProps: { value: _vm.usuario.password },
@@ -49976,6 +49977,7 @@ var render = function() {
                           "a",
                           {
                             staticClass: "btn btn-danger text-white",
+                            attrs: { id: usuario.id },
                             on: {
                               click: function($event) {
                                 return _vm.eliminarusuario(usuario.id)

@@ -77,7 +77,7 @@
               </div>
               <div class="form-group">
                 <label for="password">Password*</label>
-                <input type="password" class="form-control" v-model="usuario.password" placeholder="password">
+                <input type="password" class="form-control" name="password" v-model="usuario.password" placeholder="password">
                 <div v-if="errors.password" class="alert-danger">{{ errors.password[0] }}</div> 
               </div>
             </div>

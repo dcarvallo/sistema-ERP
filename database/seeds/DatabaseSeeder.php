@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             PermisosTableSeeder::class,
             RoleSeederTable::class,
             ModelHasRolesTable::class,
+            EmpresaSeeder::class,
         ]);
     }
 }

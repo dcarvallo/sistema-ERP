@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="csrf_token" content="{{csrf_token()}}">
 
   <title>Sistema ERP</title>
 
@@ -258,7 +259,7 @@
           </li>
           @endif
           {{-- @canany('permisos', ['Navegar-empresas','Navegar-ubicaciones', 'Navegar-departamentos', 'Navegar-areas','Navegar-cargos']) --}}
-          @if(Gate::check('permisos','Navegar-empresas') || 
+          @if(Gate::check('permisos', 'Navegar-empresas') || 
               Gate::check('permisos', 'Navegar-ubicaciones') ||
               Gate::check('permisos', 'Navegar-departamentos') ||
               Gate::check('permisos', 'Navegar-areas') ||
@@ -268,7 +269,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
-                Administrar Empresa
+                Estructura empresarial
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\M_Empresa\Empresa;
 use App\Bitacora;
+use Intervention\Image\ImageManagerStatic as Image;
 use Auth;
 
 use Illuminate\Support\Facades\Storage;
@@ -56,9 +57,20 @@ class EmpresaController extends Controller
       $empresa->email = $request->email;
       if($request->imagen_empresa)
       {
+        // $ext = $request->imagen_empresa->getClientOriginalExtension();
+        // $fileName = str_random().'.'.$ext;
+        // $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
+        // $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
+
+        //laravel intervention
+
         $ext = $request->imagen_empresa->getClientOriginalExtension();
         $fileName = str_random().'.'.$ext;
+        //original
         $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
+        //modificado
+        $imagenmod = Image::make($request->imagen_empresa)->fit(300, 300);
+        Storage::put('archivos/empresa/'.$fileName, $imagenmod->encode() );
         $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
 
       }
@@ -98,7 +110,7 @@ class EmpresaController extends Controller
           'nombre' => 'required|string',
           'descripcion' => 'required|string',
           'rubro' => 'required|string',
-          'email' => 'email|string',
+          'email' => 'email|string|nullable',
           'direccion' => 'required|string',
           'fecha_creacion' => 'required',
       ]);
