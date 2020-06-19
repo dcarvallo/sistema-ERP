@@ -65,7 +65,9 @@ class UserController extends Controller
       $empleados = Empleado::select('id', 'nombres', 'apellidos', 'ci')->get();
       
       $roles = Role::all()->groupBy('category')->toArray();
-      ksort($roles);
+      unset($roles['Inactivo']);
+      unset($roles['Admin']);
+      // ksort($roles);
 
       return view('usuarios.create', compact('roles', 'empleados'));
     }
@@ -150,7 +152,9 @@ class UserController extends Controller
       if(!Auth::user()->can('permisos', 'Ver-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       $roles = Role::all()->groupBy('category')->toArray();
-      ksort($roles);
+      // ksort($roles);
+      unset($roles['Inactivo']);
+      unset($roles['Admin']);
       $usuario = User::find($id);
       return view('usuarios.show', compact('usuario', 'roles'));
     }
@@ -160,9 +164,11 @@ class UserController extends Controller
       if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
         $roles = Role::all()->groupBy('category')->toArray();
-        ksort($roles);
+        unset($roles['Inactivo']);
+        unset($roles['Admin']);
         $usuario = User::find($id);
-        return view('usuarios.edit', compact('usuario', 'roles'));
+        $usuarioroles = $usuario->roles;
+        return view('usuarios.edit', compact('usuario', 'usuarioroles','roles'));
     }
 
     public function update(UpdateUsuario $request, $id)
@@ -332,21 +338,40 @@ class UserController extends Controller
     public function updaterol(Request $request, $id)
     {
       if(!Auth::user()->can('permisos', 'Editar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
-
+      
       try {
-        
         $usuario = User::find($id);
         if($request->roles)
         {
-          $arrayderoles = explode(",", $request->roles);
-          $usuario->syncRoles([$arrayderoles]);
-          $toast2 = array(
-            'title'   => 'roles modificados para: ',
-            'message' => $usuario->username,
-            'type'    => 'success'
-          );
+          if($request->roles == "Super Admin") 
+          {
+            $toast2 = array(
+              'title'   => 'roles modificados para: ',
+              'message' => $usuario->username,
+              'type'    => 'error'
+            );
+            return [$usuario,$toast];
+          }
+          if($request->roles == "Inactivo"){
+            $usuario->syncRoles("Inactivo");
+            $toast2 = array(
+              'title'   => 'roles modificados para: ',
+              'message' => $usuario->username,
+              'type'    => 'success'
+            );
+          }
+          else{
+            $arrayderoles = explode(",", $request->roles);
+            $usuario->syncRoles([$arrayderoles]);
+            $toast2 = array(
+              'title'   => 'roles modificados para: ',
+              'message' => $usuario->username,
+              'type'    => 'success'
+            );
+          }
         }
-        else{
+        else
+        {
           $usuario->removeRoles($usuario->roles);
           $toast2 = array(
             'title'   => 'roles modificados para: ',

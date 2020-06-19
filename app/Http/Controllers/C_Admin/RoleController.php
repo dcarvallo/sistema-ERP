@@ -31,8 +31,8 @@ class RoleController extends Controller
       $dir = $request->input('dir');
       $searchValue = $request->input('search');
 
-      $query = Role::select('id', 'name', 'description','category')->orderBy($columns[$column], $dir);
-
+      $query = Role::select('id', 'name', 'description','category')->whereNotIn('name',['Inactivo','Super Admin'])->orderBy($columns[$column], $dir);
+      
       if ($searchValue) {
           $query->where(function($query) use ($searchValue) {
               $query->where('name', 'like', '%' . $searchValue . '%')
@@ -55,8 +55,6 @@ class RoleController extends Controller
       foreach($cat as $cate){
           $categorias[] = $cate->category;
       }
-      // dd($categorias);
-      // $permisos = Permission::select('id', 'name', 'description', 'category')->get()->toArray();
       
       return view('admin.roles.create', compact('permisos', 'categorias'));;
     }
@@ -66,7 +64,7 @@ class RoleController extends Controller
       if(!Auth::user()->can('permisos', 'Crear-roles') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       $this->validate($request, [
-      'name' => 'required|string',
+      'name' => 'required|string|unique:roles',
       'description' => 'required|string',
       'category' => 'required|string',
       ]);
@@ -113,6 +111,7 @@ class RoleController extends Controller
     public function show(Role $role)
     {
       if(!Auth::user()->can('permisos', 'Ver-roles') || Auth::user()->hasRole('Inactivo')) abort(403);
+      if($role->id == 1 || $role->id == 2) return back();
       $permisos = $role->permissions;
       return view('admin.roles.show', compact('role', 'permisos'));   
     }
@@ -122,6 +121,7 @@ class RoleController extends Controller
       if(!Auth::user()->can('permisos', 'Editar-roles') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       $rol = Role::find($id);
+      if($rol->id == 1 || $rol->id == 2) return back();
       $permisos = Permission::all()->groupBy('category')->toArray();
       ksort($permisos);
 
@@ -143,6 +143,7 @@ class RoleController extends Controller
         ]);
         try {
           $rol = Role::find($id);
+          if($rol->id == 1 || $rol->id == 2) return back();
           $rol->name = $request->name;
           $rol->description = $request->description;
           $rol->category = $request->category;
@@ -183,7 +184,9 @@ class RoleController extends Controller
     {
       if(!Auth::user()->can('permisos', 'Eliminar-roles') || Auth::user()->hasRole('Inactivo')) abort(403);
       
-      $rol = Role::find($id);
+        $rol = Role::find($id);
+        if($rol->id == 1 || $rol->id == 2) return back();
+
         $rol->delete();
 
         $bitacora = new Bitacora();

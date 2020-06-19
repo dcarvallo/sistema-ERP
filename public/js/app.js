@@ -3541,7 +3541,6 @@ __webpack_require__.r(__webpack_exports__);
       // let rolessel = this.rolesSeleccionados;
       var formData = new FormData();
       formData.append('roles', this.rolesSeleccionados);
-      console.log();
       formData.append('_method', 'put');
       this.errors = [];
       axios.post('/users/ur/' + this.usuario.id, formData).then(function (response) {
