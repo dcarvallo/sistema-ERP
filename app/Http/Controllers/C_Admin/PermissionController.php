@@ -28,13 +28,13 @@ class PermissionController extends Controller
       $column = $request->input('column');
       $dir = $request->input('dir');
       $searchValue = $request->input('search');
+      $searchColumn = $request->input('searchColumn');
 
       $query = Permission::select('id', 'name','description','category')->orderBy($columns[$column], $dir);
 
       if ($searchValue) {
-          $query->where(function($query) use ($searchValue) {
-              $query->where('category', 'like', '%' . $searchValue . '%')
-              ->orWhere('description', 'like', '%' . $searchValue . '%');
+          $query->where(function($query) use ($searchValue, $searchColumn) {
+              $query->where($searchColumn, 'like', '%' . $searchValue . '%');
           });
       }
 

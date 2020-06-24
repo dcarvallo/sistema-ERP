@@ -32,14 +32,13 @@ class UbicacionController extends Controller
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
+        $searchColumn = $request->input('searchColumn');
 
         $query = Ubicacion::select('id', 'nombre', 'descripcion', 'locacion', 'empresa_id')->with('Empresa')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
-            $query->where(function($query) use ($searchValue) {
-                $query->where('nombre', 'like', '%' . $searchValue . '%')
-                ->orWhere('descripcion', 'like', '%' . $searchValue . '%')
-                ->orWhere('locacion', 'like', '%' . $searchValue . '%');
+            $query->where(function($query) use ($searchValue, $searchColumn) {
+                $query->where($searchColumn, 'like', '%' . $searchValue . '%');
             });
         }
 

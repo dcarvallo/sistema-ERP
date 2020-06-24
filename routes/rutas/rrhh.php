@@ -14,7 +14,9 @@ Route::get('rrhh', 'C_RRHH\RecursoshumanoController@index')->name('rrhh.index');
 
   Route::post('empleados/store', 'C_RRHH\EmpleadoController@store')->name('empleados.store');
 
-	Route::get('empleados', 'C_RRHH\EmpleadoController@index')->name('empleados.index');
+  Route::get('empleados', 'C_RRHH\EmpleadoController@index')->name('empleados.index');
+  
+  Route::get('obtenerempleados', 'C_RRHH\EmpleadoController@obtenerempleados');
 
 	Route::get('empleados/create', 'C_RRHH\EmpleadoController@create')->name('empleados.create');
 

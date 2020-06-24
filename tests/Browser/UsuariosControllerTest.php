@@ -9,7 +9,7 @@ use Tests\DuskTestCase;
 use App\User;
 use Illuminate\Support\Str;
 
-class UsuariosTest extends DuskTestCase
+class UsuariosControllerTest extends DuskTestCase
 {
 
   // use DatabaseMigrations;
@@ -56,7 +56,7 @@ class UsuariosTest extends DuskTestCase
                 ->type('password', 'Passw0rd')
                 ->select('activo', 1)
                 ->press('Guardar')
-                ->pause(1500)
+                ->pause(2000)
                 ->assertSee('Usuario creado')
                 ->screenshot('guardar usuario');
        });
@@ -91,7 +91,7 @@ class UsuariosTest extends DuskTestCase
                 ->type('nombres', Str::random(6).' nombre')
                 ->type('apellidos', Str::random(7).' apellido')
                 ->press('Guardar')
-                ->pause(1500)
+                ->pause(2000)
                 ->assertSee('Usuario modificado')
                 ->screenshot('modificar usuario');
        });

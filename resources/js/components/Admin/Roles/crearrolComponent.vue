@@ -12,36 +12,33 @@
         <div class="card-body">
             <div class="form-group">
                 <label>Nombre*</label>
-                <input class="form-control" type="text" v-model="rol.name">
+                <input class="form-control" type="text" name="name" v-model="rol.name">
                 <label v-if="errors.name" class="alert-danger">{{errors.name[0]}}</label>
             </div>
             <div class="form-group">
                 <label>Descripcion*</label>
-                <textarea class="form-control" type="text" v-model="rol.description"></textarea>
+                <textarea class="form-control" type="text" name="description" v-model="rol.description"></textarea>
                  <label v-if="errors.description" class="alert-danger">{{errors.description[0]}}</label>
             </div>
             <div class="form-group">
               <label class="mr-2"> Categoria*</label> 
-               <i class="far" :class="nueva ? 'fa-minus-square' : 'fa-plus-square'" 
-               :style="'cursor:pointer'" 
-               data-toggle="tooltip" data-placement="top" :title="!nueva ? 'Nueva categoria': 'Volver a existentes'" 
-               @click="nueva = !nueva">
-               </i>
               
-                <multiselect v-if="!nueva" v-model="value" 
-                :option="'Nueva categoria'"
+                <multiselect v-model="value"
                 :options= categorias
-                :searchable="true" 
-                :placeholder="'Seleccione una opcion'" 
+                :searchable="true"
+                :placeholder="'Seleccione o agregue una opcion'" 
                 :selectLabel="''" 
+                :multiple="false"
+                @tag="addTag"
+                :taggable="true"
+                :preserve-search="true" 
+                tag-placeholder="Agregar como nueva categoria" 
                 :selectedLabel="'Seleccionado'" 
                 :deselectLabel="''"
                 :noOptions="''"
                 >
-                <span slot="noResult">No existe categoria, agregue nueva categoria.</span>
+                {{value}}
                 </multiselect>
-                <!-- {{value}} -->
-                <input v-if="nueva" class="form-control" placeholder="Ingrese nueva categoria" type="text" v-model="rol.category">
                 <label v-if="errors.category" class="alert-danger">{{errors.category[0]}}</label>
               </div>
  
@@ -140,7 +137,6 @@ export default {
       permiso: {
         name: [],
       },
-      nueva: false,
       errors: [],
     }
   },
@@ -151,6 +147,10 @@ export default {
     this.nombres = this.test;
   },
   methods:{
+    addTag(newTag) {
+      // this.categorias.push(newTag);
+      this.value =(newTag);
+    },
     expandirTodos()
     {
       if(this.expand)
@@ -173,29 +173,13 @@ export default {
           this.nombres.push(el)
       }
     },
-    nuevacategoria(){
-      this.nueva = !this.nueva;
-
-    },
-    seleccioncategoria(){
-      if(this.value == 'Nueva categoria')
-      {
-          this.nueva= true;
-      }
-      else
-      this.nueva = false;
-      this.rol.category = this.value;
-    },
     crearrol()
     {
       this.errors = [];
       let formData = new FormData();
       formData.append('name', this.rol.name);
       formData.append('description', this.rol.description);
-      if(this.nueva)
-      {
-        formData.append('category', this.rol.category);
-      }else if(!this.nueva && this.value != null)
+      if(this.value)
       {
         formData.append('category', this.value);
       }
@@ -211,7 +195,6 @@ export default {
       .then(res => {
         let datos = res.data;
         this.nombres = [];
-        this.nueva = false;
         this.rol.name = '';
         this.rol.description = '';
         this.rol.category = '';

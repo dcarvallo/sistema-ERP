@@ -12,9 +12,12 @@
 
 @section('content')
 
-    <section>
-      <permisos
-      />
+    <section class="content mb-4">
+      <div class="card card-solid">
+        <div class="card-body pt-1">
+          <permisos/>
+        </div>
+      </div>
     </section>
 
 @endsection

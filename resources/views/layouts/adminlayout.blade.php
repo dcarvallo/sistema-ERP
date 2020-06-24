@@ -14,12 +14,7 @@
  
   @yield('css-head')
 </head>
-<!--
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
+
 <body class="hold-transition sidebar-collapse sidebar-mini">
 <div id="app" class="wrapper">
   <!-- Navbar -->
@@ -348,12 +343,14 @@
                   <p>Cargos</p>
                 </a>
               </li>
+              @can('permisos', 'Navegar-empleados')
               <li class="nav-item">
-                <a href="/empleados" class="nav-link">
+                <a href="{{route('empleados.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Empleados</p>
                 </a>
               </li>
+              @endcan
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -396,6 +393,12 @@
                   <a href="#" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Facturación</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('librodiario')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Libro diario</p>
                   </a>
                 </li>
                 <li class="nav-item">

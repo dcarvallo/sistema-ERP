@@ -31,13 +31,10 @@ class CreateEmpleadosTable extends Migration
             $table->float('peso', 5, 2)->nullable();
             $table->string('tipo_sangre', 10)->nullable();
             $table->string('fotografia', 255)->nullable();
-            $table->date('fecha_contrato')->nullable();
-            $table->unsignedBigInteger('departamento_id');
-            $table->unsignedBigInteger('area_id');
+            $table->date('fecha_contrato');
+            $table->string('tipo_contrato', 100)->nullable();
             $table->unsignedBigInteger('cargo_id');
             $table->string('telefono_int', 50)->nullable();
-            $table->foreign('departamento_id')->references('id')->on('departamentos');
-            $table->foreign('area_id')->references('id')->on('areas');
             $table->foreign('cargo_id')->references('id')->on('cargos');
             $table->softDeletes();
             $table->timestamps();

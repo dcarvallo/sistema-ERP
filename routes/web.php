@@ -27,7 +27,7 @@ View::composer(['layouts.adminlayout'], function($view){
     $view->with('globalimagenempresa', $empresa->imagen_empresa)->with('globalnombreempresa', $empresa->nombre);
   }
   else{
-    $view->with('globalimagenempresa', '')->with('globalnombreempresa', '');
+    $view->with('globalimagenempresa', 'null')->with('globalnombreempresa', 'null');
   }
 
 });

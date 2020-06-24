@@ -90,18 +90,17 @@ class LoginController extends Controller
       return $this->sendFailedLoginResponse($request);
   }
 
-    // public function redirectPath()
-    // {
-    //     if (auth()->user()->hasRole('Inactivo')) {
-    //       $this->guard()->logout();
-
-    //         // return redirect('logout')->with('message', 'Usuario inactivo');
-    //     }
-    //     // else if (auth()->user()->hasRole(['rrhh'])) {
-    //     //     return 'gerente';
-    //     // }
-    //     return property_exists($this, 'redirectTo') ? $this->redirectTo : 'home';
-    // }
+    public function redirectPath()
+    {
+        if (auth()->user()->hasRole('Gerente')) {
+          return 'dashboard';
+        }
+        if (auth()->user()->hasRole('Administrador')) {
+          return 'admin';
+        }
+        
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : 'home';
+    }
 
 
     // protected function credentials(Request $request)

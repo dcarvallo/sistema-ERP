@@ -32,14 +32,13 @@ class AreaController extends Controller
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
+        $searchColumn = $request->input('searchColumn');
         
         $query = Area::select('id', 'nombre', 'descripcion', 'encargado', 'departamento_id')->with('departamento')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
-            $query->where(function($query) use ($searchValue) {
-                $query->where('nombre', 'like', '%' . $searchValue . '%')
-                ->orWhere('descripcion', 'like', '%' . $searchValue . '%')
-                ->orWhere('encargado', 'like', '%' . $searchValue . '%');
+            $query->where(function($query) use ($searchValue, $searchColumn) {
+                $query->where($searchColumn, 'like', '%' . $searchValue . '%');
             });
         }
 

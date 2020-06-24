@@ -31,13 +31,13 @@ class CargoController extends Controller
         $column = $request->input('column');
         $dir = $request->input('dir');
         $searchValue = $request->input('search');
+        $searchColumn = $request->input('searchColumn');
         
         $query = Cargo::select('id', 'nombre', 'descripcion', 'area_id')->with('Area')->orderBy($columns[$column], $dir);
 
         if ($searchValue) {
-            $query->where(function($query) use ($searchValue) {
-                $query->where('nombre', 'like', '%' . $searchValue . '%')
-                ->orWhere('descripcion', 'like', '%' . $searchValue . '%');
+            $query->where(function($query) use ($searchValue, $searchColumn) {
+                $query->where($searchColumn, 'like', '%' . $searchValue . '%');
             });
         }
 

@@ -2,9 +2,8 @@
 
    <div>
      <div class="container-fluid">
-        <div class="tableFilters my-1">
-            <div class="d-flex justify-content-between">
-                <div class="control d-flex">
+          <div class="row justify-content-between">
+            <div class=" d-flex align-items-center my-1">
                     <div class="mr-3">
                         <select class="form-control" v-model="tableData.length" @change="getCargos()">
                             <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
@@ -23,18 +22,30 @@
                       </a>
                     </div>
                 </div>
-
-                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
-                    @input="getCargos()">
+                <fieldset class="border p-1">
+                  <legend class="w-auto my-0" ><span class="my-0 text-sm"> Buscar por</span></legend>
+                  <div class="row d-flex align-items-stretch">
+                    <div class="col pr-1">
+                      <input class="input form-control" type="text" v-model="tableData.search" placeholder="Buscar"
+                        @keyup.enter="getCargos()">
+                    </div>
+                    <div class="col pl-1">
+                      <select class="form-control" v-model="tableData.searchColumn">
+                          <option value="nombre">Nombre</option>
+                          <option value="description">Descripcion</option>
+                      </select>
+                    </div>
+                  </div>
+                </fieldset>
 
             </div>
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
             <tbody>
                 <tr  v-for="cargo in cargos" :key="cargo.id">
-                    <td class="col-3">{{cargo.nombre}}</td>
-                    <td class="col-6 text-justify">{{cargo.descripcion}}</td>
-                    <td class="col-3">{{cargo.area.nombre}}</td>
+                    <td style="width: 30%" >{{cargo.nombre}}</td>
+                    <td style="width: 50%" class="text-justify">{{cargo.descripcion}}</td>
+                    <td style="width: 20%" >{{cargo.area.nombre}}</td>
                     <td v-if="can_ver" class="text-center">
                       <a class="btn btn-primary text-white" :href="'/cargos/'+cargo.id"><i class="far fa-eye"></i></a>
                     </td>
@@ -103,6 +114,7 @@ export default {
           search: '',
           column: 0,
           dir: 'asc',
+          searchColumn: 'nombre',
         },
         pagination: {
           lastPage: '',

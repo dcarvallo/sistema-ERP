@@ -3,7 +3,7 @@
     <div class="card card-solid">
       <div class="card-body ">
     
-      <form >
+      <form @keydown.enter.prevent>
         
         <div class="form-row">
           <div class="col-md-6">
@@ -15,20 +15,21 @@
 
               <div class="form-group">
                 <label for="nombre">Nombre*</label>
-                <input type="text" class="form-control" name="nombre" v-model="area.nombre" placeholder="Nombre area">
+                <input type="text" class="form-control" id="nombre" v-model="area.nombre" placeholder="Nombre area">
                 <label class="alert-danger py-0" v-if="errors.nombre" >{{errors.nombre[0]}}</label>
               </div>
               <div class="form-group">
                 <label for="descripcion">Descripción*</label>
-                <textarea type="text" class="form-control" name="descripcion" v-model="area.descripcion" placeholder="Descripción"></textarea>
+                <textarea type="text" class="form-control" id="descripcion" name="descripcion" v-model="area.descripcion" placeholder="Descripción"></textarea>
                 <label class="alert-danger py-0" v-if="errors.descripcion" >{{errors.descripcion[0]}}</label>
               </div>
               <div class="form-group">
                 <label>Encargado del area</label>
                <multiselect v-model="area.encargado"
                 :options= cargos
-                :searchable="true" 
-                :placeholder="'Seleccione una opcion'" 
+                :searchable="true"
+                :id="encargado"
+                :placeholder="'Seleccione Cargo'" 
                 :selectLabel="''" 
                 :selectedLabel="'Seleccionado'" 
                 :deselectLabel="''"
@@ -45,7 +46,8 @@
                <multiselect v-model="area.departamento_id"
                 :options= departamentos
                 :searchable="true" 
-                :placeholder="'Seleccione una opcion'" 
+                :id="departamento"
+                :placeholder="'Seleccione Departamento'" 
                 :selectLabel="''" 
                 :selectedLabel="'Seleccionado'" 
                 :deselectLabel="''"

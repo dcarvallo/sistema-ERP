@@ -2,9 +2,8 @@
 
    <div>
      <div class="container-fluid">
-        <div class="tableFilters my-1">
-            <div class="d-flex justify-content-between">
-                <div class="control d-flex">
+          <div class="row justify-content-between">
+            <div class=" d-flex align-items-center my-1">
                     <div class="mr-3">
                         <select class="form-control" v-model="tableData.length" @change="getDepartamentos()">
                             <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
@@ -23,19 +22,32 @@
                       </a>
                     </div>
                 </div>
+                <fieldset class="border p-1">
+              <legend class="w-auto my-0" ><span class="my-0 text-sm"> Buscar por</span></legend>
+              <div class="row d-flex align-items-stretch">
+                  <div class="col pr-1">
+                  <input class="input form-control" type="text" v-model="tableData.search" placeholder="Buscar"
+                    @keyup.enter="getDepartamentos()">
+                  </div>
+                <div class="col pl-1">
 
-                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar"
-                    @input="getDepartamentos()">
-
+                  <select class="form-control" v-model="tableData.searchColumn">
+                      <option value="nombre">Nombre</option>
+                      <option value="description">Descripcion</option>
+                      <option value="encargado">Encargado</option>
+                  </select>
+                  </div>
+                </div>
+                </fieldset>
             </div>
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
             <tbody>
                 <tr  v-for="departamento in departamentos" :key="departamento.id">
-                    <td class="col-3">{{departamento.nombre}}</td>
-                    <td class="col-5 text-justify">{{departamento.descripcion}}</td>
-                    <td class="col-2">{{departamento.encargado}}</td>
-                    <td class="col-2">{{departamento.ubicacion.nombre}}</td>
+                    <td style="width: 20%" >{{departamento.nombre}}</td>
+                    <td style="width: 40%" class="text-justify">{{departamento.descripcion}}</td>
+                    <td style="width: 20%" >{{departamento.encargado}}</td>
+                    <td style="width: 20%" >{{departamento.ubicacion.nombre}}</td>
                     <td v-if="can_ver" class="text-center">
                       <a class="btn btn-primary text-white" :href="'/departamentos/'+departamento.id"><i class="far fa-eye"></i></a>
                     </td>
@@ -105,6 +117,7 @@ export default {
           search: '',
           column: 0,
           dir: 'asc',
+          searchColumn: 'nombre'
         },
         pagination: {
           lastPage: '',

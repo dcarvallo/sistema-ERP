@@ -1,80 +1,91 @@
 <template>
 
    <div>
-        <div class="container-fluid">
+     <div class="container-fluid">
           <div class="row justify-content-between">
-            <div class="d-flex align-items-center my-1">
-              <div class="mr-3">
-                <select class="form-control" v-model="tableData.length" @change="getUsuarios()">
-                  <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
-                </select>
-              </div>
-                <div v-if="can_crear" class="w-auto mr-1">
-                  <a class="btn btn-success" href="/users/create">
-                    <i class="far fa-plus-square"></i>
-                    Crear
-                  </a>
-                </div>
-                <div class="w-auto">
-                  <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalexportar">
-                    <i class=" fas fa-file-download"></i>
-                    Exportar
-                  </a>
-                </div>
-            </div>
-            <fieldset class="border p-1">
+            <div class=" d-flex align-items-center my-1">
+                    <div class="mr-3">
+                      <select class="form-control" v-model="tableData.length" @change="getEmpleados()">
+                          <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
+                      </select>
+                    </div>
+
+                      <div v-if="can_crear" class="w-auto mr-1">
+                          <a class="btn btn-success" href="/empleados/create">
+                            <i class="far fa-plus-square"></i>
+                            Crear
+                          </a>
+                      </div>
+                      <div class="w-auto">
+                          <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalexportar">
+                            <i class=" fas fa-file-download"></i>
+                            Exportar
+                          </a>
+                      </div>
+                  </div>
+               <fieldset class="border p-1">
               <legend class="w-auto my-0" ><span class="my-0 text-sm"> Buscar por</span></legend>
               <div class="row d-flex align-items-stretch">
-                <div class="col pr-1">
-                <input class="input form-control" autofocus type="text" v-model="tableData.search" placeholder="Buscar"
-                    @keyup.enter="getUsuarios()">
-                </div>
-                <div class="col pl-1">
-                  <select class="form-control" v-model="tableData.searchColumn">
-                      <option value="name">Nombre Completo</option>
-                      <option value="username">Nombre de usuario</option>
-                      <option value="email">Email</option>
-                  </select>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+                  <div class="col pr-1">
 
+                  <input class="form-control" autofocus type="text" v-model="tableData.search" placeholder="Buscar"
+                      @keyup.enter="getEmpleados()">
+                  </div>
+                  <div class="col pl-1">
+
+                  <select class="form-control" v-model="tableData.searchColumn">
+                      <option value="empleado_id" selected>Id Empleado</option>
+                      <option value="nombres">Nombres</option>
+                      <option value="apellidos">Apellidos</option>
+                      <option value="ci">CI</option>
+                      <option value="cargo">Cargo</option>
+                      <option value="email">Email</option>
+                      <option value="tipo_contrato">Tipo Contrato</option>
+                      <option value="fecha_contrato">Fecha Contrato</option>
+                  </select>
+                  </div>
+                </div>
+               </fieldset>
+          </div>
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
           
             <tbody>
-                <tr v-for="(usuario) in usuarios" :key="usuario.id">
-                    <td style="width: 30%" >{{usuario.name}}</td>
-                    <td style="width: 30%" >{{usuario.username}}</td>
-                    <td style="width: 30%" >{{usuario.email}}</td>
-                    <td style="width: 10%"  class="text-center" v-if="usuario.activo">SI</td>
-                    <td style="width: 10%" class="text-center bg-info" v-else>NO</td>
-                    <td style="width: 10%" class="text-center" v-if="can_ver" >
-                        <a class="btn btn-primary text-white" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
+                <tr v-for="(empleado) in empleados" :key="empleado.id">
+                    <td style="width: 10%" >{{empleado.empleado_id}}</td>
+                    <td style="width: 15%" >{{empleado.nombres}}</td>
+                    <td style="width: 15%" >{{empleado.apellidos}}</td>
+                    <td style="width: 10%" > {{empleado.ci}}</td>
+                    <td style="width: 30%" > {{empleado.cargo.nombre}}</td>
+                    <td style="width: 10%" > {{empleado.tipo_contrato}}</td>
+                    <td style="width: 10%" > {{empleado.fecha_contrato}}</td>
+
+                    <td class="text-center" v-if="can_ver" >
+                        <a class="btn btn-primary text-white" :href="'/empleados/'+empleado.id"><i class="far fa-eye"></i></a>
                     </td>
                     <td class="text-center" v-if="can_editar" >
-                        <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
+                        <a class="btn btn-warning" :href="'/empleados/'+empleado.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
                     <td class="text-center" v-if="can_eliminar" >
-                        <a class="btn btn-danger text-white" :id="usuario.id" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
+                        <a class="btn btn-danger text-white" :id="empleado.id" @click="eliminarempleado(empleado.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
         </datatable>
         <div class="d-flex justify-content-end">
           <pagination :pagination="pagination"
-              @prev="getUsuarios(pagination.prevPageUrl)"
-              @next="getUsuarios(pagination.nextPageUrl)">
+              @prev="getEmpleados(pagination.prevPageUrl)"
+              @next="getEmpleados(pagination.nextPageUrl)">
           </pagination>
         </div>
+        
 
       <!-- Modal -->
       <div class="modal fade" id="modalexportar" tabindex="-1" role="dialog" aria-labelledby="modalexportar" aria-hidden="true">
         <div class="modal-dialog modal-sm"  role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalexportar">Exportar lista de usuarios:</h5>
+              <h5 class="modal-title" id="modalexportar">Exportar lista de empleados:</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -118,17 +129,20 @@ import Pagination from '../../Pagination.vue';
 export default {
     components: { datatable: Datatable, pagination: Pagination },
     created() {
-        this.getUsuarios();
+        this.getEmpleados();
     },
     props:['can_crear','can_ver', 'can_editar','can_eliminar'],
     data() {
         let sortOrders = {};
         let parametrostabla = {};
         let columns = [
-            {label: 'Nombre Completo', name: 'name' },
-            {label: 'Nombre de usuario', name: 'username'},
-            {label: 'Email', name: 'email'},
-            {label: 'Activo', name: 'activo'},            
+            {label: 'ID Empleado', name: 'empleado_id' },
+            {label: 'Nombres', name: 'nombres'},
+            {label: 'Apellidos', name: 'apellidos'},
+            {label: 'CI', name: 'ci'},            
+            {label: 'Cargo', name: 'cargo'},           
+            {label: 'Tipo de Contrato', name: 'tipo_contrato'},            
+            {label: 'Fecha Contrato', name: 'fecha_contrato'},            
         ];
         const columnasPrincipales = columns.length - 1 ;
           columns.forEach((column) => {
@@ -145,7 +159,7 @@ export default {
         }
 
         return {
-            usuarios: [],
+            empleados: [],
             exportar: [],
             checkbox: [
               'name',
@@ -166,7 +180,7 @@ export default {
                 search: '',
                 column: 0,
                 dir: 'asc',
-                searchColumn: 'name',
+                searchColumn: 'empleado_id',
             },
             pagination: {
                 lastPage: '',
@@ -181,14 +195,14 @@ export default {
         }
     },
     methods: {
-        getUsuarios(url = '/obtenerusuarios') {
+        getEmpleados(url = '/obtenerempleados') {
             this.tableData.draw++;
             axios.get(url, {params: this.tableData})
                 .then(response => {
                     let data = response.data;
                     this.parametrostabla = data;
                     if (this.tableData.draw == data.draw) {
-                        this.usuarios = data.data.data;
+                        this.empleados = data.data.data;
                         this.configPagination(data.data);
                     }
                 })
@@ -199,18 +213,18 @@ export default {
                     })
                 });
         },
-        eliminarusuario(usuarioid) {
+        eliminarempleado(empleadoid) {
             
         modalconfirm.fire({
-        title: '¿Está seguro que desea eliminar este usuario?',
-        text: "El usuario ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        title: '¿Está seguro que desea eliminar este empleado?',
+        text: "El empleado ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
         confirmButtonText: 'Si, eliminar',
         cancelButtonText: 'Cancelar',
         preConfirm: (login) => {
-          return axios.delete('/users/'+usuarioid, {params: this.tableData})
+          return axios.delete('/empleados/'+empleadoid, {params: this.tableData})
                 .then(response => {
                   let data = response.data;
-                  this.getUsuarios();
+                  this.getEmpleados();
                   toastsuccess.fire({
                     title: data.title+' '+data.message
                   })
@@ -231,7 +245,7 @@ export default {
           })
         },
         filtro(){
-          this.getUsuarios();
+          this.getEmpleados();
         },
         configPagination(data) {
             this.pagination.lastPage = data.last_page;
@@ -249,17 +263,17 @@ export default {
           this.tableData.column = this.getIndex(this.columns, 'name', key);
           this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
           if(this.tableData.column <= this.columnasPrincipales)
-          this.getUsuarios();
+          this.getEmpleados();
         },
         getIndex(array, key, value) {
             return array.findIndex(i => i[key] == value)
         },
 
-        importardatousuario(usuariosel){
+        importardatoempleado(empleadosel){
             let par = this.parametrostabla;
-          axios.put('/importardatousuario/'+usuariosel.id)
+          axios.put('/importardatoempleado/'+empleadosel.id)
           .then(res => {
-            this.getUsuarios('/obtenerusuarios');
+            this.getEmpleados('/obtenerempleados');
             toast.fire({
                 icon: 'success',
                 title: 'Datos importados correctamente'

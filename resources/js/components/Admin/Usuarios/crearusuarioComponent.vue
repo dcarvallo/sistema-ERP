@@ -24,23 +24,32 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group border rounded">
-                <div class="custom-control custom-switch">
+                <div class="custom-control custom-switch mb-1">
                   <input style="cursor:pointer" type="checkbox" class="custom-control-input display-2" id="switch1" v-model="vincular">
                   <label style="cursor:pointer" class="custom-control-label" for="switch1">Vincular con empleado</label>
                   
                 </div>
                 <div v-if="vincular" class="form-group mb-0">
-                    <input class="form-control mt-2 col-md-12" type="text" style="text-transform:uppercase" placeholder="Buscar empleado" v-model="dato">
                     <div class="col-md-11 position-relative">
                       <div class="position-absolute w-100">
-                        <div v-show="dato!=''" :style="'cursor:pointer'" class="form-control border asdf" @click.prevent="seleccionempleado(empleado)" v-for="(empleado, index) in buscarempleado" :key="index">
-                          
-                          <label class="w-100 position-absolute" style="cursor:pointer" >
-                            {{empleado.nombres}} {{empleado.apellidos}}, CI: {{empleado.ci}}
-                          </label>
-                        </div>
                       </div>
                     </div>
+                        <multiselect v-model="value"
+                        :options= empleados
+                        :searchable="true"
+                        :placeholder="'Seleccione un empleado'" 
+                        :selectLabel="''" 
+                        :multiple="false"
+                        track-by="id"
+                        @select="seleccionempleado"
+                        :custom-label="nombresApellidosCi"
+                        :preserve-search="true" 
+                        :selectedLabel="'Seleccionado'" 
+                        :deselectLabel="''"
+                        :noOptions="''"
+                        >
+                        <span slot="noResult">No existe empleado registrado.</span>
+                        </multiselect>
                     <span v-if="empselect">
                       <strong> Usuario vinculado con:</strong> {{empselect}}
                     </span>
@@ -105,39 +114,26 @@
           <h5>Roles</h5>
         </div>
         <div class="card-body">
-            <!-- <div class="row">
-              <div class="col-md-2" v-for="rol in roles" :key="rol.id">
-                <label>
-                  <input type="checkbox"  :id="rol.id" :value="rol.guard_name" v-model="rolesSeleccionados" :checked="rol.special == 'no-access'">
-                  <span :for="rol.name">{{rol.name}}: </span>
-                  <em>{{rol.description}}</em>
+          <label v-if="expand" @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Contraer todos</label>
+          <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
+
+          <div class="row">
+              <div class="col-md-2 my-2" v-for="(categoria,index) in roles" :key="index">
+                <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
+                  <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
+                  <i v-else class="far fa-plus-square"></i>
+                  <span class="bold">  {{index}} </span>
                 </label>
-              </div>
-            </div> -->
-            <label v-if="expand" @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Contraer todos</label>
-            <label v-else @click="expand = !expand" :style="{cursor: 'pointer'}" @click.prevent="expandirTodos">Expandir todos</label>
-
-            <div class="row">
-               <div class="col-md-2 my-2" v-for="(categoria,index) in roles" :key="index">
-                  <label class="bg-cyan w-100 rounded px-1" @click.prevent="funcion(index)" :style="{cursor: 'pointer'}">
-                    <i v-if="nombres.includes(index)" class="far fa-minus-square"></i>
-                    <i v-else class="far fa-plus-square"></i>
-                    <span class="bold">  {{index}} </span>
-                  </label>
-                    <div v-for="elemento in categoria" :key="elemento.id"> 
-                      <transition name="fade">
-                        <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
-                          <input type="checkbox" :id="elemento.id" :value="elemento.name" v-model="rol.guard_name">
-                          <span>{{elemento.name}}</span> 
-                          </label>
-                      </transition>
-                    </div>
-                 </div> 
-              </div>
-
-
-
-
+                  <div v-for="elemento in categoria" :key="elemento.id"> 
+                    <transition name="fade">
+                      <label v-if="nombres.includes(elemento.category)"  :style="{cursor: 'pointer'}">
+                        <input type="checkbox" :id="elemento.id" :value="elemento.name" v-model="rol.guard_name">
+                        <span>{{elemento.name}}</span> 
+                        </label>
+                    </transition>
+                  </div>
+                </div> 
+            </div>
         </div>
       </div>
     </div>
@@ -150,10 +146,13 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
 export default {
   props: ['roles', 'empleados'],
+  components: { Multiselect },
   data(){
     return{
+      value: null,
       message: '',
       dato: '',
       empselect:'',
@@ -185,11 +184,14 @@ export default {
       this.nombres = this.test;
   },
   computed: {
-    buscarempleado(){
-      return this.empleados.filter((empleado) => empleado.apellidos.toLowerCase().includes(this.dato) || empleado.nombres.toLowerCase().includes(this.dato));
-    },
+    // buscarempleado(){
+    //   return this.empleados.filter((empleado) => empleado.apellidos.toLowerCase().includes(this.dato) || empleado.nombres.toLowerCase().includes(this.dato));
+    // },
   },
   methods:{
+    nombresApellidosCi ({ nombres, apellidos, ci }) {
+      return `${nombres} ${apellidos} - CI: ${ci}`
+    },
     expandirTodos()
     {
       if(this.expand)
@@ -212,12 +214,11 @@ export default {
         this.nombres.push(el)
       }
     },
-    seleccionempleado(emp){
-      this.dato ='';
-      this.empselect = emp.nombres+' '+emp.apellidos+' CI: '+emp.ci;
-      this.empleado_id = emp.id;
-      this.usuario.nombres = emp.nombres;
-      this.usuario.apellidos = emp.apellidos;
+    seleccionempleado(datos){
+      // this.dato ='';
+      // this.empselect = datos.nombres+' '+datos.apellidos+' CI: '+datos.ci;
+      this.usuario.nombres = datos.nombres;
+      this.usuario.apellidos = datos.apellidos;
     },
     onFileChange(e) {
       this.usuario.imagen = e.target.files[0];
@@ -235,8 +236,8 @@ export default {
       formData.append('password', this.usuario.password);
       formData.append('imagen', this.usuario.imagen);
       formData.append('roles', this.rol.guard_name);
-      if(this.empleado_id != ''){
-        formData.append('empleado_id', this.empleado_id);
+      if(this.value != null && this.vincular == true){
+        formData.append('empleado_id', this.value.id);
       }
       axios.post('/users/store',formData)
       .then(res => {

@@ -14,7 +14,7 @@
 
   <section class="content mb-4">
     <div class="card card-solid">
-      <div class="card-body ">
+      <div class="card-body pt-1">
         
         <usuarios 
           can_crear="{{ Auth::user()->can('permisos','Crear-usuarios') ? true : false }}"

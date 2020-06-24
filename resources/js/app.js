@@ -174,6 +174,8 @@ Vue.component('editararea', require('./components/Empresa/area/editarareaCompone
 Vue.component('cargos', require('./components/Empresa/cargo/cargosComponent.vue').default);
 Vue.component('crearcargo', require('./components/Empresa/cargo/crearcargoComponent.vue').default);
 Vue.component('editarcargo', require('./components/Empresa/cargo/editarcargoComponent.vue').default);
+//Empleados
+Vue.component('empleados', require('./components/RRHH/empleados/empleadosComponent.vue').default);
 //usuarios
 Vue.component('usuarios', require('./components/Admin/Usuarios/usuariosComponent.vue').default);
 Vue.component('editarusuario', require('./components/Admin/Usuarios/editarusuarioComponent.vue').default);

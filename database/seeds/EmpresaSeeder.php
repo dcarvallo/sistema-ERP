@@ -16,6 +16,7 @@ class EmpresaSeeder extends Seeder
         'nombre'            => 'Sistema ERP',
         'descripcion'       => 'Descripcion empresa',
         'rubro'             => 'Tecnologia',
+        'direccion'         => 'calle falsa 1234',
         'fecha_creacion'    => now()
       ]);
 
@@ -46,6 +47,18 @@ class EmpresaSeeder extends Seeder
         'nombre'            => 'Cargo 1',
         'descripcion'       => 'Descripcion de cargo 1',
         'area_id'           => 1
+      ]);
+
+      //crear empleado
+      DB::table('empleados')->insert([
+        'empleado_id'       => '111251',
+        'nombres'           => 'Juan',
+        'apellidos'         => 'Perez Gonzales',
+        'ci'                => '1598745 CH',
+        'fecha_nac'         => now(),
+        'fecha_contrato'    => now(),
+        'tipo_contrato'     => 'Indefinido',
+        'cargo_id'          => 1,
       ]);
     }
 }

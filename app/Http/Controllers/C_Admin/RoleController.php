@@ -30,14 +30,13 @@ class RoleController extends Controller
       $column = $request->input('column');
       $dir = $request->input('dir');
       $searchValue = $request->input('search');
+      $searchColumn = $request->input('searchColumn');
 
       $query = Role::select('id', 'name', 'description','category')->whereNotIn('name',['Inactivo','Super Admin'])->orderBy($columns[$column], $dir);
       
       if ($searchValue) {
-          $query->where(function($query) use ($searchValue) {
-              $query->where('name', 'like', '%' . $searchValue . '%')
-              ->orWhere('description', 'like', '%' . $searchValue . '%')
-              ->orWhere('category', 'like', '%' . $searchValue . '%');
+          $query->where(function($query) use ($searchValue, $searchColumn) {
+              $query->where($searchColumn, 'like', '%' . $searchValue . '%');
           });
       }
 
@@ -50,8 +49,9 @@ class RoleController extends Controller
       if(!Auth::user()->can('permisos', 'Crear-roles') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       $permisos = Permission::all()->groupBy('category')->toArray();
-      ksort($permisos);
-      $cat = Role::select('category')->groupBy('category')->get();
+
+      $cat = Role::select('category')->whereNotIn('category', ['Admin', 'Inactivo'])->groupBy('category')->get();
+      $categorias[] = '';
       foreach($cat as $cate){
           $categorias[] = $cate->category;
       }
@@ -125,7 +125,7 @@ class RoleController extends Controller
       $permisos = Permission::all()->groupBy('category')->toArray();
       ksort($permisos);
 
-      $cat = Role::select('category')->groupBy('category')->get();
+      $cat = Role::select('category')->whereNotIn('category', ['Admin', 'Inactivo'])->groupBy('category')->get();
       foreach($cat as $cate){
           $categorias[] = $cate->category;
       }

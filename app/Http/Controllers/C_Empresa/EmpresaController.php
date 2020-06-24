@@ -97,7 +97,7 @@ class EmpresaController extends Controller
     public function edit(Empresa $empresa)
     {
       if(!Auth::user()->can('permisos', 'Editar-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
-
+      
       return view('empresa.empresa.edit', compact('empresa'));
       
     }

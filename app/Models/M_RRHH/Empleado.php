@@ -12,6 +12,6 @@ class Empleado extends Model
   
   public function cargo()
   {
-      return $this->hasOne(Cargo::class);
+      return $this->belongsTo(Cargo::class);
   }
 }

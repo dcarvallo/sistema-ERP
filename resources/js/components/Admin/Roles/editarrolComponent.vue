@@ -17,32 +17,29 @@
             </div>
             <div class="form-group">
                 <label>Descripcion*</label>
-                <textarea class="form-control" type="text" v-model="rolmod.description"></textarea>
+                <textarea class="form-control" name="description" type="text" v-model="rolmod.description"></textarea>
                 <label v-if="errors.description" class="alert-danger">{{errors.description[0]}}</label>
             </div>
             <div class="form-group">
               <div class="d-flex justify-content-between">
                 <label class="mr-2"> Categoria*</label> 
-                  <i class="far fa-2x" :class="nueva ? 'fa-minus-square' : 'fa-plus-square'" 
-                  :style="'cursor:pointer'" 
-                  data-toggle="tooltip" data-placement="top" :title="!nueva ? 'Nueva categoria': 'Volver a existentes'" 
-                  @click="nueva = !nueva">
-                  </i>
               </div>
               
-                <multiselect v-if="!nueva" v-model="value"
+                <multiselect v-model="value"
                 :options= categorias
                 :searchable="true" 
-                :placeholder="'Seleccione una opcion'" 
+                :placeholder="'Seleccione o agregue una opcion'" 
                 :selectLabel="''" 
+                :multiple="false"
+                @tag="addTag"
+                :taggable="true"
+                :preserve-search="true" 
+                tag-placeholder="Agregar como nueva categoria" 
                 :selectedLabel="'Seleccionado'" 
                 :deselectLabel="''"
                 :noOptions="''"
                 >
-                <span slot="noResult">No existe categoria, agregue nueva categoria.</span>
                 </multiselect>
-                <!-- {{value}} -->
-                <input v-if="nueva" class="form-control" placeholder="Ingrese nueva categoria" type="text" v-model="rolmod.category">
                 <label v-if="errors.category" class="alert-danger">{{errors.category[0]}}</label>
               </div>
           </div>
@@ -136,6 +133,10 @@ export default {
     this.nombres = this.test;
   },
   methods:{
+    addTag(newTag) {
+      this.categorias.push(newTag);
+      this.value =(newTag);
+    },
     expandirTodos()
     {
       if(this.expand)

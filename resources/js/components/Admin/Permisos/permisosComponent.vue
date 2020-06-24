@@ -1,34 +1,44 @@
 <template>
 
-   <div class="roles">
-     <div class="container-fluid">
-        <div class="tableFilters my-1">
-            <div class="d-flex justify-content-between">
-                <div class="control d-flex">
-                    <div class="mr-3">
+   <div>
+        <div class="container-fluid">
+            <div class="row justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="pr-3">
                       <select class="form-control" v-model="tableData.length" @change="getpermisos()">
                           <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
                       </select>
                     </div>
-                      <!-- <div class="w-auto">
-                          <a class="btn btn-success" :href="'/permisos/create'">
-                            <i class="far fa-plus-square"></i>
-                            Crear
-                          </a>
-                      </div> -->
+                </div>
+
+                <fieldset class="border p-1">
+                  <legend class="w-auto my-0" ><span class="my-0 text-sm"> Buscar por</span></legend>
+                  
+                  <div class="row d-flex align-items-stretch">
+                    <div class="col pr-1">
+
+                    <input class="input form-control" autofocus type="text" v-model="tableData.search" placeholder="Buscar"
+                        @keyup.enter="getpermisos()">
+                    </div>
+                    <div class="col pl-1">
+
+                    <select class="form-control" v-model="tableData.searchColumn">
+                        <option value="category">Categoria</option>
+                        <option value="name">Nombre permiso</option>
+                        <option value="description">Descripcion</option>
+                    </select>
+                    </div>
                   </div>
-
-                <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
-                    @input="getpermisos()">
-
+                </fieldset>
             </div>
+
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
-            <tbody class="text-center">
+            <tbody >
                 <tr v-for="permiso in permisos" :key="permiso.id">
-                    <td class="col-2">{{permiso.category}}</td>
-                    <td class="col-2">{{permiso.name}}</td>
-                    <td class="col-8">{{permiso.description}}</td>
+                    <td style="width: 20%">{{permiso.category}}</td>
+                    <td style="width: 20%">{{permiso.name}}</td>
+                    <td style="width: 60%">{{permiso.description}}</td>
                     <!-- <td v-if="can_ver" class="text-white">                        
                       <a class="btn btn-primary text-white" :href="'/permisos/'+permiso.id"><i class=" far fa-eye"></i></a>
                     </td> -->
@@ -82,6 +92,7 @@ export default {
                 search: '',
                 column: 0,
                 dir: 'asc',
+                searchColumn:'category',
             },
             pagination: {
                 lastPage: '',

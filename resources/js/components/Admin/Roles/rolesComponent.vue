@@ -1,10 +1,9 @@
 <template>
 
    <div>
-     <div>
-        <div class="tableFilters my-1">
-          <div class="d-flex justify-content-between">
-            <div class="control d-flex">
+        <div class="container-fluid">
+          <div class="row justify-content-between">
+            <div class=" d-flex align-items-center my-1">
               <div class="mr-3">
                 <select class="form-control" v-model="tableData.length" @change="getroles()">
                     <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
@@ -24,24 +23,38 @@
                 </div>
               </div>
 
-            <input class="input w-25 form-control" type="text" v-model="tableData.search" placeholder="Buscar en la tabla"
-                @input="getroles()">
-
+            <fieldset class="border p-1">
+              <legend class="w-auto my-0" ><span class="my-0 text-sm"> Buscar por</span></legend>
+              <div class="row d-flex align-items-stretch">
+                <div class="col pr-1">
+                <input class="input form-control" autofocus type="text" v-model="tableData.search" placeholder="Escriba"
+                    @keyup.enter="getroles()">
+                </div>
+                <div class="col pl-1">
+                <select class="form-control" v-model="tableData.searchColumn">
+                    <option value="name" selected> Nombre </option>
+                    <option value="description">Descripcion</option>
+                    <option value="category">Categoria</option>
+                </select>
+                </div>
+              </div>
+            </fieldset>
           </div>
+
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
             <tbody>
                 <tr v-for="rol in roles" :key="rol.id">
-                    <td class="col-sm-4">{{rol.name}}</td>
-                    <td class="col-md-5">{{rol.description}}</td>
-                    <td class="col-sm-3">{{rol.category}}</td>
-                    <td v-if="can_ver" class=" text-center">                        
+                    <td style="width: 33%">{{rol.name}}</td>
+                    <td style="width: 33%">{{rol.description}}</td>
+                    <td style="width: 33%">{{rol.category}}</td>
+                    <td v-if="can_ver" class=" text-center" >                        
                       <a class="btn btn-primary text-white" :href="'/roles/'+rol.id"><i class=" far fa-eye"></i></a>
                     </td>
-                    <td v-if="can_editar" class="col-sm- text-center">
+                    <td v-if="can_editar" class="text-center" >
                       <a class="btn btn-warning" :href="'/roles/'+rol.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
-                    <td v-if="can_eliminar" class="text-center">
+                    <td v-if="can_eliminar" class="text-center" >
                       <a class="btn text-white btn-danger" @click="eliminarrol(rol.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
@@ -104,6 +117,7 @@ export default {
             search: '',
             column: 0,
             dir: 'asc',
+            searchColumn:'name',
         },
         pagination: {
             lastPage: '',

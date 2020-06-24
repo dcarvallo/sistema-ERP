@@ -1,9 +1,9 @@
 <template>
-  <!-- Default box -->
+
     <div class="card card-solid">
       <div class="card-body ">
     
-      <form >
+      <form @keydown.enter.prevent>
         
         <div class="form-row">
           <div class="col-md-6">

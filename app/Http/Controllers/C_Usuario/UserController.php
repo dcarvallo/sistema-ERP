@@ -25,7 +25,6 @@ class UserController extends Controller
   
     public function index()
     {
-      // dd(Auth::user()->hasRole('Inactivo', 'web'));
       if(!Auth::user()->can('permisos', 'Navegar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
       
       return view('usuarios.index');
@@ -42,14 +41,13 @@ class UserController extends Controller
       $column = $request->input('column');
       $dir = $request->input('dir');
       $searchValue = $request->input('search');
+      $searchColumn = $request->input('searchColumn');
       
       $query = User::select('id', 'name', 'username', 'email', 'activo')->orderBy($columns[$column], $dir);
 
       if ($searchValue) {
-          $query->where(function($query) use ($searchValue) {
-              $query->where('name', 'like', '%' . $searchValue . '%')
-              ->orWhere('username', 'like', '%' . $searchValue . '%')
-              ->orWhere('email', 'like', '%' . $searchValue . '%');
+          $query->where(function($query) use ($searchValue, $searchColumn) {
+              $query->where($searchColumn, 'like', '%' . $searchValue . '%');
           });
       }
 
@@ -152,7 +150,6 @@ class UserController extends Controller
       if(!Auth::user()->can('permisos', 'Ver-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
       $roles = Role::all()->groupBy('category')->toArray();
-      // ksort($roles);
       unset($roles['Inactivo']);
       unset($roles['Admin']);
       $usuario = User::find($id);

@@ -15,7 +15,7 @@
 @section('content')
 
     <section>
-    <crearrol :permisos="{{ json_encode($permisos) }}" :categorias="{{json_encode($categorias)}}"/>
+      <crearrol :permisos="{{ json_encode($permisos) }}" :categorias="{{json_encode($categorias)}}"/>
     </section>
 
 @endsection
