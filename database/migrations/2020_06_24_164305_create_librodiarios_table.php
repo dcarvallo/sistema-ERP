@@ -15,7 +15,21 @@ class CreateLibrodiariosTable extends Migration
     {
         Schema::create('librodiarios', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('nro_asiento');
+            $table->string('tipo_asiento');
+            $table->date('fecha');
+            $table->string('cuenta');
+            $table->string('descripcion');
+            $table->string('documento');
+            $table->float('debe');
+            $table->float('haber');
+            $table->string('notas')->nullable();
+            $table->string('archivo')->nullable();
+            $table->unsignedBigInteger('creador_id');
+            $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('creador_id')->references('id')->on('users');
         });
     }
 

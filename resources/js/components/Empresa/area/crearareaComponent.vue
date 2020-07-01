@@ -15,7 +15,7 @@
 
               <div class="form-group">
                 <label for="nombre">Nombre*</label>
-                <input type="text" class="form-control" id="nombre" v-model="area.nombre" placeholder="Nombre area">
+                <input type="text" class="form-control" id="nombre" v-model="area.nombre" placeholder="Nombre area" autofocus>
                 <label class="alert-danger py-0" v-if="errors.nombre" >{{errors.nombre[0]}}</label>
               </div>
               <div class="form-group">

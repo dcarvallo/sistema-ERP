@@ -2802,7 +2802,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3850,6 +3849,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3880,6 +3888,10 @@ __webpack_require__.r(__webpack_exports__);
     var columnasPrincipales = columns.length - 1;
     columns.forEach(function (column) {
       sortOrders[column.name] = -1;
+    });
+    columns.push({
+      label: 'Rol',
+      name: 'rol'
     });
 
     if (this.can_ver) {
@@ -4072,6 +4084,547 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['columns', 'sortKey', 'sortOrders']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_currency_input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-currency-input */ "./node_modules/vue-currency-input/dist/vue-currency-input.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['cuentas'],
+  components: {
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  data: function data() {
+    return {
+      librodiario: [{
+        cuenta: null,
+        descripcion: '',
+        documento: '',
+        debe: 0,
+        haber: 0
+      }],
+      sumaigual: '',
+      errors: []
+    };
+  },
+  created: function created() {
+    this.agregarfila();
+  },
+  methods: {
+    borrarfila: function borrarfila(index, librodiario) {
+      var idx = this.librodiario.indexOf(librodiario);
+
+      if (idx > -1) {
+        this.librodiario.splice(idx, 1);
+      }
+
+      this.cuadre();
+    },
+    agregarfila: function agregarfila() {
+      this.librodiario.push({
+        descripcion: '',
+        documento: '',
+        debe: 0,
+        haber: 0
+      });
+    },
+    codigodescripcion: function codigodescripcion(_ref) {
+      var codigo_cta = _ref.codigo_cta,
+          descripcion = _ref.descripcion;
+      return "".concat(codigo_cta, " ").concat(descripcion);
+    },
+    cuadre: function cuadre() {
+      var sumadebe = 0;
+      var sumahaber = 0;
+      this.librodiario.forEach(function (fila, index) {
+        // console.log(fila);
+        // if(fila.debe != "")
+        // {
+        sumadebe += parseFloat(fila.debe); // }
+        // if(fila.haber != "")
+        // {
+
+        sumahaber += parseFloat(fila.haber); // }
+      });
+      console.log(sumadebe);
+      console.log(sumahaber);
+
+      if (sumahaber != sumadebe) {
+        console.log('no igala');
+        this.sumaigual = 'el cuadre no iguala';
+      } else this.sumaigual = '';
+    },
+    crearlibrodiario: function crearlibrodiario() {
+      var _this = this;
+
+      this.errors = [];
+      var formData = new FormData();
+      formData.append('name', this.rol.name);
+      formData.append('description', this.rol.description);
+
+      if (this.cuenta) {
+        formData.append('category', this.cuenta);
+      }
+
+      var arraypermisos = [];
+      this.permiso.name.forEach(function (elemento) {
+        arraypermisos.push(elemento[0]);
+      });
+      formData.append('permisos', arraypermisos);
+      axios.post('/roles/store', formData).then(function (res) {
+        var datos = res.data;
+        toastsuccess.fire({
+          title: datos[1].title + ' ' + datos[1].message
+        });
+      })["catch"](function (error) {
+        var datos = error.data;
+
+        if (error.response.status == 422) {
+          _this.errors = error.response.data.errors;
+        }
+
+        if (datos) {
+          toasterror.fire({
+            title: datos[1].title + ' ' + datos[1].message
+          });
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ColumUserdatabase_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../ColumUserdatabase.vue */ "./resources/js/components/ColumUserdatabase.vue");
+/* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Pagination.vue */ "./resources/js/components/Pagination.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    datatable: _ColumUserdatabase_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    pagination: _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  created: function created() {
+    this.getLibrodiario();
+  },
+  props: ['can_crear', 'can_ver', 'can_editar', 'can_eliminar'],
+  data: function data() {
+    var sortOrders = {};
+    var parametrostabla = {};
+    var columns = [{
+      label: 'ID',
+      name: 'id'
+    }, {
+      label: 'Elemento',
+      name: 'elemento'
+    }, {
+      label: 'Codigo Cuenta',
+      name: 'codigo_cta'
+    }, {
+      label: 'Descripcion',
+      name: 'descripcion'
+    }, {
+      label: 'Tipo Cuenta',
+      name: 'tipo_cta'
+    }];
+    var columnasPrincipales = columns.length - 1;
+    columns.forEach(function (column) {
+      sortOrders[column.name] = -1;
+    });
+
+    if (this.can_ver) {
+      columns.push({
+        label: 'Ver',
+        name: 'ver'
+      });
+    }
+
+    if (this.can_editar) {
+      columns.push({
+        label: 'Editar',
+        name: 'editar'
+      });
+    }
+
+    if (this.can_eliminar) {
+      columns.push({
+        label: 'Eliminar',
+        name: 'eliminar'
+      });
+    }
+
+    return {
+      librodiarios: [],
+      exportar: [],
+      expanded: false,
+      columns: columns,
+      columnasPrincipales: columnasPrincipales,
+      sortKey: 'name',
+      sortOrders: sortOrders,
+      perPage: ['15', '30', '50'],
+      tableData: {
+        draw: 0,
+        length: 15,
+        search: '',
+        column: 0,
+        dir: 'asc',
+        searchColumn: 'codigo_cta'
+      },
+      pagination: {
+        lastPage: '',
+        currentPage: '',
+        total: '',
+        lastPageUrl: '',
+        nextPageUrl: '',
+        prevPageUrl: '',
+        from: '',
+        to: ''
+      }
+    };
+  },
+  methods: {
+    getLibrodiario: function getLibrodiario() {
+      var _this = this;
+
+      var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/obtenerlibrodiarios';
+      this.tableData.draw++;
+      axios.get(url, {
+        params: this.tableData
+      }).then(function (response) {
+        var data = response.data;
+        _this.parametrostabla = data;
+
+        if (_this.tableData.draw == data.draw) {
+          _this.librodiarios = data.data.data;
+
+          _this.configPagination(data.data);
+        }
+      })["catch"](function (errors) {
+        toast.fire({
+          icon: 'error',
+          title: 'Error'
+        });
+      });
+    },
+    eliminarlibrodiario: function eliminarlibrodiario(librodiarioid) {
+      var _this2 = this;
+
+      modalconfirm.fire({
+        title: '¿Está seguro que desea eliminar este librodiario?',
+        text: "El librodiario ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: function preConfirm(login) {
+          return axios["delete"]('/librodiarios/' + librodiarioid, {
+            params: _this2.tableData
+          }).then(function (response) {
+            var data = response.data;
+
+            _this2.getLibrodiario();
+
+            toastsuccess.fire({
+              title: data.title + ' ' + data.message
+            });
+          })["catch"](function (errors) {
+            console.log(errors);
+          });
+        },
+        allowOutsideClick: function allowOutsideClick() {
+          return !swal.isLoading();
+        }
+      }).then(function (result) {
+        if (result.value) {
+          swal.fire('Quitado!', 'Se ha quitado el rol.', 'success');
+        }
+      });
+    },
+    filtro: function filtro() {
+      this.getLibrodiario();
+    },
+    configPagination: function configPagination(data) {
+      this.pagination.lastPage = data.last_page;
+      this.pagination.currentPage = data.current_page;
+      this.pagination.total = data.total;
+      this.pagination.lastPageUrl = data.last_page_url;
+      this.pagination.nextPageUrl = data.next_page_url;
+      this.pagination.prevPageUrl = data.prev_page_url;
+      this.pagination.from = data.from;
+      this.pagination.to = data.to;
+    },
+    sortBy: function sortBy(key) {
+      this.sortKey = key;
+      this.sortOrders[key] = this.sortOrders[key] * -1;
+      this.tableData.column = this.getIndex(this.columns, 'name', key);
+      this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
+      if (this.tableData.column <= this.columnasPrincipales) this.getLibrodiario();
+    },
+    getIndex: function getIndex(array, key, value) {
+      return array.findIndex(function (i) {
+        return i[key] == value;
+      });
+    },
+    importardatolibrodiario: function importardatolibrodiario(librodiariosel) {
+      var _this3 = this;
+
+      var par = this.parametrostabla;
+      axios.put('/importardatolibrodiario/' + librodiariosel.id).then(function (res) {
+        _this3.getLibrodiario('/obtenerlibrodiarios');
+
+        toast.fire({
+          icon: 'success',
+          title: 'Datos importados correctamente'
+        });
+      })["catch"](function (err) {
+        toast.fire({
+          icon: 'error',
+          title: 'Error'
+        });
+        location.reload();
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -4641,7 +5194,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ColumUserdatabase_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../ColumUserdatabase.vue */ "./resources/js/components/ColumUserdatabase.vue");
 /* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Pagination.vue */ "./resources/js/components/Pagination.vue");
-//
 //
 //
 //
@@ -46755,6 +47307,579 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-currency-input/dist/vue-currency-input.esm.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/vue-currency-input/dist/vue-currency-input.esm.js ***!
+  \************************************************************************/
+/*! exports provided: default, CurrencyDirective, CurrencyInput, parseCurrency, setValue */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CurrencyDirective", function() { return directive; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CurrencyInput", function() { return component; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseCurrency", function() { return parseCurrency; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setValue", function() { return setValue; });
+/**
+ * Vue Currency Input 1.19.1
+ * (c) 2018-2020 Matthias Stiller
+ * @license MIT
+ */
+function dispatchEvent (el, eventName, data) {
+  var event = document.createEvent('CustomEvent');
+  event.initCustomEvent(eventName, true, true, data);
+  el.dispatchEvent(event);
+}
+
+var toExternalNumberModel = function (number, valueAsInteger, fractionDigits) {
+  return valueAsInteger && number != null ? Number(number.toFixed(fractionDigits).split('.').join('')) : number
+};
+var toInternalNumberModel = function (number, valueAsInteger, fractionDigits) {
+  return valueAsInteger && number != null ? number / Math.pow(10, fractionDigits) : number
+};
+
+var escapeRegExp = function (str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); };
+var removeLeadingZeros = function (str) { return str.replace(/^0+(0$|[^0])/, '$1'); };
+var count = function (str, search) { return (str.match(new RegExp(escapeRegExp(search), 'g')) || []).length; };
+var startsWith = function (str, search) { return str.substring(0, search.length) === search; };
+var substringBefore = function (str, search) { return str.substring(0, str.indexOf(search)); };
+
+var NumberFormat = function NumberFormat (options) {
+  var currency = options.currency;
+  var locale = options.locale;
+  var precision = options.precision;
+  var autoDecimalMode = options.autoDecimalMode;
+  var valueAsInteger = options.valueAsInteger;
+  var numberFormat = new Intl.NumberFormat(locale, typeof currency === 'string' ? { currency: currency, style: 'currency' } : { minimumFractionDigits: 1 });
+  var ps = numberFormat.format(123456);
+  this.locale = locale;
+  this.currency = currency;
+  this.digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (i) { return i.toLocaleString(locale); });
+  this.decimalSymbol = count(ps, this.digits[0]) ? ps.substr(ps.indexOf(this.digits[6]) + 1, 1) : undefined;
+  this.groupingSymbol = ps.substr(ps.indexOf(this.digits[3]) + 1, 1);
+  this.minusSymbol = substringBefore(Number(-1).toLocaleString(locale), this.digits[1]);
+  if (this.decimalSymbol === undefined) {
+    this.minimumFractionDigits = this.maximumFractionDigits = 0;
+  } else if (typeof precision === 'number') {
+    this.minimumFractionDigits = this.maximumFractionDigits = precision;
+  } else if (typeof precision === 'object' && !autoDecimalMode && !valueAsInteger) {
+    this.minimumFractionDigits = precision.min || 0;
+    this.maximumFractionDigits = precision.max !== undefined ? precision.max : 20;
+  } else if (typeof currency === 'string') {
+    this.minimumFractionDigits = numberFormat.resolvedOptions().minimumFractionDigits;
+    this.maximumFractionDigits = numberFormat.resolvedOptions().maximumFractionDigits;
+  } else {
+    this.minimumFractionDigits = this.maximumFractionDigits = 2;
+  }
+  if (typeof currency === 'string') {
+    this.prefix = substringBefore(ps, this.digits[1]);
+    this.negativePrefix = substringBefore(numberFormat.format(-1), this.digits[1]);
+    this.suffix = ps.substring(ps.lastIndexOf(this.decimalSymbol ? this.digits[0] : this.digits[6]) + 1);
+  } else {
+    this.prefix = (currency || {}).prefix || '';
+    this.negativePrefix = "" + (this.minusSymbol) + (this.prefix);
+    this.suffix = (currency || {}).suffix || '';
+  }
+};
+NumberFormat.prototype.parse = function parse (str) {
+  var negative = this.isNegative(str);
+  str = this.normalizeDigits(str);
+  str = this.stripCurrencySymbol(str);
+  str = this.stripMinusSymbol(str);
+  var fraction = this.decimalSymbol ? ("(" + (escapeRegExp(this.decimalSymbol)) + "\\d*)?") : '';
+  var match = str.match(new RegExp(("^" + (this.integerPattern()) + fraction + "$")));
+  if (match) {
+    return Number(("" + (negative ? '-' : '') + ((this.onlyDigits(match[1]))) + "." + ((this.onlyDigits(match[3] || '')))))
+  }
+  return null
+};
+NumberFormat.prototype.format = function format (number, options) {
+    if ( options === void 0 ) options = {
+  minimumFractionDigits: this.minimumFractionDigits,
+  maximumFractionDigits: this.maximumFractionDigits
+};
+  if (typeof this.currency === 'string') {
+    return number.toLocaleString(this.locale, Object.assign({}, {style: 'currency',
+      currency: this.currency},
+      options))
+  } else {
+    return this.insertCurrencySymbol(Math.abs(number).toLocaleString(this.locale, options), number < 0 || (number === 0 && (1 / number < 0)))
+  }
+};
+NumberFormat.prototype.integerPattern = function integerPattern () {
+  return ("(0|[1-9]\\d{0,2}(" + (escapeRegExp(this.groupingSymbol)) + "?\\d{3})*)")
+};
+NumberFormat.prototype.toFraction = function toFraction (str) {
+  return ("" + (this.digits[0]) + (this.decimalSymbol) + ((this.onlyLocaleDigits(str.substr(1)).substr(0, this.maximumFractionDigits))))
+};
+NumberFormat.prototype.isFractionIncomplete = function isFractionIncomplete (str) {
+  return this.normalizeDigits(str).match(new RegExp(("" + (this.integerPattern()) + (escapeRegExp(this.decimalSymbol)) + "$")))
+};
+NumberFormat.prototype.isNegative = function isNegative (str) {
+  return startsWith(str, this.negativePrefix) || startsWith(str.replace('-', this.minusSymbol), this.minusSymbol)
+};
+NumberFormat.prototype.insertCurrencySymbol = function insertCurrencySymbol (str, negative) {
+  return ("" + (negative ? this.negativePrefix : this.prefix) + str + (this.suffix))
+};
+NumberFormat.prototype.stripMinusSymbol = function stripMinusSymbol (str) {
+  return str.replace('-', this.minusSymbol).replace(this.minusSymbol, '')
+};
+NumberFormat.prototype.stripCurrencySymbol = function stripCurrencySymbol (str) {
+  return str.replace(this.negativePrefix, '').replace(this.prefix, '').replace(this.suffix, '')
+};
+NumberFormat.prototype.normalizeDigits = function normalizeDigits (str) {
+  if (this.digits[0] !== '0') {
+    this.digits.forEach(function (digit, index) {
+      str = str.replace(new RegExp(digit, 'g'), index);
+    });
+  }
+  return str
+};
+NumberFormat.prototype.onlyDigits = function onlyDigits (str) {
+  return this.normalizeDigits(str).replace(/\D+/g, '')
+};
+NumberFormat.prototype.onlyLocaleDigits = function onlyLocaleDigits (str) {
+  return str.replace(new RegExp(("[^" + (this.digits.join('')) + "]*"), 'g'), '')
+};
+
+var DEFAULT_OPTIONS = {
+  locale: undefined,
+  currency: 'EUR',
+  valueAsInteger: false,
+  distractionFree: true,
+  precision: undefined,
+  autoDecimalMode: false,
+  valueRange: undefined,
+  allowNegative: true
+};
+var parseCurrency = function (formattedValue, options) {
+  var mergedOptions = Object.assign({}, DEFAULT_OPTIONS, options);
+  var numberFormat = new NumberFormat(mergedOptions);
+  return toExternalNumberModel(numberFormat.parse(formattedValue), mergedOptions.valueAsInteger, numberFormat.maximumFractionDigits)
+};
+var setValue = function (el, value) { return dispatchEvent(el, 'format', { value: value }); };
+
+var setCaretPosition = function (el, position) { return el.setSelectionRange(position, position); };
+var getCaretPositionAfterFormat = function (newValue, inputtedValue, caretPosition, numberFormat, options) {
+  var prefix = numberFormat.prefix;
+  var suffix = numberFormat.suffix;
+  var decimalSymbol = numberFormat.decimalSymbol;
+  var maximumFractionDigits = numberFormat.maximumFractionDigits;
+  var groupingSymbol = numberFormat.groupingSymbol;
+  var decimalSymbolPosition = inputtedValue.indexOf(decimalSymbol) + 1;
+  var caretPositionFromLeft = inputtedValue.length - caretPosition;
+  if (Math.abs(newValue.length - inputtedValue.length) > 1 && caretPosition <= decimalSymbolPosition) {
+    return newValue.indexOf(decimalSymbol) + 1
+  } else if (newValue.substr(caretPosition, 1) === groupingSymbol && count(newValue, groupingSymbol) === count(inputtedValue, groupingSymbol) + 1) {
+    return newValue.length - caretPositionFromLeft - 1
+  } else {
+    if (!options.autoDecimalMode && decimalSymbolPosition !== 0 && caretPosition > decimalSymbolPosition) {
+      if (numberFormat.onlyDigits(inputtedValue.substr(decimalSymbolPosition)).length - 1 === maximumFractionDigits) {
+        caretPositionFromLeft -= 1;
+      }
+    }
+    return options.distractionFree.hideCurrencySymbol
+      ? newValue.length - caretPositionFromLeft
+      : Math.max(newValue.length - Math.max(caretPositionFromLeft, suffix.length), prefix.length === 0 ? 0 : prefix.length + 1)
+  }
+};
+var getDistractionFreeCaretPosition = function (numberFormat, options, value, caretPosition) {
+  var result = caretPosition;
+  if (options.distractionFree.hideCurrencySymbol) {
+    result -= numberFormat.prefix.length;
+  }
+  if (options.distractionFree.hideGroupingSymbol) {
+    result -= count(value.substring(0, caretPosition), numberFormat.groupingSymbol);
+  }
+  return Math.max(0, result)
+};
+
+var equal = function (a, b) {
+  if (a === b) {
+    return true
+  }
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') {
+    return false
+  }
+  var keys = Object.keys(a);
+  if (keys.length !== Object.keys(b).length) {
+    return false
+  }
+  if (!keys.every(Object.prototype.hasOwnProperty.bind(b))) {
+    return false
+  }
+  return keys.every(function (key) { return equal(a[key], b[key]); })
+};
+
+var DefaultNumberMask = function DefaultNumberMask (numberFormat) {
+  this.numberFormat = numberFormat;
+};
+DefaultNumberMask.prototype.conformToMask = function conformToMask (str, previousConformedValue) {
+    var this$1 = this;
+    if ( previousConformedValue === void 0 ) previousConformedValue = '';
+  var negative = this.numberFormat.isNegative(str);
+  var checkIncompleteValue = function (str) {
+    if (str === '' && negative && previousConformedValue !== this$1.numberFormat.negativePrefix) {
+      return ''
+    } else if (this$1.numberFormat.maximumFractionDigits > 0) {
+      if (this$1.numberFormat.isFractionIncomplete(str)) {
+        return str
+      } else if (startsWith(str, this$1.numberFormat.decimalSymbol)) {
+        return this$1.numberFormat.toFraction(str)
+      }
+    }
+    return null
+  };
+  var value = str;
+  value = this.numberFormat.stripCurrencySymbol(value);
+  value = this.numberFormat.stripMinusSymbol(value);
+  var incompleteValue = checkIncompleteValue(value);
+  if (incompleteValue != null) {
+    return this.numberFormat.insertCurrencySymbol(incompleteValue, negative)
+  }
+  var ref = value.split(this.numberFormat.decimalSymbol);
+    var integer = ref[0];
+    var fraction = ref.slice(1);
+  var integerDigits = removeLeadingZeros(this.numberFormat.onlyDigits(integer));
+  var fractionDigits = this.numberFormat.onlyDigits(fraction.join('')).substr(0, this.numberFormat.maximumFractionDigits);
+  var invalidFraction = fraction.length > 0 && fractionDigits.length === 0;
+  var invalidNegativeValue = integerDigits === '' && negative && (previousConformedValue === str.slice(0, -1) || previousConformedValue !== this.numberFormat.negativePrefix);
+  if (invalidFraction || invalidNegativeValue) {
+    return previousConformedValue
+  } else if (integerDigits.match(/\d+/)) {
+    return {
+      numberValue: Number(("" + (negative ? '-' : '') + integerDigits + "." + fractionDigits)),
+      fractionDigits: fractionDigits
+    }
+  } else {
+    return ''
+  }
+};
+var AutoDecimalModeNumberMask = function AutoDecimalModeNumberMask (numberFormat) {
+  this.numberFormat = numberFormat;
+};
+AutoDecimalModeNumberMask.prototype.conformToMask = function conformToMask (str) {
+  if (str === '') {
+    return ''
+  }
+  var negative = this.numberFormat.isNegative(str);
+  var numberValue = this.numberFormat.stripMinusSymbol(str) === ''
+    ? -0
+    : Number(("" + (negative ? '-' : '') + (removeLeadingZeros(this.numberFormat.onlyDigits(str))))) / Math.pow(10, this.numberFormat.minimumFractionDigits);
+  return {
+    numberValue: numberValue,
+    fractionDigits: numberValue.toFixed(this.numberFormat.minimumFractionDigits).slice(-this.numberFormat.minimumFractionDigits)
+  }
+};
+
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+var init = function (el, optionsFromBinding, ref) {
+  var $CI_DEFAULT_OPTIONS = ref.$CI_DEFAULT_OPTIONS;
+  var inputElement = el.tagName.toLowerCase() === 'input' ? el : el.querySelector('input');
+  if (!inputElement) {
+    throw new Error('No input element found')
+  }
+  var options = Object.assign({}, ($CI_DEFAULT_OPTIONS || DEFAULT_OPTIONS), optionsFromBinding);
+  var distractionFree = options.distractionFree;
+  var autoDecimalMode = options.autoDecimalMode;
+  var valueRange = options.valueRange;
+  if (typeof distractionFree === 'boolean') {
+    options.distractionFree = {
+      hideCurrencySymbol: distractionFree,
+      hideNegligibleDecimalDigits: distractionFree,
+      hideGroupingSymbol: distractionFree
+    };
+  }
+  if (valueRange) {
+    options.valueRange = {
+      min: valueRange.min !== undefined ? Math.max(valueRange.min, -MAX_SAFE_INTEGER) : -MAX_SAFE_INTEGER,
+      max: valueRange.max !== undefined ? Math.min(valueRange.max, MAX_SAFE_INTEGER) : MAX_SAFE_INTEGER
+    };
+  } else {
+    options.valueRange = {
+      min: -MAX_SAFE_INTEGER,
+      max: MAX_SAFE_INTEGER
+    };
+  }
+  if (autoDecimalMode) {
+    options.distractionFree.hideNegligibleDecimalDigits = false;
+    inputElement.setAttribute('inputmode', 'numeric');
+  } else {
+    inputElement.setAttribute('inputmode', 'decimal');
+  }
+  var currencyFormat = new NumberFormat(options);
+  inputElement.$ci = Object.assign({}, inputElement.$ci || {},
+    {options: options,
+    numberMask: options.autoDecimalMode ? new AutoDecimalModeNumberMask(currencyFormat) : new DefaultNumberMask(currencyFormat),
+    currencyFormat: currencyFormat});
+  return inputElement
+};
+var validateValueRange = function (value, valueRange) {
+  return Math.min(Math.max(value, valueRange.min), valueRange.max)
+};
+var triggerEvent = function (el, eventName) {
+  var ref = el.$ci;
+  var numberValue = ref.numberValue;
+  var currencyFormat = ref.currencyFormat;
+  var options = ref.options;
+  numberValue = toExternalNumberModel(numberValue, options.valueAsInteger, currencyFormat.maximumFractionDigits);
+  dispatchEvent(el, eventName, { numberValue: numberValue });
+};
+var applyFixedFractionFormat = function (el, value, forcedChange) {
+  if ( forcedChange === void 0 ) forcedChange = false;
+  var ref = el.$ci;
+  var currencyFormat = ref.currencyFormat;
+  var options = ref.options;
+  format(el, value != null ? currencyFormat.format(validateValueRange(value, options.valueRange)) : null);
+  if (value !== el.$ci.numberValue || forcedChange) {
+    triggerEvent(el, 'change');
+  }
+};
+var updateInputValue = function (el, value, hideNegligibleDecimalDigits) {
+  if (value != null) {
+    var ref = el.$ci;
+    var focus = ref.focus;
+    var options = ref.options;
+    var numberMask = ref.numberMask;
+    var currencyFormat = ref.currencyFormat;
+    var previousConformedValue = ref.previousConformedValue;
+    var allowNegative = options.allowNegative;
+    var distractionFree = options.distractionFree;
+    var conformedValue = numberMask.conformToMask(value, previousConformedValue);
+    var formattedValue;
+    if (typeof conformedValue === 'object') {
+      var numberValue = conformedValue.numberValue;
+      var fractionDigits = conformedValue.fractionDigits;
+      var maximumFractionDigits = currencyFormat.maximumFractionDigits;
+      var minimumFractionDigits = currencyFormat.minimumFractionDigits;
+      if (focus) {
+        minimumFractionDigits = maximumFractionDigits;
+      }
+      minimumFractionDigits = hideNegligibleDecimalDigits
+        ? fractionDigits.replace(/0+$/, '').length
+        : Math.min(minimumFractionDigits, fractionDigits.length);
+      formattedValue = numberValue > MAX_SAFE_INTEGER
+        ? previousConformedValue
+        : currencyFormat.format(numberValue, {
+          useGrouping: !(focus && distractionFree.hideGroupingSymbol),
+          minimumFractionDigits: minimumFractionDigits,
+          maximumFractionDigits: maximumFractionDigits
+        });
+    } else {
+      formattedValue = conformedValue;
+    }
+    if (!allowNegative) {
+      formattedValue = formattedValue.replace(currencyFormat.negativePrefix, currencyFormat.prefix);
+    }
+    if (focus && distractionFree.hideCurrencySymbol) {
+      formattedValue = formattedValue
+        .replace(currencyFormat.negativePrefix, currencyFormat.minusSymbol)
+        .replace(currencyFormat.prefix, '')
+        .replace(currencyFormat.suffix, '');
+    }
+    el.value = formattedValue;
+    el.$ci.numberValue = currencyFormat.parse(el.value);
+  } else {
+    el.value = el.$ci.numberValue = null;
+  }
+  el.$ci.previousConformedValue = el.value;
+};
+var format = function (el, value, hideNegligibleDecimalDigits) {
+  if ( hideNegligibleDecimalDigits === void 0 ) hideNegligibleDecimalDigits = false;
+  updateInputValue(el, value, hideNegligibleDecimalDigits);
+  triggerEvent(el, 'input');
+};
+var addEventListener = function (el) {
+  el.addEventListener('input', function (e) {
+    if (!e.detail) {
+      var value = el.value;
+      var selectionStart = el.selectionStart;
+      var el_$ci = el.$ci;
+      var currencyFormat = el_$ci.currencyFormat;
+      var options = el_$ci.options;
+      format(el, value);
+      if (el.$ci.focus) {
+        setCaretPosition(el, getCaretPositionAfterFormat(el.value, value, selectionStart, currencyFormat, options));
+      }
+    }
+  }, { capture: true });
+  el.addEventListener('format', function (e) {
+    var ref = el.$ci;
+    var currencyFormat = ref.currencyFormat;
+    var options = ref.options;
+    var numberValue = ref.numberValue;
+    var value = toInternalNumberModel(e.detail.value, options.valueAsInteger, currencyFormat.maximumFractionDigits);
+    if (value !== numberValue) {
+      applyFixedFractionFormat(el, value);
+    }
+  });
+  el.addEventListener('focus', function () {
+    el.$ci.focus = true;
+    var ref = el.$ci.options.distractionFree;
+    var hideCurrencySymbol = ref.hideCurrencySymbol;
+    var hideGroupingSymbol = ref.hideGroupingSymbol;
+    var hideNegligibleDecimalDigits = ref.hideNegligibleDecimalDigits;
+    if (hideCurrencySymbol || hideGroupingSymbol || hideNegligibleDecimalDigits) {
+      setTimeout(function () {
+        var value = el.value;
+        var selectionStart = el.selectionStart;
+        var selectionEnd = el.selectionEnd;
+        format(el, el.value, hideNegligibleDecimalDigits);
+        if (Math.abs(selectionStart - selectionEnd) > 0) {
+          el.setSelectionRange(0, el.value.length);
+        } else {
+          setCaretPosition(el, getDistractionFreeCaretPosition(el.$ci.currencyFormat, el.$ci.options, value, selectionStart));
+        }
+      });
+    }
+  });
+  el.addEventListener('blur', function () {
+    el.$ci.focus = false;
+    applyFixedFractionFormat(el, el.$ci.numberValue);
+  });
+  el.addEventListener('change', function (e) {
+    if (!e.detail) {
+      triggerEvent(el, 'change');
+    }
+  });
+};
+var directive = {
+  bind: function bind (el, ref, ref$1) {
+    var options = ref.value;
+    var context = ref$1.context;
+    var inputElement = init(el, options, context);
+    var value = inputElement.value;
+    var currencyFormat = inputElement.$ci.currencyFormat;
+    if (value) {
+      applyFixedFractionFormat(inputElement, toInternalNumberModel(currencyFormat.parse(value), options.valueAsInteger, currencyFormat.maximumFractionDigits));
+    }
+    addEventListener(inputElement);
+  },
+  componentUpdated: function componentUpdated (el, ref, ref$1) {
+    var value = ref.value;
+    var oldValue = ref.oldValue;
+    var context = ref$1.context;
+    if (!equal(value, oldValue)) {
+      var inputElement = init(el, value, context);
+      applyFixedFractionFormat(inputElement, inputElement.$ci.numberValue, true);
+    }
+  }
+};
+
+var component = {
+  render: function render (h) {
+    var this$1 = this;
+    return h('input', {
+      directives: [{
+        name: 'currency',
+        value: this.options
+      }],
+      on: Object.assign({}, this.$listeners,
+        {change: function (e) {
+          if (e.detail) {
+            this$1.$emit('change', e.detail.numberValue);
+          }
+        },
+        input: function (e) {
+          if (e.detail && this$1.value !== e.detail.numberValue) {
+            this$1.$emit('input', e.detail.numberValue);
+          }
+        }})
+    })
+  },
+  directives: {
+    currency: directive
+  },
+  name: 'CurrencyInput',
+  props: {
+    value: {
+      type: Number,
+      default: null
+    },
+    locale: {
+      type: String,
+      default: undefined
+    },
+    currency: {
+      type: [String, Object],
+      default: undefined
+    },
+    distractionFree: {
+      type: [Boolean, Object],
+      default: undefined
+    },
+    precision: {
+      type: [Number, Object],
+      default: undefined
+    },
+    autoDecimalMode: {
+      type: Boolean,
+      default: undefined
+    },
+    valueAsInteger: {
+      type: Boolean,
+      default: undefined
+    },
+    valueRange: {
+      type: Object,
+      default: undefined
+    },
+    allowNegative: {
+      type: Boolean,
+      default: undefined
+    }
+  },
+  mounted: function mounted () {
+    this.setValue(this.value);
+  },
+  computed: {
+    options: function options () {
+      var this$1 = this;
+      var options = Object.assign({}, this.$CI_DEFAULT_OPTIONS || DEFAULT_OPTIONS);
+      Object.keys(DEFAULT_OPTIONS).forEach(function (key) {
+        if (this$1[key] !== undefined) {
+          options[key] = this$1[key];
+        }
+      });
+      return options
+    }
+  },
+  watch: {
+    value: 'setValue'
+  },
+  methods: {
+    setValue: function setValue$1 (value) {
+      setValue(this.$el, value);
+    }
+  }
+};
+
+var plugin = {
+  install: function install (Vue, ref) {
+    if ( ref === void 0 ) ref = {};
+    var componentName = ref.componentName; if ( componentName === void 0 ) componentName = component.name;
+    var directiveName = ref.directiveName; if ( directiveName === void 0 ) directiveName = 'currency';
+    var globalOptions = ref.globalOptions; if ( globalOptions === void 0 ) globalOptions = {};
+    Vue.prototype.$CI_DEFAULT_OPTIONS = Object.assign({}, DEFAULT_OPTIONS, globalOptions);
+    Vue.component(componentName, component);
+    Vue.directive(directiveName, directive);
+    Vue.prototype.$parseCurrency = function (str, options) {
+      if ( options === void 0 ) options = {};
+      return parseCurrency(str, Object.assign({}, globalOptions, options));
+    };
+  }
+};
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(plugin);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (plugin);
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/Permisos/crearpermisoComponent.vue?vue&type=template&id=506e7a69&":
 /*!***************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/Permisos/crearpermisoComponent.vue?vue&type=template&id=506e7a69& ***!
@@ -46804,7 +47929,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text" },
+                attrs: { type: "text", autofocus: "" },
                 domProps: { value: _vm.permiso.name },
                 on: {
                   input: function($event) {
@@ -46974,7 +48099,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text" },
+                attrs: { type: "text", autofocus: "" },
                 domProps: { value: _vm.permisomod.name },
                 on: {
                   input: function($event) {
@@ -47378,7 +48503,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "text", name: "name" },
+                    attrs: { type: "text", name: "name", autofocus: "" },
                     domProps: { value: _vm.rol.name },
                     on: {
                       input: function($event) {
@@ -47781,7 +48906,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "text" },
+                    attrs: { type: "text", autofocus: "" },
                     domProps: { value: _vm.rolmod.name },
                     on: {
                       input: function($event) {
@@ -48299,15 +49424,15 @@ var render = function() {
             "tbody",
             _vm._l(_vm.roles, function(rol) {
               return _c("tr", { key: rol.id }, [
-                _c("td", { staticStyle: { width: "33%" } }, [
+                _c("td", { staticStyle: { width: "30%" } }, [
                   _vm._v(_vm._s(rol.name))
                 ]),
                 _vm._v(" "),
-                _c("td", { staticStyle: { width: "33%" } }, [
+                _c("td", { staticStyle: { width: "45%" } }, [
                   _vm._v(_vm._s(rol.description))
                 ]),
                 _vm._v(" "),
-                _c("td", { staticStyle: { width: "33%" } }, [
+                _c("td", { staticStyle: { width: "25%" } }, [
                   _vm._v(_vm._s(rol.category))
                 ]),
                 _vm._v(" "),
@@ -48652,7 +49777,8 @@ var render = function() {
                             attrs: {
                               type: "text",
                               name: "nombres",
-                              placeholder: "Nombres"
+                              placeholder: "Nombres",
+                              autofocus: ""
                             },
                             domProps: { value: _vm.usuario.nombres },
                             on: {
@@ -49307,7 +50433,8 @@ var render = function() {
                               attrs: {
                                 type: "text",
                                 name: "nombres",
-                                placeholder: "Nombres"
+                                placeholder: "Nombres",
+                                autofocus: ""
                               },
                               domProps: { value: _vm.usuariomod.nombres },
                               on: {
@@ -50394,11 +51521,11 @@ var render = function() {
                   _vm._v(_vm._s(usuario.name))
                 ]),
                 _vm._v(" "),
-                _c("td", { staticStyle: { width: "30%" } }, [
+                _c("td", { staticStyle: { width: "20%" } }, [
                   _vm._v(_vm._s(usuario.username))
                 ]),
                 _vm._v(" "),
-                _c("td", { staticStyle: { width: "30%" } }, [
+                _c("td", { staticStyle: { width: "20%" } }, [
                   _vm._v(_vm._s(usuario.email))
                 ]),
                 _vm._v(" "),
@@ -50419,6 +51546,24 @@ var render = function() {
                       },
                       [_vm._v("NO")]
                     ),
+                _vm._v(" "),
+                usuario.roles
+                  ? _c("td", { staticStyle: { width: "20%" } }, [
+                      _c(
+                        "ul",
+                        _vm._l(usuario.roles, function(roles, index) {
+                          return _c("li", { key: index }, [
+                            _vm._v(
+                              "\n                           " +
+                                _vm._s(roles.name) +
+                                "\n                       "
+                            )
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  : _c("td", [_vm._v(" - ")]),
                 _vm._v(" "),
                 _vm.can_ver
                   ? _c(
@@ -50794,6 +51939,832 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=template&id=07878f76&":
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=template&id=07878f76& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "form",
+      {
+        on: {
+          keydown: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            $event.preventDefault()
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("table", { staticClass: "table table-responsive-sm" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.librodiario, function(librodiario, k) {
+                      return _c("tr", { key: k }, [
+                        _c(
+                          "td",
+                          { staticStyle: { width: "30%" } },
+                          [
+                            _c(
+                              "multiselect",
+                              {
+                                attrs: {
+                                  options: _vm.cuentas,
+                                  searchable: true,
+                                  selectLabel: "",
+                                  multiple: false,
+                                  placeholder: "Seleccione",
+                                  "preserve-search": true,
+                                  "custom-label": _vm.codigodescripcion,
+                                  selectedLabel: "Seleccionado",
+                                  deselectLabel: "",
+                                  noOptions: ""
+                                },
+                                model: {
+                                  value: librodiario.cuenta,
+                                  callback: function($$v) {
+                                    _vm.$set(librodiario, "cuenta", $$v)
+                                  },
+                                  expression: "librodiario.cuenta"
+                                }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    attrs: { slot: "noResult" },
+                                    slot: "noResult"
+                                  },
+                                  [_vm._v("No existe cuenta.")]
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: librodiario.descripcion,
+                                expression: "librodiario.descripcion"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: librodiario.descripcion },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  librodiario,
+                                  "descripcion",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: librodiario.documento,
+                                expression: "librodiario.documento"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: librodiario.documento },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  librodiario,
+                                  "documento",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: librodiario.debe,
+                                expression: "librodiario.debe"
+                              },
+                              {
+                                name: "currency",
+                                rawName: "v-currency",
+                                value: null,
+                                expression: "null"
+                              }
+                            ],
+                            staticClass: "form-control text-right",
+                            attrs: {
+                              disabled: librodiario.haber ? true : false,
+                              step: ".01",
+                              value: "0"
+                            },
+                            domProps: { value: librodiario.debe },
+                            on: {
+                              keyup: _vm.cuadre,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  librodiario,
+                                  "debe",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: librodiario.haber,
+                                expression: "librodiario.haber"
+                              },
+                              {
+                                name: "currency",
+                                rawName: "v-currency",
+                                value: null,
+                                expression: "null"
+                              }
+                            ],
+                            staticClass: "form-control text-right",
+                            attrs: {
+                              disabled: librodiario.debe ? true : false,
+                              step: ".01",
+                              value: "0"
+                            },
+                            domProps: { value: librodiario.haber },
+                            on: {
+                              keyup: _vm.cuadre,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  librodiario,
+                                  "haber",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "trashIconContainer",
+                            attrs: { scope: "row" }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "far fa-trash-alt",
+                              on: {
+                                click: function($event) {
+                                  return _vm.borrarfila(k, librodiario)
+                                }
+                              }
+                            })
+                          ]
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: { click: _vm.agregarfila }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-plus-circle" }),
+                    _vm._v("\n                    Agregar\n                ")
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "text-right" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.crearlibrodiario($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Guardar")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("span", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.sumaigual))
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h5", [_c("strong", [_vm._v(" Libro Diario ")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Cuenta")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Descripcion")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Documento")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Debe")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Haber")]),
+        _vm._v(" "),
+        _c("th"),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=template&id=2134f010&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=template&id=2134f010& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row justify-content-between" }, [
+          _c("div", { staticClass: " d-flex align-items-center my-1" }, [
+            _c("div", { staticClass: "mr-3" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.tableData.length,
+                      expression: "tableData.length"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.tableData,
+                          "length",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      },
+                      function($event) {
+                        return _vm.getLibrodiario()
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.perPage, function(records, index) {
+                  return _c(
+                    "option",
+                    { key: index, domProps: { value: records } },
+                    [_vm._v(_vm._s(records))]
+                  )
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _vm.can_crear
+              ? _c("div", { staticClass: "w-auto mr-1" }, [_vm._m(0)])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(1)
+          ]),
+          _vm._v(" "),
+          _c("fieldset", { staticClass: "border p-1" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "row d-flex align-items-stretch" }, [
+              _c("div", { staticClass: "col pr-1" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.tableData.search,
+                      expression: "tableData.search"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { autofocus: "", type: "text", placeholder: "Buscar" },
+                  domProps: { value: _vm.tableData.search },
+                  on: {
+                    keyup: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.getLibrodiario()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.tableData, "search", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col pl-1" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.tableData.searchColumn,
+                        expression: "tableData.searchColumn"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.tableData,
+                          "searchColumn",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "elemento" } }, [
+                      _vm._v("Elemento")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "codigo_cta" } }, [
+                      _vm._v("Codigo Cuenta")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "descripcion" } }, [
+                      _vm._v("Descripcion")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "tipo_cta" } }, [
+                      _vm._v("Tipo Cuenta")
+                    ])
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "datatable",
+        {
+          attrs: {
+            columns: _vm.columns,
+            sortKey: _vm.sortKey,
+            sortOrders: _vm.sortOrders
+          },
+          on: { sort: _vm.sortBy }
+        },
+        [
+          _c(
+            "tbody",
+            _vm._l(_vm.librodiarios, function(librodiario) {
+              return _c("tr", { key: librodiario.id }, [
+                _c("td", { staticStyle: { width: "10%" } }, [
+                  _vm._v(_vm._s(librodiario.id))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { width: "15%" } }, [
+                  _vm._v(_vm._s(librodiario.elemento))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { width: "15%" } }, [
+                  _vm._v(_vm._s(librodiario.codigo_cta))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { width: "10%" } }, [
+                  _vm._v(" " + _vm._s(librodiario.descripcion))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { width: "30%" } }, [
+                  _vm._v(" " + _vm._s(librodiario.tipo_cta))
+                ]),
+                _vm._v(" "),
+                _vm.can_ver
+                  ? _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-primary text-white",
+                          attrs: { href: "/librodiarios/" + librodiario.id }
+                        },
+                        [_c("i", { staticClass: "far fa-eye" })]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.can_editar
+                  ? _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-warning",
+                          attrs: {
+                            href: "/librodiarios/" + librodiario.id + "/edit"
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-edit" })]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.can_eliminar
+                  ? _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-danger text-white",
+                          attrs: { id: librodiario.id },
+                          on: {
+                            click: function($event) {
+                              return _vm.eliminarlibrodiario(librodiario.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-trash-alt" })]
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex justify-content-end" },
+        [
+          _c("pagination", {
+            attrs: { pagination: _vm.pagination },
+            on: {
+              prev: function($event) {
+                return _vm.getLibrodiario(_vm.pagination.prevPageUrl)
+              },
+              next: function($event) {
+                return _vm.getLibrodiario(_vm.pagination.nextPageUrl)
+              }
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "modalexportar",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "modalexportar",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-sm",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "col-md-6 offset-4" }, [
+                    _c("form", { attrs: { action: "" } }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.exportar,
+                                expression: "exportar"
+                              }
+                            ],
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              value: _vm.exportar,
+                              checked: Array.isArray(_vm.exportar)
+                                ? _vm._i(_vm.exportar, _vm.exportar) > -1
+                                : _vm.exportar
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.exportar,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = _vm.exportar,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.exportar = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.exportar = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.exportar = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", [_vm._v(" PDF ")]),
+                          _vm._v(" "),
+                          _c("i", { staticClass: "far fa-2x fa-file-pdf" })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.exportar,
+                                expression: "exportar"
+                              }
+                            ],
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              value: _vm.exportar,
+                              checked: Array.isArray(_vm.exportar)
+                                ? _vm._i(_vm.exportar, _vm.exportar) > -1
+                                : _vm.exportar
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.exportar,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = _vm.exportar,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.exportar = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.exportar = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.exportar = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", [_vm._v(" Excel")]),
+                          _vm._v(" "),
+                          _c("i", { staticClass: "far fa-2x fa-file-excel" })
+                        ])
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(4)
+              ])
+            ]
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-success",
+        attrs: { href: "/librodiarios/create" }
+      },
+      [
+        _c("i", { staticClass: "far fa-plus-square" }),
+        _vm._v("\n                         Crear\n                       ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-auto" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-primary",
+          attrs: {
+            href: "",
+            "data-toggle": "modal",
+            "data-target": "#modalexportar"
+          }
+        },
+        [
+          _c("i", { staticClass: " fas fa-file-download" }),
+          _vm._v("\n                         Exportar\n                       ")
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("legend", { staticClass: "w-auto my-0" }, [
+      _c("span", { staticClass: "my-0 text-sm" }, [_vm._v(" Buscar por")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "modalexportar" } }, [
+        _vm._v("Exportar lista de librodiarios:")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Generar")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -51182,7 +53153,8 @@ var render = function() {
                       attrs: {
                         type: "text",
                         id: "nombre",
-                        placeholder: "Nombre area"
+                        placeholder: "Nombre area",
+                        autofocus: ""
                       },
                       domProps: { value: _vm.area.nombre },
                       on: {
@@ -51408,7 +53380,8 @@ var render = function() {
                     attrs: {
                       type: "text",
                       name: "nombre",
-                      placeholder: "Nombre Area"
+                      placeholder: "Nombre Area",
+                      autofocus: ""
                     },
                     domProps: { value: _vm.area_mod.nombre },
                     on: {
@@ -51968,7 +53941,8 @@ var render = function() {
                       attrs: {
                         type: "text",
                         name: "nombre",
-                        placeholder: "Nombre cargo"
+                        placeholder: "Nombre cargo",
+                        autofocus: ""
                       },
                       domProps: { value: _vm.cargo.nombre },
                       on: {
@@ -52158,7 +54132,8 @@ var render = function() {
                     attrs: {
                       type: "text",
                       name: "nombre",
-                      placeholder: "Nombre Area"
+                      placeholder: "Nombre Area",
+                      autofocus: ""
                     },
                     domProps: { value: _vm.cargo_mod.nombre },
                     on: {
@@ -52362,7 +54337,8 @@ var render = function() {
                       attrs: {
                         type: "text",
                         name: "nombre",
-                        placeholder: "Nombre departamento"
+                        placeholder: "Nombre departamento",
+                        autofocus: ""
                       },
                       domProps: { value: _vm.departamento.nombre },
                       on: {
@@ -52926,7 +54902,8 @@ var render = function() {
                       type: "text",
                       name: "nombre",
                       placeholder: "Nombre departamento",
-                      required: ""
+                      required: "",
+                      autofocus: ""
                     },
                     domProps: { value: _vm.depa_mod.nombre },
                     on: {
@@ -68423,7 +70400,10 @@ Vue.component('permisos', __webpack_require__(/*! ./components/Admin/Permisos/pe
 Vue.component('crearpermiso', __webpack_require__(/*! ./components/Admin/Permisos/crearpermisoComponent.vue */ "./resources/js/components/Admin/Permisos/crearpermisoComponent.vue")["default"]);
 Vue.component('editarpermiso', __webpack_require__(/*! ./components/Admin/Permisos/editarpermisoComponent.vue */ "./resources/js/components/Admin/Permisos/editarpermisoComponent.vue")["default"]); //Usuario
 
-Vue.component('perfil', __webpack_require__(/*! ./components/Usuario/perfilComponent.vue */ "./resources/js/components/Usuario/perfilComponent.vue")["default"]);
+Vue.component('perfil', __webpack_require__(/*! ./components/Usuario/perfilComponent.vue */ "./resources/js/components/Usuario/perfilComponent.vue")["default"]); //contabilidad - librodiario
+
+Vue.component('librodiario', __webpack_require__(/*! ./components/Contabilidad/Librodiario/librodiarioComponent.vue */ "./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue")["default"]);
+Vue.component('crearlibrodiario', __webpack_require__(/*! ./components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue */ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -69300,6 +71280,146 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColumUserdatabase_vue_vue_type_template_id_c190feba___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColumUserdatabase_vue_vue_type_template_id_c190feba___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _crearlibrodiarioComponent_vue_vue_type_template_id_07878f76___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./crearlibrodiarioComponent.vue?vue&type=template&id=07878f76& */ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=template&id=07878f76&");
+/* harmony import */ var _crearlibrodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./crearlibrodiarioComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var vue_multiselect_dist_vue_multiselect_min_css_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css& */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.css?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _crearlibrodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _crearlibrodiarioComponent_vue_vue_type_template_id_07878f76___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _crearlibrodiarioComponent_vue_vue_type_template_id_07878f76___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_crearlibrodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./crearlibrodiarioComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_crearlibrodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=template&id=07878f76&":
+/*!***********************************************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=template&id=07878f76& ***!
+  \***********************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_crearlibrodiarioComponent_vue_vue_type_template_id_07878f76___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./crearlibrodiarioComponent.vue?vue&type=template&id=07878f76& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue?vue&type=template&id=07878f76&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_crearlibrodiarioComponent_vue_vue_type_template_id_07878f76___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_crearlibrodiarioComponent_vue_vue_type_template_id_07878f76___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./librodiarioComponent.vue?vue&type=template&id=2134f010& */ "./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=template&id=2134f010&");
+/* harmony import */ var _librodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./librodiarioComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _librodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_librodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./librodiarioComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_librodiarioComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=template&id=2134f010&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=template&id=2134f010& ***!
+  \******************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./librodiarioComponent.vue?vue&type=template&id=2134f010& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue?vue&type=template&id=2134f010&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

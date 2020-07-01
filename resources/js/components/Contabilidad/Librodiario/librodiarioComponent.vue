@@ -1,89 +1,85 @@
 <template>
 
    <div>
-        <div class="container-fluid">
+     <div class="container-fluid">
           <div class="row justify-content-between">
-            <div class="d-flex align-items-center my-1">
-              <div class="mr-3">
-                <select class="form-control" v-model="tableData.length" @change="getUsuarios()">
-                  <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
-                </select>
-              </div>
-                <div v-if="can_crear" class="w-auto mr-1">
-                  <a class="btn btn-success" href="/users/create">
-                    <i class="far fa-plus-square"></i>
-                    Crear
-                  </a>
-                </div>
-                <div class="w-auto">
-                  <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalexportar">
-                    <i class=" fas fa-file-download"></i>
-                    Exportar
-                  </a>
-                </div>
-            </div>
-            <fieldset class="border p-1">
+            <div class=" d-flex align-items-center my-1">
+                    <div class="mr-3">
+                      <select class="form-control" v-model="tableData.length" @change="getLibrodiario()">
+                          <option v-for="(records, index) in perPage" :key="index" :value="records">{{records}}</option>
+                      </select>
+                    </div>
+
+                      <div v-if="can_crear" class="w-auto mr-1">
+                          <a class="btn btn-success" href="/librodiarios/create">
+                            <i class="far fa-plus-square"></i>
+                            Crear
+                          </a>
+                      </div>
+                      <div class="w-auto">
+                          <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalexportar">
+                            <i class=" fas fa-file-download"></i>
+                            Exportar
+                          </a>
+                      </div>
+                  </div>
+               <fieldset class="border p-1">
               <legend class="w-auto my-0" ><span class="my-0 text-sm"> Buscar por</span></legend>
               <div class="row d-flex align-items-stretch">
-                <div class="col pr-1">
-                <input class="input form-control" autofocus type="text" v-model="tableData.search" placeholder="Buscar"
-                    @keyup.enter="getUsuarios()">
-                </div>
-                <div class="col pl-1">
-                  <select class="form-control" v-model="tableData.searchColumn">
-                      <option value="name">Nombre Completo</option>
-                      <option value="username">Nombre de usuario</option>
-                      <option value="email">Email</option>
-                  </select>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+                  <div class="col pr-1">
 
+                  <input class="form-control" autofocus type="text" v-model="tableData.search" placeholder="Buscar"
+                      @keyup.enter="getLibrodiario()">
+                  </div>
+                  <div class="col pl-1">
+
+                  <select class="form-control" v-model="tableData.searchColumn">
+                      <option value="elemento">Elemento</option>
+                      <option value="codigo_cta">Codigo Cuenta</option>
+                      <option value="descripcion">Descripcion</option>
+                      <option value="tipo_cta">Tipo Cuenta</option>
+                  </select>
+                  </div>
+                </div>
+               </fieldset>
+          </div>
         </div>
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
           
             <tbody>
-                <tr v-for="(usuario) in usuarios" :key="usuario.id">
-                    <td style="width: 30%" >{{usuario.name}}</td>
-                    <td style="width: 20%" >{{usuario.username}}</td>
-                    <td style="width: 20%" >{{usuario.email}}</td>
-                    <td style="width: 10%"  class="text-center" v-if="usuario.activo">SI</td>
-                    <td style="width: 10%" class="text-center bg-info" v-else>NO</td>
-                    <td v-if="usuario.roles" style="width: 20%" >
-                        <ul>
-                          <li v-for="(roles, index) in usuario.roles" :key="index" >
-                              {{roles.name}}
-                          </li>
-                        </ul>
-                    </td>
-                    <td v-else> - </td>
-                    <td style="width: 10%" class="text-center" v-if="can_ver" >
-                        <a class="btn btn-primary text-white" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
+                <tr v-for="(librodiario) in librodiarios" :key="librodiario.id">
+                    <td style="width: 10%" >{{librodiario.id}}</td>
+                    <td style="width: 15%" >{{librodiario.elemento}}</td>
+                    <td style="width: 15%" >{{librodiario.codigo_cta}}</td>
+                    <td style="width: 10%" > {{librodiario.descripcion}}</td>
+                    <td style="width: 30%" > {{librodiario.tipo_cta}}</td>
+
+                    <td class="text-center" v-if="can_ver" >
+                        <a class="btn btn-primary text-white" :href="'/librodiarios/'+librodiario.id"><i class="far fa-eye"></i></a>
                     </td>
                     <td class="text-center" v-if="can_editar" >
-                        <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
+                        <a class="btn btn-warning" :href="'/librodiarios/'+librodiario.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
                     <td class="text-center" v-if="can_eliminar" >
-                        <a class="btn btn-danger text-white" :id="usuario.id" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
+                        <a class="btn btn-danger text-white" :id="librodiario.id" @click="eliminarlibrodiario(librodiario.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
         </datatable>
-        
         <div class="d-flex justify-content-end">
           <pagination :pagination="pagination"
-              @prev="getUsuarios(pagination.prevPageUrl)"
-              @next="getUsuarios(pagination.nextPageUrl)">
+              @prev="getLibrodiario(pagination.prevPageUrl)"
+              @next="getLibrodiario(pagination.nextPageUrl)">
           </pagination>
         </div>
+        
 
       <!-- Modal -->
       <div class="modal fade" id="modalexportar" tabindex="-1" role="dialog" aria-labelledby="modalexportar" aria-hidden="true">
         <div class="modal-dialog modal-sm"  role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalexportar">Exportar lista de usuarios:</h5>
+              <h5 class="modal-title" id="modalexportar">Exportar lista de librodiarios:</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -127,23 +123,23 @@ import Pagination from '../../Pagination.vue';
 export default {
     components: { datatable: Datatable, pagination: Pagination },
     created() {
-        this.getUsuarios();
+        this.getLibrodiario();
     },
     props:['can_crear','can_ver', 'can_editar','can_eliminar'],
     data() {
         let sortOrders = {};
         let parametrostabla = {};
         let columns = [
-            {label: 'Nombre Completo', name: 'name' },
-            {label: 'Nombre de usuario', name: 'username'},
-            {label: 'Email', name: 'email'},
-            {label: 'Activo', name: 'activo'},            
+            {label: 'ID', name: 'id' },
+            {label: 'Elemento', name: 'elemento'},
+            {label: 'Codigo Cuenta', name: 'codigo_cta'},
+            {label: 'Descripcion', name: 'descripcion'},            
+            {label: 'Tipo Cuenta', name: 'tipo_cta'},           
         ];
         const columnasPrincipales = columns.length - 1 ;
           columns.forEach((column) => {
              sortOrders[column.name] = -1;
           });
-          columns.push({label: 'Rol', name: 'rol'});
         if(this.can_ver){
           columns.push({label: 'Ver', name: 'ver'});
         }
@@ -155,15 +151,8 @@ export default {
         }
 
         return {
-            usuarios: [],
+            librodiarios: [],
             exportar: [],
-            checkbox: [
-              'name',
-              'username',
-              'email',
-              'activo',
-              'acciones',
-            ],
             expanded: false,
             columns: columns,
             columnasPrincipales:columnasPrincipales,
@@ -176,7 +165,7 @@ export default {
                 search: '',
                 column: 0,
                 dir: 'asc',
-                searchColumn: 'name',
+                searchColumn: 'codigo_cta',
             },
             pagination: {
                 lastPage: '',
@@ -191,14 +180,14 @@ export default {
         }
     },
     methods: {
-        getUsuarios(url = '/obtenerusuarios') {
+        getLibrodiario(url = '/obtenerlibrodiarios') {
             this.tableData.draw++;
             axios.get(url, {params: this.tableData})
                 .then(response => {
                     let data = response.data;
                     this.parametrostabla = data;
                     if (this.tableData.draw == data.draw) {
-                        this.usuarios = data.data.data;
+                        this.librodiarios = data.data.data;
                         this.configPagination(data.data);
                     }
                 })
@@ -209,18 +198,18 @@ export default {
                     })
                 });
         },
-        eliminarusuario(usuarioid) {
+        eliminarlibrodiario(librodiarioid) {
             
         modalconfirm.fire({
-        title: '¿Está seguro que desea eliminar este usuario?',
-        text: "El usuario ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        title: '¿Está seguro que desea eliminar este librodiario?',
+        text: "El librodiario ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
         confirmButtonText: 'Si, eliminar',
         cancelButtonText: 'Cancelar',
         preConfirm: (login) => {
-          return axios.delete('/users/'+usuarioid, {params: this.tableData})
+          return axios.delete('/librodiarios/'+librodiarioid, {params: this.tableData})
                 .then(response => {
                   let data = response.data;
-                  this.getUsuarios();
+                  this.getLibrodiario();
                   toastsuccess.fire({
                     title: data.title+' '+data.message
                   })
@@ -241,7 +230,7 @@ export default {
           })
         },
         filtro(){
-          this.getUsuarios();
+          this.getLibrodiario();
         },
         configPagination(data) {
             this.pagination.lastPage = data.last_page;
@@ -259,17 +248,17 @@ export default {
           this.tableData.column = this.getIndex(this.columns, 'name', key);
           this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
           if(this.tableData.column <= this.columnasPrincipales)
-          this.getUsuarios();
+          this.getLibrodiario();
         },
         getIndex(array, key, value) {
             return array.findIndex(i => i[key] == value)
         },
 
-        importardatousuario(usuariosel){
+        importardatolibrodiario(librodiariosel){
             let par = this.parametrostabla;
-          axios.put('/importardatousuario/'+usuariosel.id)
+          axios.put('/importardatolibrodiario/'+librodiariosel.id)
           .then(res => {
-            this.getUsuarios('/obtenerusuarios');
+            this.getLibrodiario('/obtenerlibrodiarios');
             toast.fire({
                 icon: 'success',
                 title: 'Datos importados correctamente'

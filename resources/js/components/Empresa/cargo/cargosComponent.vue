@@ -64,7 +64,6 @@
             @next="getCargos(pagination.nextPageUrl)">
           </pagination>
         </div>
-        </div>
     </div>
 
 

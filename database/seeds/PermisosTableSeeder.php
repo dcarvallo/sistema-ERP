@@ -348,6 +348,38 @@ class PermisosTableSeeder extends Seeder
           'category'      => 'Contabilidad'
         ]);
 
+        //libro diario
+
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-librodiario',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos los libro-diarios de la empresa',
+          'category'      => 'Libro diario'
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Ver-librodiario',
+            'guard_name'    => 'web',
+            'description'   => 'Ver en detalle cada libro-diario de la empresa',
+            'category'      => 'Libro diario' 
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Editar-librodiario',
+            'guard_name'    => 'web',
+            'description'   => 'Editar cualquier dato de un libro-diario de la empresa',
+            'category'      => 'Libro diario'
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Eliminar-librodiario',
+            'guard_name'    => 'web',
+            'description'   => 'Eliminar cuaquier libro-diario de la empresa',
+            'category'      => 'Libro diario'
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Crear-librodiario',
+            'guard_name'    => 'web',
+            'description'   => 'Crea libro-diarios de la empresa',
+            'category'      => 'Libro diario'
+        ]);
         //Almacenes
 
         DB::table('permissions')->insert([

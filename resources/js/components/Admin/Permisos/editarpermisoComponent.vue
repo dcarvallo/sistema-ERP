@@ -10,7 +10,7 @@
         <div class="card-body">
             <div class="form-group">
                 <label>Nombre*</label>
-                <input class="form-control" type="text" v-model="permisomod.name">
+                <input class="form-control" type="text" v-model="permisomod.name" autofocus>
                 <label class="alert-danger py-0" v-if="errors.name" >{{errors.name[0]}}</label>
             </div>
             <div class="form-group">

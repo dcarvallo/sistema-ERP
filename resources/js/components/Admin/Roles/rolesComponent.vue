@@ -45,9 +45,9 @@
         <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
             <tbody>
                 <tr v-for="rol in roles" :key="rol.id">
-                    <td style="width: 33%">{{rol.name}}</td>
-                    <td style="width: 33%">{{rol.description}}</td>
-                    <td style="width: 33%">{{rol.category}}</td>
+                    <td style="width: 30%">{{rol.name}}</td>
+                    <td style="width: 45%">{{rol.description}}</td>
+                    <td style="width: 25%">{{rol.category}}</td>
                     <td v-if="can_ver" class=" text-center" >                        
                       <a class="btn btn-primary text-white" :href="'/roles/'+rol.id"><i class=" far fa-eye"></i></a>
                     </td>
@@ -68,7 +68,6 @@
         </div>
         </div>
 
-    </div>
 
 
 </template>

@@ -22,7 +22,7 @@
 
                 <div class="form-group">
                   <label for="nombres">Nombres</label>
-                  <input type="text" class="form-control " name="nombres" v-model="usuariomod.nombres" placeholder="Nombres">
+                  <input type="text" class="form-control " name="nombres" v-model="usuariomod.nombres" placeholder="Nombres" autofocus>
                   <div v-if="errors.nombres" class="alert-danger">{{ errors.nombres[0] }}</div>
                 </div>
                 <div class="form-group">
