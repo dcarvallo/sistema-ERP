@@ -194,8 +194,9 @@ Vue.component('perfil', require('./components/Usuario/perfilComponent.vue').defa
 //contabilidad - librodiario
 Vue.component('librodiario', require('./components/Contabilidad/Librodiario/librodiarioComponent.vue').default);
 Vue.component('crearlibrodiario', require('./components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue').default);
-
-
+//contabilidad - plancontable
+Vue.component('plancontable', require('./components/Contabilidad/Plancontable/plancontableComponent.vue').default);
+// Vue.component('crearplancontable', require('./components/Contabilidad/Plancontable/crearplancontableComponent.vue').default);
 
 
 /**

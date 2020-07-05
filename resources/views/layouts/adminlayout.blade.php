@@ -396,6 +396,12 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="{{route('plancontable.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Plan contable</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a href="{{route('librodiarios.index')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Libro diario</p>
@@ -411,6 +417,12 @@
                   <a href="/empleados" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Cuentas x Cobrar</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('reportes-contables')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Reportes</p>
                   </a>
                 </li>
               </ul>

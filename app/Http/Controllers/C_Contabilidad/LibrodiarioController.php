@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\C_Contabilidad;
 
 use App\Models\M_Contabilidad\Librodiario;
-use App\Models\M_Contabilidad\Pcge;
+use App\Models\M_Contabilidad\Plancontable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -47,7 +47,7 @@ class LibrodiarioController extends Controller
     {
       if(!Auth::user()->can('permisos', 'Crear-librodiarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-      $cuentas = Pcge::all();
+      $cuentas = Plancontable::all();
       
       return view('contabilidad.librodiario.create', compact('cuentas'));;
     }

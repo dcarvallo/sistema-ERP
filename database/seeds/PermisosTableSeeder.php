@@ -380,6 +380,40 @@ class PermisosTableSeeder extends Seeder
             'description'   => 'Crea libro-diarios de la empresa',
             'category'      => 'Libro diario'
         ]);
+
+        //Plan contable
+
+        DB::table('permissions')->insert([
+          'name'          => 'Navegar-plancontable',
+          'guard_name'    => 'web',
+          'description'   => 'Lista y navega todos los plan contables de la empresa',
+          'category'      => 'Plan contable'
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Ver-plancontable',
+            'guard_name'    => 'web',
+            'description'   => 'Ver en detalle cada plan contable de la empresa',
+            'category'      => 'Plan contable' 
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Editar-plancontable',
+            'guard_name'    => 'web',
+            'description'   => 'Editar cualquier dato de un plan contable de la empresa',
+            'category'      => 'Plan contable'
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Eliminar-plancontable',
+            'guard_name'    => 'web',
+            'description'   => 'Eliminar cuaquier plan contable de la empresa',
+            'category'      => 'Plan contable'
+        ]);
+        DB::table('permissions')->insert([
+            'name'          => 'Crear-plancontable',
+            'guard_name'    => 'web',
+            'description'   => 'Crea plan contables de la empresa',
+            'category'      => 'Plan contable'
+        ]);
+
         //Almacenes
 
         DB::table('permissions')->insert([

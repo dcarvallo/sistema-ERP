@@ -2800,8 +2800,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4202,6 +4200,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4438,7 +4445,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4454,20 +4460,17 @@ __webpack_require__.r(__webpack_exports__);
     var sortOrders = {};
     var parametrostabla = {};
     var columns = [{
-      label: 'ID',
-      name: 'id'
+      label: 'Nro Asiento',
+      name: 'nro_asiento'
     }, {
-      label: 'Elemento',
-      name: 'elemento'
+      label: 'Fecha',
+      name: 'fecha'
     }, {
-      label: 'Codigo Cuenta',
-      name: 'codigo_cta'
+      label: 'Tipo Asiento',
+      name: 'tipo_asiento'
     }, {
-      label: 'Descripcion',
-      name: 'descripcion'
-    }, {
-      label: 'Tipo Cuenta',
-      name: 'tipo_cta'
+      label: 'Notas',
+      name: 'notas'
     }];
     var columnasPrincipales = columns.length - 1;
     columns.forEach(function (column) {
@@ -4611,6 +4614,321 @@ __webpack_require__.r(__webpack_exports__);
       var par = this.parametrostabla;
       axios.put('/importardatolibrodiario/' + librodiariosel.id).then(function (res) {
         _this3.getLibrodiario('/obtenerlibrodiarios');
+
+        toast.fire({
+          icon: 'success',
+          title: 'Datos importados correctamente'
+        });
+      })["catch"](function (err) {
+        toast.fire({
+          icon: 'error',
+          title: 'Error'
+        });
+        location.reload();
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ColumUserdatabase_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../ColumUserdatabase.vue */ "./resources/js/components/ColumUserdatabase.vue");
+/* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Pagination.vue */ "./resources/js/components/Pagination.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    datatable: _ColumUserdatabase_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    pagination: _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  created: function created() {
+    this.getPlancontable();
+  },
+  props: ['can_crear', 'can_ver', 'can_editar', 'can_eliminar'],
+  data: function data() {
+    var sortOrders = {};
+    var parametrostabla = {};
+    var columns = [{
+      label: 'Elemento',
+      name: 'elemento'
+    }, {
+      label: 'Codigo Cuenta',
+      name: 'codigo_cta'
+    }, {
+      label: 'Descripcion',
+      name: 'descripcion'
+    }, {
+      label: 'Tipo Cuenta',
+      name: 'tipo_cta'
+    }];
+    var columnasPrincipales = columns.length - 1;
+    columns.forEach(function (column) {
+      sortOrders[column.name] = -1;
+    });
+
+    if (this.can_ver) {
+      columns.push({
+        label: 'Ver',
+        name: 'ver'
+      });
+    }
+
+    if (this.can_editar) {
+      columns.push({
+        label: 'Editar',
+        name: 'editar'
+      });
+    }
+
+    if (this.can_eliminar) {
+      columns.push({
+        label: 'Eliminar',
+        name: 'eliminar'
+      });
+    }
+
+    return {
+      plancontable: [],
+      exportar: [],
+      expanded: false,
+      columns: columns,
+      columnasPrincipales: columnasPrincipales,
+      sortKey: 'name',
+      sortOrders: sortOrders,
+      perPage: ['15', '30', '50'],
+      tableData: {
+        draw: 0,
+        length: 15,
+        search: '',
+        column: 0,
+        dir: 'asc',
+        searchColumn: 'elemento'
+      },
+      pagination: {
+        lastPage: '',
+        currentPage: '',
+        total: '',
+        lastPageUrl: '',
+        nextPageUrl: '',
+        prevPageUrl: '',
+        from: '',
+        to: ''
+      }
+    };
+  },
+  methods: {
+    getPlancontable: function getPlancontable() {
+      var _this = this;
+
+      var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/obtenerplancontable';
+      this.tableData.draw++;
+      axios.get(url, {
+        params: this.tableData
+      }).then(function (response) {
+        var data = response.data;
+        _this.parametrostabla = data;
+
+        if (_this.tableData.draw == data.draw) {
+          _this.plancontable = data.data.data;
+
+          _this.configPagination(data.data);
+        }
+      })["catch"](function (errors) {
+        toast.fire({
+          icon: 'error',
+          title: 'Error'
+        });
+      });
+    },
+    eliminarplancontable: function eliminarplancontable(plancontableid) {
+      var _this2 = this;
+
+      modalconfirm.fire({
+        title: '¿Está seguro que desea eliminar esta cuenta?',
+        text: "La cuenta ya no será visible en ninguna consulta, pero seguirá persistiendo en la base de datos como eliminado.",
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: function preConfirm(login) {
+          return axios["delete"]('/plancontable/' + plancontableid, {
+            params: _this2.tableData
+          }).then(function (response) {
+            var data = response.data;
+
+            _this2.getPlancontable();
+
+            toastsuccess.fire({
+              title: data.title + ' ' + data.message
+            });
+          })["catch"](function (errors) {
+            console.log(errors);
+          });
+        },
+        allowOutsideClick: function allowOutsideClick() {
+          return !swal.isLoading();
+        }
+      }).then(function (result) {
+        if (result.value) {
+          swal.fire('Quitado!', 'Se ha quitado la cuenta.', 'success');
+        }
+      });
+    },
+    filtro: function filtro() {
+      this.getPlancontable();
+    },
+    configPagination: function configPagination(data) {
+      this.pagination.lastPage = data.last_page;
+      this.pagination.currentPage = data.current_page;
+      this.pagination.total = data.total;
+      this.pagination.lastPageUrl = data.last_page_url;
+      this.pagination.nextPageUrl = data.next_page_url;
+      this.pagination.prevPageUrl = data.prev_page_url;
+      this.pagination.from = data.from;
+      this.pagination.to = data.to;
+    },
+    sortBy: function sortBy(key) {
+      this.sortKey = key;
+      this.sortOrders[key] = this.sortOrders[key] * -1;
+      this.tableData.column = this.getIndex(this.columns, 'name', key);
+      this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
+      if (this.tableData.column <= this.columnasPrincipales) this.getPlancontable();
+    },
+    getIndex: function getIndex(array, key, value) {
+      return array.findIndex(function (i) {
+        return i[key] == value;
+      });
+    },
+    importardatoplancontable: function importardatoplancontable(plancontableel) {
+      var _this3 = this;
+
+      var par = this.parametrostabla;
+      axios.put('/importardatoplancontable/' + plancontableel.id).then(function (res) {
+        _this3.getPlancontable('/obtenerplancontable');
 
         toast.fire({
           icon: 'success',
@@ -51983,8 +52301,10 @@ var render = function() {
               _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
+                _vm._m(1),
+                _vm._v(" "),
                 _c("table", { staticClass: "table table-responsive-sm" }, [
-                  _vm._m(1),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -52245,6 +52565,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("select", { attrs: { name: "", id: "" } }, [
+          _c("option", { attrs: { value: "" } }, [_vm._v("Apunte")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("Cuenta")]),
@@ -52418,20 +52754,20 @@ var render = function() {
                     }
                   },
                   [
-                    _c("option", { attrs: { value: "elemento" } }, [
-                      _vm._v("Elemento")
+                    _c("option", { attrs: { value: "nro_asiento" } }, [
+                      _vm._v("Nro Asiento")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "codigo_cta" } }, [
-                      _vm._v("Codigo Cuenta")
+                    _c("option", { attrs: { value: "fecha" } }, [
+                      _vm._v("Fecha")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "descripcion" } }, [
-                      _vm._v("Descripcion")
+                    _c("option", { attrs: { value: "tipo_asiento" } }, [
+                      _vm._v("Tipo Asiento")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "tipo_cta" } }, [
-                      _vm._v("Tipo Cuenta")
+                    _c("option", { attrs: { value: "notas" } }, [
+                      _vm._v("Notas")
                     ])
                   ]
                 )
@@ -52456,24 +52792,20 @@ var render = function() {
             "tbody",
             _vm._l(_vm.librodiarios, function(librodiario) {
               return _c("tr", { key: librodiario.id }, [
-                _c("td", { staticStyle: { width: "10%" } }, [
-                  _vm._v(_vm._s(librodiario.id))
+                _c("td", { staticStyle: { width: "15%" } }, [
+                  _vm._v(_vm._s(librodiario.nro_asiento))
                 ]),
                 _vm._v(" "),
                 _c("td", { staticStyle: { width: "15%" } }, [
-                  _vm._v(_vm._s(librodiario.elemento))
-                ]),
-                _vm._v(" "),
-                _c("td", { staticStyle: { width: "15%" } }, [
-                  _vm._v(_vm._s(librodiario.codigo_cta))
-                ]),
-                _vm._v(" "),
-                _c("td", { staticStyle: { width: "10%" } }, [
-                  _vm._v(" " + _vm._s(librodiario.descripcion))
+                  _vm._v(_vm._s(librodiario.fecha))
                 ]),
                 _vm._v(" "),
                 _c("td", { staticStyle: { width: "30%" } }, [
-                  _vm._v(" " + _vm._s(librodiario.tipo_cta))
+                  _vm._v(" " + _vm._s(librodiario.tipo_asiento))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { width: "40%" } }, [
+                  _vm._v(" " + _vm._s(librodiario.notas))
                 ]),
                 _vm._v(" "),
                 _vm.can_ver
@@ -52736,6 +53068,505 @@ var staticRenderFns = [
     return _c("div", { staticClass: "modal-header" }, [
       _c("h5", { staticClass: "modal-title", attrs: { id: "modalexportar" } }, [
         _vm._v("Exportar lista de librodiarios:")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Generar")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=template&id=69a2072e&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=template&id=69a2072e& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row justify-content-between" }, [
+          _c("div", { staticClass: " d-flex align-items-center my-1" }, [
+            _c("div", { staticClass: "mr-3" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.tableData.length,
+                      expression: "tableData.length"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.tableData,
+                          "length",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      },
+                      function($event) {
+                        return _vm.getPlancontable()
+                      }
+                    ]
+                  }
+                },
+                _vm._l(_vm.perPage, function(records, index) {
+                  return _c(
+                    "option",
+                    { key: index, domProps: { value: records } },
+                    [_vm._v(_vm._s(records))]
+                  )
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _vm.can_crear
+              ? _c("div", { staticClass: "w-auto mr-1" }, [_vm._m(0)])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(1)
+          ]),
+          _vm._v(" "),
+          _c("fieldset", { staticClass: "border p-1" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "row d-flex align-items-stretch" }, [
+              _c("div", { staticClass: "col pr-1" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.tableData.search,
+                      expression: "tableData.search"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { autofocus: "", type: "text", placeholder: "Buscar" },
+                  domProps: { value: _vm.tableData.search },
+                  on: {
+                    keyup: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.getPlancontable()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.tableData, "search", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col pl-1" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.tableData.searchColumn,
+                        expression: "tableData.searchColumn"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.tableData,
+                          "searchColumn",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "elemento" } }, [
+                      _vm._v("Elemento")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "codigo_cta" } }, [
+                      _vm._v("Codigo Cuenta")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "descripcion" } }, [
+                      _vm._v("Descripcion")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "tipo_cta" } }, [
+                      _vm._v("Tipo Cuenta")
+                    ])
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "datatable",
+        {
+          attrs: {
+            columns: _vm.columns,
+            sortKey: _vm.sortKey,
+            sortOrders: _vm.sortOrders
+          },
+          on: { sort: _vm.sortBy }
+        },
+        [
+          _c(
+            "tbody",
+            _vm._l(_vm.plancontable, function(plancontable) {
+              return _c("tr", { key: plancontable.id }, [
+                _c("td", { staticStyle: { width: "10%" } }, [
+                  _vm._v(_vm._s(plancontable.elemento))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { width: "20%" } }, [
+                  _vm._v(_vm._s(plancontable.codigo_cta))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { width: "50%" } }, [
+                  _vm._v(" " + _vm._s(plancontable.descripcion))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "text-center", staticStyle: { width: "20%" } },
+                  [_vm._v(" " + _vm._s(plancontable.tipo_cta))]
+                ),
+                _vm._v(" "),
+                _vm.can_ver
+                  ? _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-primary text-white",
+                          attrs: { href: "/plancontable/" + plancontable.id }
+                        },
+                        [_c("i", { staticClass: "far fa-eye" })]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.can_editar
+                  ? _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-warning",
+                          attrs: {
+                            href: "/plancontable/" + plancontable.id + "/edit"
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-edit" })]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.can_eliminar
+                  ? _c("td", { staticClass: "text-center" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-danger text-white",
+                          attrs: { id: plancontable.id },
+                          on: {
+                            click: function($event) {
+                              return _vm.eliminarplancontable(plancontable.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "far fa-trash-alt" })]
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex justify-content-end" },
+        [
+          _c("pagination", {
+            attrs: { pagination: _vm.pagination },
+            on: {
+              prev: function($event) {
+                return _vm.getPlancontable(_vm.pagination.prevPageUrl)
+              },
+              next: function($event) {
+                return _vm.getPlancontable(_vm.pagination.nextPageUrl)
+              }
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "modalexportar",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "modalexportar",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-sm",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "col-md-6 offset-4" }, [
+                    _c("form", { attrs: { action: "" } }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.exportar,
+                                expression: "exportar"
+                              }
+                            ],
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              value: _vm.exportar,
+                              checked: Array.isArray(_vm.exportar)
+                                ? _vm._i(_vm.exportar, _vm.exportar) > -1
+                                : _vm.exportar
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.exportar,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = _vm.exportar,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.exportar = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.exportar = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.exportar = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", [_vm._v(" PDF ")]),
+                          _vm._v(" "),
+                          _c("i", { staticClass: "far fa-2x fa-file-pdf" })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.exportar,
+                                expression: "exportar"
+                              }
+                            ],
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              value: _vm.exportar,
+                              checked: Array.isArray(_vm.exportar)
+                                ? _vm._i(_vm.exportar, _vm.exportar) > -1
+                                : _vm.exportar
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.exportar,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = _vm.exportar,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.exportar = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.exportar = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.exportar = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", [_vm._v(" Excel")]),
+                          _vm._v(" "),
+                          _c("i", { staticClass: "far fa-2x fa-file-excel" })
+                        ])
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(4)
+              ])
+            ]
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-success",
+        attrs: { href: "/plancontable/create" }
+      },
+      [
+        _c("i", { staticClass: "far fa-plus-square" }),
+        _vm._v("\n                         Crear\n                       ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-auto" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-primary",
+          attrs: {
+            href: "",
+            "data-toggle": "modal",
+            "data-target": "#modalexportar"
+          }
+        },
+        [
+          _c("i", { staticClass: " fas fa-file-download" }),
+          _vm._v("\n                         Exportar\n                       ")
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("legend", { staticClass: "w-auto my-0" }, [
+      _c("span", { staticClass: "my-0 text-sm" }, [_vm._v(" Buscar por")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "modalexportar" } }, [
+        _vm._v("Exportar lista de plancontable:")
       ]),
       _vm._v(" "),
       _c(
@@ -70403,7 +71234,10 @@ Vue.component('editarpermiso', __webpack_require__(/*! ./components/Admin/Permis
 Vue.component('perfil', __webpack_require__(/*! ./components/Usuario/perfilComponent.vue */ "./resources/js/components/Usuario/perfilComponent.vue")["default"]); //contabilidad - librodiario
 
 Vue.component('librodiario', __webpack_require__(/*! ./components/Contabilidad/Librodiario/librodiarioComponent.vue */ "./resources/js/components/Contabilidad/Librodiario/librodiarioComponent.vue")["default"]);
-Vue.component('crearlibrodiario', __webpack_require__(/*! ./components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue */ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue")["default"]);
+Vue.component('crearlibrodiario', __webpack_require__(/*! ./components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue */ "./resources/js/components/Contabilidad/Librodiario/crearlibrodiarioComponent.vue")["default"]); //contabilidad - plancontable
+
+Vue.component('plancontable', __webpack_require__(/*! ./components/Contabilidad/Plancontable/plancontableComponent.vue */ "./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue")["default"]); // Vue.component('crearplancontable', require('./components/Contabilidad/Plancontable/crearplancontableComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -71420,6 +72254,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_librodiarioComponent_vue_vue_type_template_id_2134f010___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _plancontableComponent_vue_vue_type_template_id_69a2072e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./plancontableComponent.vue?vue&type=template&id=69a2072e& */ "./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=template&id=69a2072e&");
+/* harmony import */ var _plancontableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./plancontableComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _plancontableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _plancontableComponent_vue_vue_type_template_id_69a2072e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _plancontableComponent_vue_vue_type_template_id_69a2072e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_plancontableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./plancontableComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_plancontableComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=template&id=69a2072e&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=template&id=69a2072e& ***!
+  \********************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_plancontableComponent_vue_vue_type_template_id_69a2072e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./plancontableComponent.vue?vue&type=template&id=69a2072e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Contabilidad/Plancontable/plancontableComponent.vue?vue&type=template&id=69a2072e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_plancontableComponent_vue_vue_type_template_id_69a2072e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_plancontableComponent_vue_vue_type_template_id_69a2072e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

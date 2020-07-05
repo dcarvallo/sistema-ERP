@@ -10,6 +10,15 @@
                 <h5><strong> Libro Diario </strong></h5>
             </div>
             <div class="card-body">
+              <div class="row">
+                  <div class="col-md-4">
+                    <select name="" id="">
+                      <option value="">Apunte</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4"></div>
+              </div>
                 
                 <table class="table table-responsive-sm">
                   <thead>

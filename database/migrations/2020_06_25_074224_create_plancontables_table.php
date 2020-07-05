@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePcgesTable extends Migration
+class CreatePlancontablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePcgesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pcges', function (Blueprint $table) {
+        Schema::create('plancontables', function (Blueprint $table) {
             $table->id();
             $table->integer('elemento');
             $table->string('codigo_cta', 15);
@@ -31,6 +31,6 @@ class CreatePcgesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pcges');
+        Schema::dropIfExists('plancontables');
     }
 }
