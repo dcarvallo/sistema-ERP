@@ -87,6 +87,8 @@ class LibrodiarioController extends Controller
         $toast = array(
           'title'   => 'Rol creado: ',
           'message' => $request->name,
+          'background' => '#e1f6d0',
+          'type' => 'success'
         );
         
         return [$rol,$toast];
@@ -95,6 +97,8 @@ class LibrodiarioController extends Controller
         $toast = array(
           'title'   => 'Rol no creado: ',
           'message' => $rol->name,
+          'type'    => 'error',
+          'background' => '#edc3c3'
         );
         return [$rol, $toast , $th];
       }
@@ -159,6 +163,8 @@ class LibrodiarioController extends Controller
           $toast = array(
             'title'   => 'Rol modificado: ',
             'message' => $request->name,
+            'background' => '#e1f6d0',
+            'type' => 'success'
           );
           
           return [$rol,$toast];
@@ -167,6 +173,8 @@ class LibrodiarioController extends Controller
           $toast = array(
             'title'   => 'Rol no modificado: ',
             'message' => $rol->name,
+            'type'    => 'error',
+            'background' => '#edc3c3'
           );
           return [$rol, $toast , $th];
         }
@@ -191,6 +199,8 @@ class LibrodiarioController extends Controller
         $toast = array(
           'title'   => 'Rol eliminado: ',
           'message' => '',
+          'background' => '#e1f6d0',
+          'type' => 'success'
         );
         return $toast;
     }

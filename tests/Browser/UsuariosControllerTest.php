@@ -12,13 +12,6 @@ use Illuminate\Support\Str;
 class UsuariosControllerTest extends DuskTestCase
 {
 
-  // use DatabaseMigrations;
-
-    // public function setUp(): void
-    //   {
-    //       parent::setUp();
-    //       $this->artisan('db:seed');
-    //   }
 
     /** @test */
     public function vista_usuarios()
@@ -27,7 +20,7 @@ class UsuariosControllerTest extends DuskTestCase
         $browser->visit('users')
                 ->type('username', 'admin')
                 ->type('password', 'admin')
-                ->press('Login')
+                ->press('Ingresar')
                 ->assertSee('Nombre')
                 ->pause(1000);
       });

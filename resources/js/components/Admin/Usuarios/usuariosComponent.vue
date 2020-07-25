@@ -59,13 +59,13 @@
                     </td>
                     <td v-else> - </td>
                     <td style="width: 10%" class="text-center" v-if="can_ver" >
-                        <a class="btn btn-primary text-white" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
+                        <a class="btn btn-sm btn-primary text-white" :href="'/users/'+usuario.id"><i class="far fa-eye"></i></a>
                     </td>
                     <td class="text-center" v-if="can_editar" >
-                        <a class="btn btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
+                        <a class="btn btn-sm btn-warning" :href="'/users/'+usuario.id+'/edit'"><i class="far fa-edit"></i></a>
                     </td>
                     <td class="text-center" v-if="can_eliminar" >
-                        <a class="btn btn-danger text-white" :id="usuario.id" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
+                        <a class="btn btn-sm btn-danger text-white" :id="usuario.id" @click="eliminarusuario(usuario.id)"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -89,43 +89,46 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="col-md-6 offset-4">
-                <form action="">
-                  <div class="form-group"> 
-                    <label>
-                    <input type="checkbox" :value="exportar" v-model="exportar"> 
-                    <span> PDF </span>  
-                    <i class="far fa-2x fa-file-pdf"></i>
-                    </label>
+              <form action="/exportar-usuarios" method="get">
+                <input type="hidden" name="_token" :value="csrf">
+                    <div class="form-group d-flex justify-content-around"> 
+                      <select class="form-control" name="exportar" v-model="exportar">
+                        <option value="excel" selected>Excel </option>
+                        <option value="pdf">PDF</option>
+                      </select>
                     </div>
-                  <div class="form-group"> 
-                    <label>
-                      <input type="checkbox" :value="exportar" v-model="exportar"> 
-                      <span> Excel</span> 
-                      <i class="far fa-2x fa-file-excel"></i>
-                    </label>
+                    <hr>
+                    <div class="form-group d-flex flex-column"> 
+                      <label>
+                        <input type="radio" checked name="exportarpagina" v-model="exportarpagina" value="actual" > 
+                        <span> Página actual </span>
+                      </label>
+                      <label v-if="exportar != 'pdf'">
+                        <input type="radio" name="exportarpagina" v-model="exportarpagina" value="todo"> 
+                        <span> Todos los registros</span>
+                      </label>
                     </div>
-                </form>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" @submit.prevent="generar">Generar</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Generar</button>
+              </form>
             </div>
           </div>
         </div>
+
       </div>
-
-
     </div>
-
 </template>
 
 <script>
 
 import Datatable from '../../ColumUserdatabase.vue';
 import Pagination from '../../Pagination.vue';
+  var csrf_token = $('meta[name="csrf-token"]').attr('content');
 export default {
-    components: { datatable: Datatable, pagination: Pagination },
+    components: { 
+      datatable: Datatable, pagination: Pagination, 
+    },
     created() {
         this.getUsuarios();
     },
@@ -153,21 +156,17 @@ export default {
         if(this.can_eliminar){
           columns.push({label: 'Eliminar', name: 'eliminar'});
         }
-
+      
         return {
+            csrf: document.querySelector('meta[name="csrf_token"]').getAttribute('content'),
             usuarios: [],
-            exportar: [],
-            checkbox: [
-              'name',
-              'username',
-              'email',
-              'activo',
-              'acciones',
-            ],
+            exportar: 'excel',
+            seleccion: 'excel',
+            exportarpagina: 'actual',
             expanded: false,
             columns: columns,
             columnasPrincipales:columnasPrincipales,
-            sortKey: 'name',
+            sortKey: '',
             sortOrders: sortOrders,
             perPage: ['15', '30', '50'],
             tableData: {
@@ -239,6 +238,31 @@ export default {
               )
             }
           })
+        },
+        exportardatos(){
+          let formData = new FormData();
+          if(this.exportar != '')
+          {
+            formData.append('exportar', this.exportar);
+            formData.append('exportarpagina', this.exportarpagina);
+            formData.append('tabledata', this.tableData.length);
+            formData.append('pagination', this.pagination);
+            axios.post('exportar-usuarios', formData)
+            .then(res => {
+              this.getUsuarios('/obtenerusuarios');
+              toast.fire({
+                  icon: 'success',
+                  title: 'Información exportada correctamente'
+              })
+            })
+            .catch(err => {
+                toast.fire({
+                  icon: 'error',
+                  title: 'Error'
+              })
+              location.reload();
+            })
+          }
         },
         filtro(){
           this.getUsuarios();

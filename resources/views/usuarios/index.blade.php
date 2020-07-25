@@ -21,7 +21,7 @@
           can_ver="{{ Auth::user()->can('permisos','Ver-usuarios') ? true : false }}"
           can_editar="{{ Auth::user()->can('permisos','Editar-usuarios') ? true : false }}"
           can_eliminar="{{ Auth::user()->can('permisos','Eliminar-usuarios') ? true : false }}"
-        />
+          />
    
       </div>
     </div>

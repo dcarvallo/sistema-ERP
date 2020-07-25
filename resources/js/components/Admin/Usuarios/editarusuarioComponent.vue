@@ -47,7 +47,7 @@
                 
 
                 <div class="form-group col-md-12 px-0">
-                  <label for="fotografia">Fotografia de usuario</label><br>
+                  <label for="fotografia">Fotografía de usuario</label><br>
                   <div class="text-center">
                   <img :src="enlace" class="img" style="width: 15em" alt="Imagen de usuario">
                   </div>
@@ -246,12 +246,19 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuario.password = '';
-          toastsuccess.fire({
-                title:  datos[1].title+' '+datos[1].message
-            })
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
+            title: datos[1].title+' '+datos[1].message
+          })
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
         });
 
@@ -267,12 +274,19 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuario.password = '';
-          toastsuccess.fire({
-                title:  datos[1].title+' '+datos[1].message
-            })
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
+            title: datos[1].title+' '+datos[1].message
+          })
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
         });
     },
@@ -292,12 +306,19 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuariomod.password = '';
-          toastsuccess.fire({
-                title:  datos[1].title+' '+datos[1].message
-            })
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
+            title: datos[1].title+' '+datos[1].message
+          })
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
         });
 
@@ -315,12 +336,19 @@ export default {
         .then(response => {
           let datos = response.data;
           this.usuario.password = '';
-          toastsuccess.fire({
-                title:  datos[1].title+' '+datos[1].message
-            })
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
+            title: datos[1].title+' '+datos[1].message
+          })
         }).catch(error => {
           if(error.response.status == 422){
             this.errors = error.response.data.errors;
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
         });
     },

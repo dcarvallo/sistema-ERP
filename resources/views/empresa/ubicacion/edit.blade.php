@@ -68,6 +68,7 @@
       position: 'top',
       showConfirmButton: false,
       icon: variable.type,
+      background: '#e1f6d0',
       title: variable.title+' '+variable.message,
       timerProgressBar: true,
       onOpen: (toast) => {

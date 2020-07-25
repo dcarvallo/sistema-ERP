@@ -44,6 +44,3 @@ Route::post('password/reset', 'C_Usuario\UserController@reset')->name('password.
 Route::get('/home', 'HomeController@index')->name('home');
 //general
 Route::get('contactos', 'C_Usuario\UserController@contactos');
-
-
-

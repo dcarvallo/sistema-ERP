@@ -28,6 +28,7 @@
                 :searchable="true"
                 :placeholder="'Seleccione o agregue una opcion'" 
                 :selectLabel="''" 
+                id="categoria"
                 :multiple="false"
                 @tag="addTag"
                 :taggable="true"
@@ -199,7 +200,9 @@ export default {
         this.rol.description = '';
         this.rol.category = '';
         this.permiso.name = [];
-        toastsuccess.fire({
+        toast.fire({
+          icon: datos[1].type,
+          background: datos[1].background,
           title: datos[1].title+' '+datos[1].message
         })
       })
@@ -210,9 +213,11 @@ export default {
           }
           if(datos)
           {
-            toasterror.fire({
-            title: datos[1].title+' '+datos[1].message
-          })
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: datos[1].title+' '+datos[1].message
+            })
           }
       })
     }

@@ -77,6 +77,7 @@ class PermissionController extends Controller
           $toast = array(
             'title'   => 'permiso creado: ',
             'message' => $request->name,
+            'background' => '#e1f6d0',
             'type'    => 'success'
           );
           
@@ -86,7 +87,8 @@ class PermissionController extends Controller
           $toast = array(
             'title'   => 'permiso no creado: ',
             'message' => $permiso->name,
-            'type'    => 'error'
+            'type'    => 'error',
+            'background' => '#edc3c3'
           );
           return [$rol, $toast , $th];
         }
@@ -135,6 +137,7 @@ class PermissionController extends Controller
     //     $toast = array(
     //       'title'   => 'permiso modificado: ',
     //       'message' => $request->name,
+    // 'background' => '#e1f6d0',
     //       'type'    => 'success'
     //     );
         
@@ -147,6 +150,7 @@ class PermissionController extends Controller
     //       'title'   => 'permiso no modificado: ',
     //       'message' => $e->errorInfo,
     //       'type'    => 'error'
+            // 'background' => '#edc3c3'
     //     );
     //     return [$request,$toast,$e->errorInfo];
     //   }
@@ -167,6 +171,7 @@ class PermissionController extends Controller
     //     $toast = array(
     //       'title'   => 'permiso eliminado: ',
     //       'message' => '',
+      // 'background' => '#e1f6d0',
     //       'type'    => 'success'
     //     );
     //     return $toast;

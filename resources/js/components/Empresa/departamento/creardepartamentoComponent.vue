@@ -45,6 +45,7 @@
                <multiselect v-model="departamento.ubicacion_id"
                 :options= ubicaciones
                 :searchable="true" 
+                id="ubicacion"
                 :placeholder="'Seleccione una opcion'" 
                 :selectLabel="''" 
                 :selectedLabel="'Seleccionado'" 
@@ -109,7 +110,9 @@ methods: {
         this.departamento.nombre = '';
         this.departamento.descripcion = '';
         this.departamento = [];
-        toastsuccess.fire({
+        toast.fire({
+          icon: datos[1].type,
+          background: datos[1].background,
           title: datos[1].title+' '+datos[1].message
         })
       })
@@ -117,14 +120,18 @@ methods: {
         let datos = error.response;
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
-            toasterror.fire({
-            title: 'Error en formulario, revise'
-          })
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
           if(datos[1]){
-            toasterror.fire({
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
               title: datos[1].title+' '+datos[1].message
-          })
+            })
           }
       })
     }

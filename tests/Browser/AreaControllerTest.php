@@ -16,7 +16,7 @@ class AreaControllerTest extends DuskTestCase
         $browser->visit('areas')
                 ->type('username', 'admin')
                 ->type('password', 'admin')
-                ->press('Login')
+                ->press('Ingresar')
                 ->assertSee('Nombre');
       });
     }
@@ -38,9 +38,12 @@ class AreaControllerTest extends DuskTestCase
          $browser->visit('areas/create')
                 ->type('#nombre', Str::random(6))
                 ->type('#descripcion', Str::random(7))
-                ->press('#encargado')
-                ->press('Cargo 1')
-                ->select('#Departamento','Departamento 1' )
+                // ->press('#encargado')
+                // ->press('Cargo 1')
+                ->click('div.multiselect__tags #departamento')
+                // ->type('Seleccione Departamento','Departamento 1' )
+                // ->press('.multiselect__tags', 'depar')
+                // ->press('Departamento 1')
                 // ->press()
                 ->pause(5000)
                 ->press('Crear')
@@ -79,7 +82,7 @@ class AreaControllerTest extends DuskTestCase
                 ->type('descripcion', Str::random(15))
                 ->press('Guardar')
                 ->pause(2000)
-                ->assertSee('area modificada')
+                ->assertSee('Área modificada')
                 ->screenshot('modificar area');
        });
      }

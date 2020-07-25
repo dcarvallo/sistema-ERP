@@ -11,11 +11,12 @@
   <link rel="stylesheet" href="/css/all.min.css">
   <link rel="stylesheet" href="/css/adminlte.min.css">
  <link rel="stylesheet" href="/css/app.css">
+ <link rel="stylesheet" href="/css/css.css">
  
   @yield('css-head')
 </head>
-
-<body class="hold-transition sidebar-collapse sidebar-mini">
+{{-- sidebar-collapse  --}}
+<body class="hold-transition sidebar-mini">
 <div id="app" class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -170,6 +171,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{{route('perfil')}}">Perfil</a>
+            <a class="dropdown-item" href="{{route('perfil')}}">Documentos</a>
             <a class="dropdown-item" href=""
               onclick="event.preventDefault();
               document.getElementById('logout-form').submit();">

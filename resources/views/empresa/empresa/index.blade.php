@@ -54,6 +54,18 @@
                   <p class="font-weight-bold">Rubro</p>
                 </div>
                 <br>
+                <div>
+                  <p class="mb-0"> {{$empresa->nit}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">NIT</p>
+                </div>
+                <br>
+                <div>
+                  <p class="mb-0"> {{$empresa->propietario}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">propietario</p>
+                </div>
+                <br>
                 <div >
                   <p class="mb-0">{{$empresa->mision}}</p>
                   <hr class="my-0 border">

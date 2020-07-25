@@ -16,7 +16,7 @@ class UbicacionControllerTest extends DuskTestCase
          $browser->visit('ubicaciones')
                  ->type('username', 'admin')
                  ->type('password', 'admin')
-                 ->press('Login')
+                 ->press('Ingresar')
                  ->assertSee('Nombre');
        });
      }

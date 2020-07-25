@@ -80,7 +80,9 @@ class AreaController extends Controller
           
           $toast = array(
             'title'   => 'Area creada: ',
-            'messagess' => $area->nombre,
+            'message' => $area->nombre,
+            'background' => '#e1f6d0',
+            'type' => 'success'
           );
 
           $bitacora = new Bitacora();
@@ -95,8 +97,9 @@ class AreaController extends Controller
 
             $toast = array(
               'title'   => 'Error',
-              'messagess' => $th,
+              'messages' => $th,
               'type'    => 'error',
+              'background' => '#edc3c3'
             );
 
             return [$request, $toast];
@@ -145,9 +148,10 @@ class AreaController extends Controller
         $bitacora->save();
         
         $toast = array(
-            'title'   => 'Area modificada: ',
+            'title'   => 'Área modificada: ',
             'message' => $area->nombre,
-            'type'    => 'success'
+            'background' => '#e1f6d0',
+            'type' => 'success'
         );
 
         return [$area ,$toast];
@@ -156,7 +160,8 @@ class AreaController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'Error inesperado, contacte al administrdor, '.$th,
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
       );
 
       return [$request ,$toast];
@@ -172,7 +177,8 @@ class AreaController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'No se puede quitar, area tiene cargos dependientes',
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
         );
         return $toast;
       }
@@ -185,7 +191,8 @@ class AreaController extends Controller
       $bitacora->save();
 
       $toast = array(
-        'type'    => 'success',
+        'background' => '#e1f6d0',
+        'type' => 'success',
         'title'   => 'Area eliminada: ',
         'message' => '',
       );

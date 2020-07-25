@@ -59,7 +59,7 @@
 
                 <div class="form-group">
                 <label for="nombres">Nombres*</label>
-                <input type="text" class="form-control" name="nombres" v-model="usuario.nombres" placeholder="Nombres" autofocus>
+                <input type="text" class="form-control" id="nombres" name="nombres" v-model="usuario.nombres" placeholder="Nombres" autofocus>
                 <div v-if="errors.nombres" class="alert-danger">{{ errors.nombres[0] }}</div>
               </div>
               <div class="form-group">
@@ -92,9 +92,9 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="">Fotografia</label>
+                <label for="">Fotografía</label>
                 <div class="text-center">
-                    <img :src="enlace" class="img" style="width: 15em" alt="Imagen de usuario">
+                    <img :src="enlace" class="img" style="width: 10em" alt="Imagen de usuario">
                   </div>
                   <br>
                   <input type="file" @change="onFileChange" class="form-control" name="imagen" accept="image/*"/>
@@ -189,8 +189,8 @@ export default {
     // },
   },
   methods:{
-    nombresApellidosCi ({ nombres, apellidos, ci }) {
-      return `${nombres} ${apellidos} - CI: ${ci}`
+    nombresApellidosCi ({ nombres, ap_paterno, ap_materno, ci }) {
+      return `${nombres} ${ap_paterno} ${ap_materno} - CI: ${ci}`
     },
     expandirTodos()
     {
@@ -218,7 +218,7 @@ export default {
       // this.dato ='';
       // this.empselect = datos.nombres+' '+datos.apellidos+' CI: '+datos.ci;
       this.usuario.nombres = datos.nombres;
-      this.usuario.apellidos = datos.apellidos;
+      this.usuario.apellidos = datos.ap_paterno+' '+datos.ap_materno;
     },
     onFileChange(e) {
       this.usuario.imagen = e.target.files[0];
@@ -251,7 +251,9 @@ export default {
         this.empselect = '';
         this.vincular=false;
         this.enlace = '/storage/usuariodef/avatar.png';
-        toastsuccess.fire({
+        toast.fire({
+          icon: datos[1].type,
+          background: datos[1].background,
           title: datos[1].title+' '+datos[1].message
         })
       })
@@ -259,9 +261,11 @@ export default {
         let datos = error.data;
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
-            toasterror.fire({
-            title: 'Revise formulario'
-          })
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
         if(datos){
             toasterror.fire({
@@ -269,9 +273,11 @@ export default {
           })
           }
           if(error.response.status == 500){
-            toasterror.fire({
-            title: 'Error, notifique al administrador'
-          })
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error, contacte administrador'
+            })
           }
       })
     }

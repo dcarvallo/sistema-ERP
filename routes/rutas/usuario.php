@@ -18,7 +18,9 @@ Route::middleware(['auth'])->group(function () {
 	//Users
 	Route::get('users/create', 'C_Usuario\UserController@create')->name('users.create');
 
-	Route::get('users', 'C_Usuario\UserController@index')->name('users.index');
+  Route::get('users', 'C_Usuario\UserController@index')->name('users.index');
+  
+  Route::get('exportar-usuarios', 'C_Usuario\UserController@exportar')->name('users.exportar');
 
 	Route::put('users/{user}', 'C_Usuario\UserController@update')->name('users.update');
     

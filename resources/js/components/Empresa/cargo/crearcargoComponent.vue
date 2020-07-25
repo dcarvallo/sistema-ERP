@@ -86,7 +86,9 @@ methods: {
       .then(res => {
         let datos = res.data;
         this.cargo = [];
-        toastsuccess.fire({
+        toast.fire({
+          icon: datos[1].type,
+          background: datos[1].background,
           title: datos[1].title+' '+datos[1].message
         })
       })
@@ -95,14 +97,18 @@ methods: {
         console.log(error);
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
-            toasterror.fire({
-            title: 'Error en formulario, revise'
-          })
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
           if(datos[1]){
-            toasterror.fire({
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
               title: datos[1].title+' '+datos[1].message
-          })
+            })
           }
       })
     }

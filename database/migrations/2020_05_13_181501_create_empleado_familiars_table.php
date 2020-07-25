@@ -22,8 +22,12 @@ class CreateEmpleadoFamiliarsTable extends Migration
             $table->string('telefono_conyugue',100)->nullable();
             $table->string('nombres_padre',100)->nullable();
             $table->string('apellidos_padre',100)->nullable();
+            $table->string('direccion_padre',100)->nullable();
+            $table->string('telefono_padre',50)->nullable();
             $table->string('nombres_madre',100)->nullable();
             $table->string('apellidos_madre',100)->nullable();
+            $table->string('direccion_madre',100)->nullable();
+            $table->string('telefono_madre',50)->nullable();
             $table->unsignedBigInteger('empleado_id');
             $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->softDeletes();

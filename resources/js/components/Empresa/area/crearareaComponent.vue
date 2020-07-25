@@ -28,7 +28,7 @@
                <multiselect v-model="area.encargado"
                 :options= cargos
                 :searchable="true"
-                :id="encargado"
+                id="encargado"
                 :placeholder="'Seleccione Cargo'" 
                 :selectLabel="''" 
                 :selectedLabel="'Seleccionado'" 
@@ -46,7 +46,7 @@
                <multiselect v-model="area.departamento_id"
                 :options= departamentos
                 :searchable="true" 
-                :id="departamento"
+                id="departamento"
                 :placeholder="'Seleccione Departamento'" 
                 :selectLabel="''" 
                 :selectedLabel="'Seleccionado'" 
@@ -111,21 +111,27 @@ methods: {
         this.area = [];
         if(datos[1])
         {
-          toastsuccess.fire({
-            title: datos[1].title+': '+datos[1].messagess
-        })
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
+            title: datos[1].title+' '+datos[1].message
+          })
         }
       })
       .catch(error => {
         let datos = error.response;
         if(error.response.status == 422){
-            this.errors = error.response.data.errors;
-            toasterror.fire({
-            title: 'Error en formulario, revise'
+          this.errors = error.response.data.errors;
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
+            title: 'Error en formulario, reise'
           })
         }
         if(datos[1]){
-          toasterror.fire({
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
             title: datos[1].title+' '+datos[1].message
           })
         }

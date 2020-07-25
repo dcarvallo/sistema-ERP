@@ -3,26 +3,26 @@
 <template>
     <nav class="pagination" v-if="!client">
         <span class="page-stats">Página {{pagination.from}} - {{pagination.to}} de {{pagination.total}}</span>
-        <a v-if="pagination.prevPageUrl" class="btn btn-sm text-white btn-info mx-1 pagination-previous" @click="$emit('prev');">
+        <a v-if="pagination.prevPageUrl" class="btn btn-sm text-white btn-primary mx-1 pagination-previous" @click="$emit('prev');">
           Atras
         </a>
-        <a class="btn btn-sm btn-info text-white mx-1 pagination-previous" v-else :disabled="true">
+        <a class="btn btn-sm btn-primary text-white mx-1 pagination-previous" v-else :disabled="true">
            Atras
         </a>
 
-        <a v-if="pagination.nextPageUrl" class="btn btn-sm text-white btn-info pagination-next" @click="$emit('next');">
+        <a v-if="pagination.nextPageUrl" class="btn btn-sm text-white btn-primary pagination-next" @click="$emit('next');">
             Siguiente
         </a>
-        <a class="btn btn-sm btn-info text-white pagination-next" v-else :disabled="true">
+        <a class="btn btn-sm btn-primary text-white pagination-next" v-else :disabled="true">
             Siguiente
         </a>
     </nav>
 
     <nav class="pagination" v-else>
-      <a v-if="pagination.prevPage" class="btn btn-sm mx-1 btn-info pagination-previous" @click="$emit('prev');">
+      <a v-if="pagination.prevPage" class="btn btn-sm mx-1 btn-primary pagination-previous" @click="$emit('prev');">
             Atras
         </a>
-        <a class="btn btn-sm btn-info mx-1 pagination-previous" v-else :disabled="true">
+        <a class="btn btn-sm btn-primary mx-1 pagination-previous" v-else :disabled="true">
            Atras
         </a>
         

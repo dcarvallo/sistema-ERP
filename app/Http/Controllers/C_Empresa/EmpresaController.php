@@ -41,6 +41,8 @@ class EmpresaController extends Controller
           'nombre' => 'required|string',
           'descripcion' => 'required|string',
           'rubro' => 'required|string',
+          'nit' => 'required|integer',
+          'propietario' => 'required|string',
           'email' => 'email|string|nullable',
           'direccion' => 'required|string',
           'fecha_creacion' => 'required',
@@ -50,6 +52,8 @@ class EmpresaController extends Controller
       $empresa->nombre = $request->nombre;
       $empresa->descripcion = $request->descripcion;
       $empresa->rubro = $request->rubro;
+      $empresa->nit = $request->nit;
+      $empresa->propietario = $request->propietario;
       $empresa->mision = $request->mision;
       $empresa->vision = $request->vision;
       $empresa->direccion = $request->direccion;
@@ -110,6 +114,8 @@ class EmpresaController extends Controller
           'nombre' => 'required|string',
           'descripcion' => 'required|string',
           'rubro' => 'required|string',
+          'nit' => 'required|integer',
+          'propietario' => 'required|string',
           'email' => 'email|string|nullable',
           'direccion' => 'required|string',
           'fecha_creacion' => 'required',
@@ -118,6 +124,8 @@ class EmpresaController extends Controller
       $empresa->nombre = $request->nombre;
       $empresa->descripcion = $request->descripcion;
       $empresa->rubro = $request->rubro;
+      $empresa->nit = $request->nit;
+      $empresa->propietario = $request->propietario;
       $empresa->mision = $request->mision;
       $empresa->vision = $request->vision;
       $empresa->direccion = $request->direccion;

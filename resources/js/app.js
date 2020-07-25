@@ -8,6 +8,16 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+// require('bootstrap-table/dist/bootstrap-table.min.css');
+// require('bootstrap-table/dist/bootstrap-table.js');
+
+// require('tableexport.jquery.plugin');
+// require('bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js');
+// require('bootstrap-table/dist/extensions/print/bootstrap-table-print.min.js');
+
+// require('bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.css');
+// require('bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js');
+
 import swal from 'sweetalert2';
 window.swal = swal;
 
@@ -16,62 +26,7 @@ const toast = swal.mixin({
   toast: true,
   position: 'top',
   showConfirmButton: false,
-  timer: 5000,
-  // timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', swal.stopTimer)
-    toast.addEventListener('mouseleave', swal.resumeTimer)
-  }
-})
-
-const toastsuccess = swal.mixin({
-    toast: true,
-    position: 'top',
-    showConfirmButton: false,
-    background: '#e1f6d0',
-    icon: 'success',
-    timer: 5000,
-    // timerProgressBar: true,
-    onOpen: (toast) => {
-      toast.addEventListener('mouseenter', swal.stopTimer)
-      toast.addEventListener('mouseleave', swal.resumeTimer)
-    }
-})
-
-const toasterror = swal.mixin({
-  toast: true,
-  position: 'top',
-  showConfirmButton: false,
-  background: '#edc3c3',
-  icon: 'error',
-  timer: 5000,
-  // timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', swal.stopTimer)
-    toast.addEventListener('mouseleave', swal.resumeTimer)
-  }
-})
-
-const toastwarning = swal.mixin({
-  toast: true,
-  position: 'top',
-  showConfirmButton: false,
-  icon: 'warning',
-  timer: 5000,
-  // timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', swal.stopTimer)
-    toast.addEventListener('mouseleave', swal.resumeTimer)
-  }
-})
-
-const toastinfo = swal.mixin({
-  toast: true,
-  position: 'top',
-  showConfirmButton: false,
-  background: '#d0e0f4',
-  icon: 'info',
-  timer: 5000,
+  timer: 6000,
   // timerProgressBar: true,
   onOpen: (toast) => {
     toast.addEventListener('mouseenter', swal.stopTimer)
@@ -146,11 +101,7 @@ const modalconfirm = swal.mixin({
   // background: '#f8f3e5',
 })
 
-window.toastsuccess = toastsuccess;
 window.toast = toast;
-window.toasterror = toasterror;
-window.toastinfo = toastinfo;
-window.toastwarning = toastwarning;
 window.modalconfirm = modalconfirm;
 
 // const files = require.context('./', true, /\.vue$/i)
@@ -159,7 +110,6 @@ window.modalconfirm = modalconfirm;
 Vue.component('contactos', require('./components/RRHH/contactosComponent.vue').default);
 Vue.component('pagination', require('./components/Pagination.vue').default);
 Vue.component('datatable', require('./components/ColumUserdatabase.vue').default);
-Vue.component('empleadoedit', require('./components/RRHH/empleadoeditComponent.vue').default);
 Vue.component('empresacreate', require('./components/Empresa/empresacreateComponent.vue').default);
 Vue.component('ubicaciones', require('./components/Empresa/ubicacionesComponent.vue').default);
 //departamentos
@@ -174,8 +124,11 @@ Vue.component('editararea', require('./components/Empresa/area/editarareaCompone
 Vue.component('cargos', require('./components/Empresa/cargo/cargosComponent.vue').default);
 Vue.component('crearcargo', require('./components/Empresa/cargo/crearcargoComponent.vue').default);
 Vue.component('editarcargo', require('./components/Empresa/cargo/editarcargoComponent.vue').default);
-//Empleados
+//RRHH - Empleados
 Vue.component('empleados', require('./components/RRHH/empleados/empleadosComponent.vue').default);
+Vue.component('crearempleado', require('./components/RRHH/empleados/crearempleadoComponent.vue').default);
+Vue.component('editarempleado', require('./components/RRHH/empleados/editarempleadoComponent.vue').default);
+Vue.component('mostrarempleado', require('./components/RRHH/empleados/mostrarempleadoComponent.vue').default);
 //usuarios
 Vue.component('usuarios', require('./components/Admin/Usuarios/usuariosComponent.vue').default);
 Vue.component('editarusuario', require('./components/Admin/Usuarios/editarusuarioComponent.vue').default);

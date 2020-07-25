@@ -36,12 +36,12 @@
                   <select class="form-control" v-model="tableData.searchColumn">
                       <option value="empleado_id" selected>Id Empleado</option>
                       <option value="nombres">Nombres</option>
-                      <option value="apellidos">Apellidos</option>
+                      <option value="ap_paterno">Apellido Paterno</option>
+                      <option value="ap_materno">Apellido Materno</option>
                       <option value="ci">CI</option>
-                      <option value="cargo">Cargo</option>
-                      <option value="email">Email</option>
                       <option value="tipo_contrato">Tipo Contrato</option>
                       <option value="fecha_contrato">Fecha Contrato</option>
+                      <option value="estado">Estado</option>
                   </select>
                   </div>
                 </div>
@@ -54,11 +54,13 @@
                 <tr v-for="(empleado) in empleados" :key="empleado.id">
                     <td style="width: 10%" >{{empleado.empleado_id}}</td>
                     <td style="width: 15%" >{{empleado.nombres}}</td>
-                    <td style="width: 15%" >{{empleado.apellidos}}</td>
-                    <td style="width: 10%" > {{empleado.ci}}</td>
-                    <td style="width: 30%" > {{empleado.cargo.nombre}}</td>
+                    <td style="width: 10%" >{{empleado.ap_paterno}}</td>
+                    <td style="width: 10%" >{{empleado.ap_materno}}</td>
+                    <td style="width: 10%" > {{empleado.ci}} {{empleado.lugar_exp}}</td>
                     <td style="width: 10%" > {{empleado.tipo_contrato}}</td>
                     <td style="width: 10%" > {{empleado.fecha_contrato}}</td>
+                    <td style="width: 5%" > {{empleado.estado}}</td>
+                    <td style="width: 20%" > {{empleado.cargo.nombre}}</td>
 
                     <td class="text-center" v-if="can_ver" >
                         <a class="btn btn-primary text-white" :href="'/empleados/'+empleado.id"><i class="far fa-eye"></i></a>
@@ -138,16 +140,18 @@ export default {
         let columns = [
             {label: 'ID Empleado', name: 'empleado_id' },
             {label: 'Nombres', name: 'nombres'},
-            {label: 'Apellidos', name: 'apellidos'},
+            {label: 'Apellido Paterno', name: 'ap_paterno'},
+            {label: 'Apellido Materno', name: 'ap_materno'},
             {label: 'CI', name: 'ci'},            
-            {label: 'Cargo', name: 'cargo'},           
             {label: 'Tipo de Contrato', name: 'tipo_contrato'},            
             {label: 'Fecha Contrato', name: 'fecha_contrato'},            
+            {label: 'Estado', name: 'estado'},            
         ];
         const columnasPrincipales = columns.length - 1 ;
           columns.forEach((column) => {
-             sortOrders[column.name] = -1;
-          });
+            sortOrders[column.name] = -1;
+          });         
+          columns.push({label: 'Cargo', name: 'cargo'});
         if(this.can_ver){
           columns.push({label: 'Ver', name: 'ver'});
         }
@@ -161,17 +165,10 @@ export default {
         return {
             empleados: [],
             exportar: [],
-            checkbox: [
-              'name',
-              'username',
-              'email',
-              'activo',
-              'acciones',
-            ],
             expanded: false,
             columns: columns,
             columnasPrincipales:columnasPrincipales,
-            sortKey: 'name',
+            sortKey: '',
             sortOrders: sortOrders,
             perPage: ['15', '30', '50'],
             tableData: {
@@ -236,11 +233,11 @@ export default {
           allowOutsideClick: () => !swal.isLoading()
           }).then((result) => {
             if (result.value) {
-              swal.fire(
-                'Quitado!',
-                'Se ha quitado el rol.',
-                'success'
-              )
+              toast.fire({
+                background: '#e1f6d0',
+                icon: 'success',
+                title: 'Se ha quitado el empleado.', 
+              })
             }
           })
         },
@@ -268,25 +265,6 @@ export default {
         getIndex(array, key, value) {
             return array.findIndex(i => i[key] == value)
         },
-
-        importardatoempleado(empleadosel){
-            let par = this.parametrostabla;
-          axios.put('/importardatoempleado/'+empleadosel.id)
-          .then(res => {
-            this.getEmpleados('/obtenerempleados');
-            toast.fire({
-                icon: 'success',
-                title: 'Datos importados correctamente'
-            })
-          })
-          .catch(err => {
-              toast.fire({
-                icon: 'error',
-                title: 'Error'
-            })
-            location.reload();
-          })
-        }
     }
 };
 </script>

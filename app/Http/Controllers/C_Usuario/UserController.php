@@ -12,6 +12,10 @@ use App\Http\Requests\Usuarios\ResetPassword;
 use App\Http\Requests\Usuarios\UpdateUsuario;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\M_RRHH\Empleado;
+use Barryvdh\DomPDF\Facade as PDF;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DatosExport;
+use App\Exports\datosallExport;
 use App\Bitacora;
 use Storage;
 use Session;
@@ -23,7 +27,7 @@ class UserController extends Controller
   public function index()
   {
     if (!Auth::user()->can('permisos', 'Navegar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
-
+    // $usuarios = User::orderBy('name', 'asc')->with('roles')->get();
     return view('usuarios.index');
   }
 
@@ -51,11 +55,25 @@ class UserController extends Controller
     return ['data' => $usuarios, 'draw' => $request->input('draw')];
   }
 
+  //para bootstrap-table
+  // public function obtenerusuarios(Request $request)
+  // {
+  //   if (!Auth::user()->can('permisos', 'Navegar-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
+    
+    
+  //   $usuarios = User::select('id', 'name', 'username', 'email', 'activo')->with('roles')->get();
+    
+  //   logger($usuarios);
+
+  //   // $usuarios = $query->paginate($length);
+  //   return ['data' => $usuarios];
+  // }
+
   public function create()
   {
     if (!Auth::user()->can('permisos', 'Crear-usuarios') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-    $empleados = Empleado::select('id', 'nombres', 'apellidos', 'ci')->get();
+    $empleados = Empleado::select('id', 'nombres', 'ap_paterno', 'ap_materno','ci')->get();
 
     $roles = Role::all()->groupBy('category')->toArray();
     unset($roles['Inactivo']);
@@ -119,7 +137,8 @@ class UserController extends Controller
       $toast = array(
         'title'   => 'Usuario creado: ',
         'message' => $request->username,
-        'type'    => 'success'
+        'background' => '#e1f6d0',
+        'type' => 'success'
       );
 
       return [$usuario, $toast];
@@ -127,7 +146,8 @@ class UserController extends Controller
       $toast = array(
         'title'   => 'Usuario no creado: ',
         'message' => $usuario->username,
-        'type'    => 'error'
+        'type'    => 'error',
+        'background' => '#edc3c3'
       );
       return [$usuario, $toast, $e->errorInfo];
     }
@@ -200,7 +220,8 @@ class UserController extends Controller
       $toast = array(
         'title'   => 'Usuario modificado: ',
         'message' => $usuario->username,
-        'type'    => 'success'
+        'background' => '#e1f6d0',
+        'type' => 'success'
       );
 
       return [$usuario, $toast];
@@ -208,7 +229,8 @@ class UserController extends Controller
       $toast = array(
         'title'   => 'Usuario no modificado: ',
         'message' => 'error',
-        'type'    => 'error'
+        'type'    => 'error',
+        'background' => '#edc3c3'
       );
       return response()->json($usuario, $toast);
     }
@@ -231,6 +253,8 @@ class UserController extends Controller
     $toast = array(
       'title'   => 'usuario quitado. ',
       'message' => '',
+      'background' => '#e1f6d0',
+      'type' => 'success'
     );
     return $toast;
   }
@@ -261,14 +285,16 @@ class UserController extends Controller
       $toast = array(
         'title'   => 'Usuario modificado: ',
         'message' => $usuario->username,
-        'type'    => 'success'
+        'background' => '#e1f6d0',
+        'type' => 'success'
       );
       return [$usuario, $toast];
     } catch (\Throwable $th) {
       $toast = array(
         'title'   => 'Usuario no modificado: ',
         'message' => 'error',
-        'type'    => 'error'
+        'type'    => 'error',
+        'background' => '#edc3c3'
       );
       return response()->json($usuario, $toast);
     }
@@ -299,14 +325,16 @@ class UserController extends Controller
       $toast = array(
         'title'   => 'Email modificado: ',
         'message' => $usuario->email,
-        'type'    => 'success'
+        'background' => '#e1f6d0',
+        'type' => 'success'
       );
       return [$usuario, $toast];
     } catch (\Throwable $th) {
       $toast = array(
         'title'   => 'Usuario no modificado: ',
         'message' => 'error',
-        'type'    => 'error'
+        'type'    => 'error',
+        'background' => '#edc3c3'
       );
       return response()->json($usuario, $toast);
     }
@@ -332,7 +360,8 @@ class UserController extends Controller
           $toast2 = array(
             'title'   => 'roles modificados para: ',
             'message' => $usuario->username,
-            'type'    => 'success'
+            'background' => '#e1f6d0',
+            'type' => 'success'
           );
         } else {
           $arrayderoles = explode(",", $request->roles);
@@ -340,7 +369,8 @@ class UserController extends Controller
           $toast2 = array(
             'title'   => 'roles modificados para: ',
             'message' => $usuario->username,
-            'type'    => 'success'
+            'background' => '#e1f6d0',
+            'type' => 'success'
           );
         }
       } else {
@@ -348,7 +378,8 @@ class UserController extends Controller
         $toast2 = array(
           'title'   => 'roles modificados para: ',
           'message' => $usuario->username,
-          'type'    => 'success'
+          'background' => '#e1f6d0',
+            'type' => 'success' 
         );
       }
       cache()->tags('permisos')->flush();
@@ -364,7 +395,8 @@ class UserController extends Controller
       $toast = array(
         'title'   => 'Usuario no modificado: ',
         'message' => 'error',
-        'type'    => 'error'
+        'type'    => 'error',
+        'background' => '#edc3c3'
       );
       return [$usuario, $toast];
     }
@@ -422,5 +454,40 @@ class UserController extends Controller
     Session::flash('resetpass', $msg);
 
     return redirect('perfil');
+  }
+
+  public function exportar(Request $request){
+    logger($request);
+    if($request->exportar == "pdf")
+    {
+      if($request->exportarpagina == "actual")
+      {
+        $datos = User::select('id','name','username','email','activo')->with('roles')->paginate();
+        $datos->chunk(5);
+        return PDF::loadView('usuarios.exportar', compact('datos'))->download('exportado.pdf');
+      }
+      if($request->exportarpagina == "todo")
+      {
+        $datos = User::select('id','name','username','email','activo')->with('roles')->get();
+        $datos->chunk(1000);
+        return PDF::loadView('usuarios.exportar', compact('datos'))->download('exportado.pdf');
+      }
+
+    }
+
+    if($request->exportar == "excel")
+    {
+      if($request->exportarpagina == "actual")
+      {
+        $usuarios = User::paginate();
+        $vista = (string) "usuarios.exportar";
+         return Excel::download(new DatosExport($vista,$usuarios), 'exportado.xlsx');
+      }
+      if($request->exportarpagina == "todo")
+      {
+        return (new datosallExport)->download('exportado.xlsx');
+      }
+    }
+
   }
 }

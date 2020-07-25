@@ -154,7 +154,7 @@ export default {
             expanded: false,
             columns: columns,
             columnasPrincipales:columnasPrincipales,
-            sortKey: 'name',
+            sortKey: '',
             sortOrders: sortOrders,
             perPage: ['15', '30', '50'],
             tableData: {

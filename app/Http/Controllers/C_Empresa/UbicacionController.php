@@ -87,7 +87,8 @@ class UbicacionController extends Controller
           $toast = array(
             'title'   => 'Ubicacion creada: ',
             'message' => $ubicacion->nombre,
-            'type'    => 'success'
+            'background' => '#e1f6d0',
+            'type' => 'success'
           );
 
           return back()->with('toast', $toast);
@@ -97,7 +98,8 @@ class UbicacionController extends Controller
           $toast = array(
             'title'   => 'error',
             'message' => 'No existe empresa creada',
-            'type'    => 'error'
+            'type'    => 'error',
+            'background' => '#edc3c3'
           );
           return back()->with('toast', $toast);
         }
@@ -105,7 +107,8 @@ class UbicacionController extends Controller
           $toast = array(
             'title'   => 'Error',
             'message' => 'Error inesperado, contacte al administrador',
-            'type'    => 'error'
+            'type'    => 'error',
+            'background' => '#edc3c3'
           );
           return back()->with('toast', $toast);
       }
@@ -150,7 +153,8 @@ class UbicacionController extends Controller
         $toast = array(
             'title'   => 'Ubicacion modificada: ',
             'message' => $ubicacion->nombre,
-            'type'    => 'success'
+            'background' => '#e1f6d0',
+            'type' => 'success'
         );
 
         return back()->with('toast', $toast);
@@ -159,7 +163,8 @@ class UbicacionController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'Error inesperado, contacte al administrdor',
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
       );
 
       return back()->with('toast', $toast);
@@ -175,7 +180,8 @@ class UbicacionController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'No se puede quitar, ubicacion tiene departamentos dependientes',
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
         );
         return $toast;
       }
@@ -191,7 +197,8 @@ class UbicacionController extends Controller
       $toast = array(
         'title'   => 'ubicacion eliminada: ',
         'message' => '',
-        'type'    => 'error',
+        'background' => '#e1f6d0',
+        'type' => 'success'
       );
       return $toast;
     }

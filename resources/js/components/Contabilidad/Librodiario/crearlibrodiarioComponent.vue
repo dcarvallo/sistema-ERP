@@ -11,8 +11,8 @@
             </div>
             <div class="card-body">
               <div class="row">
-                  <div class="col-md-4">
-                    <select name="" id="">
+                  <div class="col-md-1">
+                    <select class="form-control" name="" id="">
                       <option value="">Apunte</option>
                     </select>
                   </div>
@@ -41,7 +41,7 @@
                           :searchable="true"
                           :selectLabel="''" 
                           :multiple="false"
-                          :placeholder="'Seleccione'"
+                          :placeholder="'Seleccione cuenta'"
                           :preserve-search="true" 
                           :custom-label="codigodescripcion"
                           :selectedLabel="'Seleccionado'" 
@@ -119,7 +119,7 @@ export default {
   data(){
     return{
       librodiario: [{
-          cuenta: null,
+          cuenta: '',
           descripcion: '',
           documento: '',
           debe: 0,
@@ -142,6 +142,7 @@ export default {
     },
     agregarfila() {
         this.librodiario.push({
+            cuenta: '',
             descripcion: '',
             documento: '',
             debe: 0,
@@ -149,7 +150,7 @@ export default {
         });
     },
     codigodescripcion ({ codigo_cta, descripcion}) {
-      return `${codigo_cta} ${descripcion}`
+        return `${codigo_cta} ${descripcion}` 
     },
     cuadre(){
           var sumadebe = 0;
@@ -194,7 +195,9 @@ export default {
       axios.post('/roles/store',formData)
       .then(res => {
         let datos = res.data;
-        toastsuccess.fire({
+        toast.fire({
+          icon: datos[1].type,
+          background: datos[1].background,
           title: datos[1].title+' '+datos[1].message
         })
       })
@@ -202,12 +205,19 @@ export default {
         let datos = error.data;
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: 'Error en formulario, revise'
+            })
           }
           if(datos)
           {
-            toasterror.fire({
-            title: datos[1].title+' '+datos[1].message
-          })
+            toast.fire({
+              icon: datos[1].type,
+              background: datos[1].background,
+              title: datos[1].title+' '+datos[1].message
+            })
           }
       })
     }

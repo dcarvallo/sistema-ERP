@@ -177,17 +177,20 @@ export default {
       axios.post('/roles/'+this.rol.id,formData)
       .then(res => {
         let datos = res.data;
-        toastsuccess.fire({
+        toast.fire({
+          icon: datos[1].type,
+          background: datos[1].background,
           title: datos[1].title+' '+datos[1].message
         })
       })
       .catch(error => {
         let datos = error.data;
-        console.log(error);
         if(error.response.status == 422){
             this.errors = error.response.data.errors;
           }
-          toasterror.fire({
+          toast.fire({
+            icon: datos[1].type,
+            background: datos[1].background,
             title: datos[1].title+' '+datos[1].message
           })
       })

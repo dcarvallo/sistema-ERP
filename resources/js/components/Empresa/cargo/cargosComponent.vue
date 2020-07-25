@@ -104,7 +104,7 @@ export default {
         cargos: [],
         columns: columns,
         columnasPrincipales:columnasPrincipales,
-        sortKey: 'nombre',
+        sortKey: '',
         sortOrders: sortOrders,
         perPage: ['15', '30', '50'],
         tableData: {

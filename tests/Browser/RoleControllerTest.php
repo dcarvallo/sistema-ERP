@@ -16,7 +16,7 @@ class RoleControllerTest extends DuskTestCase
         $browser->visit('roles')
                 ->type('username', 'admin')
                 ->type('password', 'admin')
-                ->press('Login')
+                ->press('Ingresar')
                 ->assertSee('Nombre');
       });
     }
@@ -40,7 +40,7 @@ class RoleControllerTest extends DuskTestCase
          $browser->visit('roles/create')
                 ->type('name', Str::random(6))
                 ->type('description', Str::random(7))
-                ->press('.fa-plus-square')
+                ->press('#categoria')
                 ->type('category', Str::random(5))
                 ->press('Guardar')
                 ->pause(1500)

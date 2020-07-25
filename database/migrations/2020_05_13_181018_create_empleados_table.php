@@ -15,14 +15,17 @@ class CreateEmpleadosTable extends Migration
     {
         Schema::create('empleados', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('empleado_id');
+            $table->string('empleado_id', 100);
             $table->string('nombres', 100);
-            $table->string('apellidos', 100);
-            $table->string('ci', 20)->nullable();
+            $table->string('ap_paterno', 100);
+            $table->string('ap_materno', 100);
+            $table->string('nacionalidad', 100)->nullable();
+            $table->string('ci', 20);
+            $table->string('lugar_exp', 20)->nullable();
             $table->string('direccion', 100)->nullable();
             $table->date('fecha_nac');
             $table->string('lugar_nac', 255)->nullable();
-            $table->tinyInteger('sexo')->nullable();
+            $table->string('sexo', 10);
             $table->string('estado_civil', 50)->nullable();
             $table->string('telefono', 200)->nullable();
             $table->string('email', 100)->nullable();
@@ -33,8 +36,8 @@ class CreateEmpleadosTable extends Migration
             $table->string('fotografia', 255)->nullable();
             $table->date('fecha_contrato');
             $table->string('tipo_contrato', 100)->nullable();
+            $table->string('estado', 10)->default('Alta');
             $table->unsignedBigInteger('cargo_id');
-            $table->string('telefono_int', 50)->nullable();
             $table->foreign('cargo_id')->references('id')->on('cargos');
             $table->softDeletes();
             $table->timestamps();

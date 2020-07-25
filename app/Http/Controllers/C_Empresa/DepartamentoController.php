@@ -86,7 +86,8 @@ class DepartamentoController extends Controller
         $toast = array(
           'title'   => 'Departamento creado: ',
           'message' => $departamento->nombre,
-          'type'    => 'success'
+          'background' => '#e1f6d0',
+          'type' => 'success'
         );
 
         return [$departamento,$toast];
@@ -95,7 +96,8 @@ class DepartamentoController extends Controller
           $toast = array(
             'title'   => 'Error',
             'message' => $th,
-            'type'    => 'error'
+            'type'    => 'error',
+          'background' => '#edc3c3'
           );
           return [$request,$toast];
       }
@@ -143,7 +145,8 @@ class DepartamentoController extends Controller
         $toast = array(
             'title'   => 'Departamento modificado: ',
             'message' => $departamento->nombre,
-            'type'    => 'success'
+            'background' => '#e1f6d0',
+            'type' => 'success'
         );
 
         return [$departamento ,$toast];
@@ -152,7 +155,8 @@ class DepartamentoController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'Error inesperado, contacte al administrdor',
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
       );
 
       return [$request ,$toast];
@@ -168,7 +172,8 @@ class DepartamentoController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'No se puede quitar, departamento tiene areas dependientes',
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
         );
         return $toast;
       }
@@ -181,7 +186,8 @@ class DepartamentoController extends Controller
       $bitacora->save();
 
       $toast = array(
-        'type'    => 'success',
+        'background' => '#e1f6d0',
+        'type' => 'success',
         'title'   => 'Departamento eliminado: ',
         'message' => '',
       );

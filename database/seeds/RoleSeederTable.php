@@ -22,6 +22,12 @@ class RoleSeederTable extends Seeder
           'guard_name'    => 'web',
           'description'   => 'Sin acceso',
           'category'      => 'Inactivo'
-      ]);
+        ]);
+        DB::table('roles')->insert([
+          'name'          => 'Encargado RRHH',
+          'guard_name'    => 'web',
+          'description'   => 'Personal de recursos humanos',
+          'category'      => 'RRHH'
+        ]);
     }
 }

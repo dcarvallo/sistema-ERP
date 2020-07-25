@@ -83,7 +83,8 @@ class CargoController extends Controller
         $toast = array(
           'title'   => 'Cargo creado: ',
           'message' => $cargo->nombre,
-          'type'    => 'success'
+          'background' => '#e1f6d0',
+          'type' => 'success'
         );
 
         return [$cargo, $toast];
@@ -92,7 +93,8 @@ class CargoController extends Controller
           $toast = array(
             'title'   => 'Error',
             'message' => $th,
-            'type'    => 'error'
+            'type'    => 'error',
+            'background' => '#edc3c3'
           );
           return [$request, $toast];
       }
@@ -139,7 +141,8 @@ class CargoController extends Controller
         $toast = array(
             'title'   => 'Cargo modificado: ',
             'message' => $cargo->nombre,
-            'type'    => 'success'
+            'background' => '#e1f6d0',
+            'type' => 'success'
         );
 
         return [$cargo ,$toast];
@@ -148,7 +151,8 @@ class CargoController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'Error inesperado, contacte al administrador, '.$th,
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
       );
 
       return [$request ,$toast];
@@ -164,7 +168,8 @@ class CargoController extends Controller
         $toast = array(
           'title'   => 'Error: ',
           'message' => 'No se puede quitar, cargo tiene empleados dependientes',
-          'type'    => 'error'
+          'type'    => 'error',
+          'background' => '#edc3c3'
         );
         return $toast;
       }
@@ -177,7 +182,8 @@ class CargoController extends Controller
       $bitacora->save();
 
       $toast = array(
-        'type'    => 'success',
+        'background' => '#e1f6d0',
+        'type' => 'success',
         'title'   => 'Cargo eliminado: ',
         'message' => '',
       );

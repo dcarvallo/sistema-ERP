@@ -16,7 +16,7 @@ class DepartamentoControllerTest extends DuskTestCase
         $browser->visit('departamentos')
                 ->type('username', 'admin')
                 ->type('password', 'admin')
-                ->press('Login')
+                ->press('Ingresar')
                 ->assertSee('Nombre');
       });
     }
@@ -75,7 +75,7 @@ class DepartamentoControllerTest extends DuskTestCase
                 ->type('descripcion', Str::random(15))
                 ->press('Guardar')
                 ->pause(2000)
-                ->assertSee('departamento modificada')
+                ->assertSee('Departamento modificado')
                 ->screenshot('modificar departamento');
        });
      }

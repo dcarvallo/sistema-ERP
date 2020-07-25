@@ -47,6 +47,16 @@
                  @error('rubro')<div class="alert-danger">{{ $message }}</div> @enderror
                </div>
                <div class="form-group">
+                <label for="nit">NIT*</label>
+                <input type="number" class="form-control @error('nit') is-invalid @enderror" name="nit" value="{{$empresa->nit }}" placeholder="NIT de la empresa">
+                @error('nit')<div class="alert-danger">{{ $message }}</div> @enderror
+              </div>
+              <div class="form-group">
+                <label for="propietario">Propietario*</label>
+                <input type="text" class="form-control @error('propietario') is-invalid @enderror" name="propietario" value="{{$empresa->propietario }}" placeholder="Propietario de la empresa">
+                @error('propietario')<div class="alert-danger">{{ $message }}</div> @enderror
+              </div>
+               <div class="form-group">
                  <label for="mision">Misión</label>
                  <textarea type="text" class="form-control" @error('mision') is-invalid @enderror name="mision" placeholder="Misión">{{ $empresa->mision }}</textarea>
                </div>

@@ -67,6 +67,7 @@
       toast: true,
       showConfirmButton: false,
       position: 'top',
+      background: '#e1f6d0',
       icon: variable.type,
       title: variable.title+' '+variable.message,
       timer: 5000,

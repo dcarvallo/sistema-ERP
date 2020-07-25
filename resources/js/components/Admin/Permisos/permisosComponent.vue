@@ -83,7 +83,7 @@ export default {
             permisos: [],
             columns: columns,
             columnasPrincipales:columnasPrincipales,
-            sortKey: 'category',
+            sortKey: '',
             sortOrders: sortOrders,
             perPage: ['15', '30', '50'],
             tableData: {

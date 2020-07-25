@@ -4,8 +4,6 @@ namespace Tests\Feature\Http\Controllers\C_Usuario;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\User;
@@ -13,22 +11,10 @@ use Illuminate\Support\Str;
 
 class UsuarioControllerTest extends TestCase
 {
-    //limpia base de datos
-    use RefreshDatabase;
-    //ejecuta migraciones
-    use DatabaseMigrations;
-
-    //Llena BD con datos de seeder
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->artisan('db:seed');
-    }
 
     /** @test */
     public function verifica_vista_usuarios()
     {
-      // $this->withoutExceptionHandling();
 
       $this->actingAs(User::find(1))
             ->get('users')
@@ -39,7 +25,6 @@ class UsuarioControllerTest extends TestCase
     /** @test */
     public function verifica_vista_usuarios_sin_usuario_autenticado()
     {
-      // $this->withoutExceptionHandling();
 
       $this->get('users')
             ->assertStatus(302)
@@ -49,18 +34,16 @@ class UsuarioControllerTest extends TestCase
     /** @test */
     public function verifica_vista_crear_usuarios()
     {
-      // $this->withoutExceptionHandling();
 
       $this->actingAs(User::find(1))
             ->get('users/create')
-            ->assertStatus(200)
-            ->assertSee('Crear Usuario');
+            ->assertSuccessful()
+            ->assertSeeText('Crear Usuario');
     }
 
     /** @test */
     public function verifica_almacenar_usuarios()
     {
-      $this->withoutExceptionHandling();
       
       $response = $this->actingAs(User::find(1))
                       ->postJson(route('users.store'), [
@@ -80,7 +63,6 @@ class UsuarioControllerTest extends TestCase
     /** @test */
     public function verifica_vista_ver_usuario()
     {
-      // $this->withoutExceptionHandling();
 
       $this->actingAs(User::find(1))
             ->get('/users/1')
@@ -91,7 +73,6 @@ class UsuarioControllerTest extends TestCase
     /** @test */
     public function verifica_vista_editar_usuarios()
     {
-      $this->withoutExceptionHandling();
 
       $this->actingAs(User::find(1))
             ->get('users/1/edit')
