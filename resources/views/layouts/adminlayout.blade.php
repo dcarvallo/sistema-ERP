@@ -28,9 +28,9 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="/admin" class="nav-link">Inicio</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="/limpiar" class="nav-link">Limpiar telescope</a>
-      </li>
+      </li> -->
       @can('admin.archivos')
       <li class="nav-item d-none d-sm-inline-block">
         <a href="/filemanager"  class="nav-link">Administrar Archivos</a>
