@@ -165,7 +165,7 @@
         <li class="nav-item right-align dropdown">
           
           <a id="navbarDropdown" class="nav-link dropdown-toggle text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img-circle img-fluid mr-1" style="width: 38px; height: 38px;" alt="user">
+            <img src="{{ secure_asset('storage/'.Auth::user()->fotografia)}}" class="img-circle img-fluid mr-1" style="width: 38px; height: 38px;" alt="user">
               
             <span class="caret"> {{ Auth::user()->username }}</span>
           </a>
@@ -193,7 +193,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/admin" class="brand-link">
-      <img src="{{ asset('storage/'.$globalimagenempresa)}}" alt="" class="brand-image img-circl elevation-3"
+      <img src="{{ secure_asset('storage/'.$globalimagenempresa)}}" alt="" class="brand-image img-circl elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light"> {{$globalnombreempresa}}</span>
     </a>

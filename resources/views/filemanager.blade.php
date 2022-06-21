@@ -1,7 +1,7 @@
 @extends('layouts.adminlayout')
 @section('css-head')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="stylesheet" href="{{ asset('/css/file-manager.css') }}">
+<link rel="stylesheet" href="{{secure_asset('/css/file-manager.css') }}">
 @endsection
 
 @section('icono')
@@ -23,5 +23,5 @@
 @endsection
 
 @section('js-footer')
-<script src="{{ asset('/js/file-manager.js') }}"></script>
+<script src="{{ secure_asset('/js/file-manager.js') }}"></script>
 @endsection

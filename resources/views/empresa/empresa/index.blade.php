@@ -39,7 +39,7 @@
                   </div>
                   @if($empresa->imagen_empresa)
                   <div class="col-md-4 text-center my-3" >
-                    <img src="{{ asset('storage/'.$empresa->imagen_empresa)}}" class="rounded img-fluid animate__animated animate__fadeIn animate__slower align-middle" style="max-height: 300px">
+                    <img src="{{ secure_asset('storage/'.$empresa->imagen_empresa)}}" class="rounded img-fluid animate__animated animate__fadeIn animate__slower align-middle" style="max-height: 300px">
                   </div>
                   @endif
               </div>

@@ -28,7 +28,7 @@
     <div class="bg-dark border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">
         <a href="/admin" class="brand-link">
-          <img style="width: 40px" src="{{ asset('storage/'.$globalimagenempresa)}}" alt="" class="brand-image img-circl elevation-3"
+          <img style="width: 40px" src="{{ secure_asset('storage/'.$globalimagenempresa)}}" alt="" class="brand-image img-circl elevation-3"
                style="opacity: .8">
           <span class="brand-text font-weight-light"> {{$globalnombreempresa}}</span>
         </a>  
@@ -79,7 +79,7 @@
                 <li class="nav-item dropdown">
                   
                   <a id="navbarDropdown" class="nav-link dropdown-toggle text-we text-right py-1 mx-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    <img src="{{ asset('storage/'.Auth::user()->fotografia)}}" class="img mr-1" style="width: 40px" alt="Logo">
+                    <img src="{{secure_asset('storage/'.Auth::user()->fotografia)}}" class="img mr-1" style="width: 40px" alt="Logo">
                       
                       <span class="caret"> {{ Auth::user()->username }}</span>
                   </a>
