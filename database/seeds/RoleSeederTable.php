@@ -12,10 +12,22 @@ class RoleSeederTable extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
-            'name'          => 'Navegar usuarios',
-            'slug'          => 'users.index',
-            'description'   => 'Lista y navega todos los usuarios del sistema',
-            'special'       => 'all-access'
+            'name'          => 'Super Admin',
+            'guard_name'    => 'web',
+            'description'   => 'Acceso a todos los modulo del sistema',
+            'category'      => 'Admin'
+        ]);
+        DB::table('roles')->insert([
+          'name'          => 'Inactivo',
+          'guard_name'    => 'web',
+          'description'   => 'Sin acceso',
+          'category'      => 'Inactivo'
+        ]);
+        DB::table('roles')->insert([
+          'name'          => 'Encargado RRHH',
+          'guard_name'    => 'web',
+          'description'   => 'Personal de recursos humanos',
+          'category'      => 'RRHH'
         ]);
     }
 }

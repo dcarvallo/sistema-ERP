@@ -18,6 +18,8 @@ class CreateEmpresasTable extends Migration
             $table->string('nombre', 200);
             $table->text('descripcion');
             $table->string('rubro', 255);
+            $table->bigInteger('nit');
+            $table->string('propietario', 255);
             $table->text('mision')->nullable();
             $table->text('vision')->nullable();
             $table->string('direccion', 200)->nullable();
@@ -25,6 +27,7 @@ class CreateEmpresasTable extends Migration
             $table->string('email', 100)->nullable();
             $table->string('imagen_empresa', 200)->nullable();
             $table->date('fecha_creacion');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

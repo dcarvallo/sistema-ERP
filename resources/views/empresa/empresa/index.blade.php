@@ -5,35 +5,27 @@
   <link rel="stylesheet" href="css/animate.min.css">
 @endsection
 
+@section('icono')
+  <i class="far fa-building"></i>
+@endsection
+
+@section('vista', 'Empresa')
+
+@section('breadcrumb')  
+  @if($empresa == null)
+    @can('permisos', 'Crear-empresas')
+      <li class="breadcrumb-item"><a class="btn btn-primary text-white" href="{{route('empresas.create')}}">Crear Empresa</a></li>
+    @endcan
+  @else
+    {{-- @can('Editar-empresas') --}}
+    @can('permisos', 'Editar-empresas')
+      <li class="breadcrumb-item"><a class="btn btn-warning text-darker" href="{{route('empresas.edit', [$empresa->id])}}" >Editar</a></li>
+    @endcan
+  @endif
+@endsection
+
 @section('content')
 
-  <div class="content-wrapper">
-<div>
-
-</div>
-       <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Datos de Empresa</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            @if($empresa == null)
-              @can('empresa.create')
-                <li class="breadcrumb-item"><a class="btn btn-primary text-white" href="{{route('empresas.create')}}">Crear Empresa</a></li>
-              @endcan
-            @else
-              @can('empresa.edit')
-                <li class="breadcrumb-item"><a class="btn btn-warning text-darker" href="{{route('empresas.edit', [$empresa->id])}}" >Editar</a></li>
-              @endcan
-            @endif
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
   @if($empresa != null)
     <section class="content" id="app">
         <!-- Default box -->
@@ -60,6 +52,18 @@
                   <p class="mb-0"> {{$empresa->rubro}}</p>
                   <hr class="my-0 border">
                   <p class="font-weight-bold">Rubro</p>
+                </div>
+                <br>
+                <div>
+                  <p class="mb-0"> {{$empresa->nit}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">NIT</p>
+                </div>
+                <br>
+                <div>
+                  <p class="mb-0"> {{$empresa->propietario}}</p>
+                  <hr class="my-0 border">
+                  <p class="font-weight-bold">propietario</p>
                 </div>
                 <br>
                 <div >
@@ -109,10 +113,6 @@
       </div>
       </section>
       @endif
-      {{-- @include('sweetalert::alert') --}}
-
-  </div>
-
 @endsection
 
 @section('js-footer')

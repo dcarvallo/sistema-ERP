@@ -19,6 +19,7 @@ class CreateCargosTable extends Migration
             $table->text('descripcion');
             $table->unsignedBigInteger('area_id');
             $table->foreign('area_id')->references('id')->on('areas');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

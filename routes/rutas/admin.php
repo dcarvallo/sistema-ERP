@@ -4,68 +4,46 @@ use Illuminate\Support\Facades\Route;
 
 //admin
 
-//usuarios
-
-
 Route::middleware(['auth'])->group(function () {
 	
-	Route::get('admin', function(){
-		return view('admin.index');
-	});
-	// Route::resource('usuarios', 'C_Admin\UserController');
-	
-	Route::get('obtenerusuarios', 'C_Admin\UserController@obtenerusuarios');
+  Route::get('admin', 'C_Admin\AdminController@index')->name('admin.index');
 
-	Route::get('filemanager', 'C_Admin\AdminController@gestionararchivos')->name('admins.archivos')
-		->middleware('can:admins.archivo');
-
-	Route::put('importardatousuario/{id}', 'C_Admin\UserController@importardatousuario');
+	Route::get('filemanager', 'C_Admin\AdminController@gestionararchivos')->name('admins.archivos');
 	
 	//Roles
-	Route::post('roles/store', 'C_Admin\RoleController@store')->name('roles.store')
-		->middleware('can:roles.create');
+	Route::post('roles/store', 'C_Admin\RoleController@store')->name('roles.store');
 
-	Route::get('roles', 'C_Admin\RoleController@index')->name('roles.index')
-		->middleware('can:roles.index');
+	Route::get('roles', 'C_Admin\RoleController@index')->name('roles.index');
 
-	Route::get('roles/create', 'C_Admin\RoleController@create')->name('roles.create')
-		->middleware('can:roles.create');
+	Route::get('roles/create', 'C_Admin\RoleController@create')->name('roles.create');
 
-	Route::put('roles/{role}', 'C_Admin\RoleController@update')->name('roles.update')
-		->middleware('can:roles.edit');
+	Route::put('roles/{role}', 'C_Admin\RoleController@update')->name('roles.update');
 
-	Route::get('roles/{role}', 'C_Admin\RoleController@show')->name('roles.show')
-		->middleware('can:roles.show');
+	Route::get('roles/{role}', 'C_Admin\RoleController@show')->name('roles.show');
 
-	Route::delete('roles/{role}', 'C_Admin\RoleController@destroy')->name('roles.destroy')
-		->middleware('can:roles.destroy');
+	Route::delete('roles/{role}', 'C_Admin\RoleController@destroy')->name('roles.destroy');
 
-	Route::get('roles/{role}/edit', 'C_Admin\RoleController@edit')->name('roles.edit')
-		->middleware('can:roles.edit');
+	Route::get('roles/{role}/edit', 'C_Admin\RoleController@edit')->name('roles.edit');
+    
+  Route::get('obtenerroles', 'C_Admin\RoleController@obtenerroles');
 
+  //Permissions
+  
+  Route::post('permisos/store', 'C_Admin\PermissionController@store')->name('permisos.store');
 
-	//Users
-	Route::get('users/create', 'C_Admin\UserController@create')->name('users.create')
-		->middleware('can:users.create');
+	Route::get('permisos', 'C_Admin\PermissionController@index')->name('permisos.index');
 
-	Route::get('users/index', 'C_Admin\UserController@index')->name('users.index')
-		->middleware('can:users.index');
+	Route::get('permisos/create', 'C_Admin\PermissionController@create')->name('permisos.create');
 
-	Route::put('users/{user}', 'C_Admin\UserController@update')->name('users.update')
-		->middleware('can:users.edit');
+	Route::put('permisos/{permission}', 'C_Admin\PermissionController@update')->name('permisos.update');
 
-	Route::get('users/{user}', 'C_Admin\UserController@show')->name('users.show')
-		->middleware('can:users.show');
+	Route::get('permisos/{permission}', 'C_Admin\PermissionController@show')->name('permisos.show');
 
-	Route::delete('users/{user}', 'C_Admin\UserController@destroy')->name('users.destroy')
-		->middleware('can:users.destroy');
+	Route::delete('permisos/{permission}', 'C_Admin\PermissionController@destroy')->name('permisos.destroy');
 
-	Route::get('users/{user}/edit', 'C_Admin\UserController@edit')->name('users.edit')
-		->middleware('can:users.edit');
-
-	Route::post('users/store', 'C_Admin\UserController@store')->name('users.store')
-		->middleware('can:users.store');
-	
+	Route::get('permisos/{permission}/edit', 'C_Admin\PermissionController@edit')->name('permisos.edit');
+    
+  Route::get('obtenerpermisos', 'C_Admin\PermissionController@obtenerpermisos');
 
 
 });

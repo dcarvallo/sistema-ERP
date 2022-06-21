@@ -5,176 +5,158 @@ namespace App\Http\Controllers\C_Empresa;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\M_Empresa\Empresa;
+use App\Bitacora;
+use Intervention\Image\ImageManagerStatic as Image;
+use Auth;
 
 use Illuminate\Support\Facades\Storage;
 
 use File;
-use Log;
 
 class EmpresaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
+  
     public function index()
     {
-        $empresa = Empresa::first();
-        return view('empresa.empresa.index', compact('empresa'));
+      if(!Auth::user()->can('permisos', 'Navegar-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      $empresa = Empresa::first();
+      return view('empresa.empresa.index', compact('empresa'));
+      
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('empresa.empresa.create');
+      if(!Auth::user()->can('permisos', 'Crear-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+      return view('empresa.empresa.create');
+      
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string',
-            'rubro' => 'required|string',
-            'email' => 'email|string',
-            'direccion' => 'required|string',
-            'fecha_creacion' => 'required',
-        ]);
+      if(!Auth::user()->can('permisos', 'Crear-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-        // Log::info($request->imagen_empresa);
-        // dd($request);
-        $empresa = new Empresa();
-        $empresa->nombre = $request->nombre;
-        $empresa->descripcion = $request->descripcion;
-        $empresa->rubro = $request->rubro;
-        $empresa->mision = $request->mision;
-        $empresa->vision = $request->vision;
-        $empresa->direccion = $request->direccion;
-        $empresa->telefono = $request->telefono;
-        $empresa->email = $request->email;
-        if($request->imagen_empresa)
-        {
+      $this->validate($request, [
+          'nombre' => 'required|string',
+          'descripcion' => 'required|string',
+          'rubro' => 'required|string',
+          'nit' => 'required|integer',
+          'propietario' => 'required|string',
+          'email' => 'email|string|nullable',
+          'direccion' => 'required|string',
+          'fecha_creacion' => 'required',
+      ]);
 
-            //con componentes
-            // $exploded = explode(',', $request->imagen_empresa);
-            // $decoded = base64_decode($exploded[1]);
-            // if(str_contains($exploded[0], 'jpg'))
-            // $extension = 'jpg';
-            // else if (str_contains($exploded[0], 'png'))
-            // $extension = 'png';
-            // else
-            // $extension = 'jpeg';
-            
-            // $fileName = str_random().'.'.$extension;
-            
-            // Storage::disk('local')->put('public/archivos/empresa/'.$fileName, $decoded);
+      $empresa = new Empresa();
+      $empresa->nombre = $request->nombre;
+      $empresa->descripcion = $request->descripcion;
+      $empresa->rubro = $request->rubro;
+      $empresa->nit = $request->nit;
+      $empresa->propietario = $request->propietario;
+      $empresa->mision = $request->mision;
+      $empresa->vision = $request->vision;
+      $empresa->direccion = $request->direccion;
+      $empresa->telefono = $request->telefono;
+      $empresa->email = $request->email;
+      if($request->imagen_empresa)
+      {
+        // $ext = $request->imagen_empresa->getClientOriginalExtension();
+        // $fileName = str_random().'.'.$ext;
+        // $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
+        // $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
 
-            // $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
-            // $ext = pathinfo($request->imagen_empresa, PATHINFO_EXTENSION);
-            $ext = $request->imagen_empresa->getClientOriginalExtension();
-            $fileName = str_random().'.'.$ext;
-            // Storage::put('archivos/empresa/', $request->imagen_empresa);
-            $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
-            // $request->imagen_empresa->storeAs('public/archivos/empresa/', $fileName);
-            $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
+        //laravel intervention
 
-        }
-        $empresa->fecha_creacion = $request->fecha_creacion;
-        
-        $empresa->save();
+        $ext = $request->imagen_empresa->getClientOriginalExtension();
+        $fileName = str_random().'.'.$ext;
+        //original
+        $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
+        //modificado
+        $imagenmod = Image::make($request->imagen_empresa)->fit(300, 300);
+        Storage::put('archivos/empresa/'.$fileName, $imagenmod->encode() );
+        $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
 
-        return redirect('/empresas')->with('toast', $empresa->nombre.': Empresa creada');
+      }
+      $empresa->fecha_creacion = $request->fecha_creacion;
+      
+      $empresa->save();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se creó la empresa';
+      $bitacora->registro_id = $empresa->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
+
+      return redirect('/empresas')->with('toast', $empresa->nombre.': Empresa creada');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Empresa $empresa)
     {
-        //
+      if(!Auth::user()->can('permisos', 'Ver-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
+
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Empresa $empresa)
     {
-        $empresa = Empresa::find($id);
-        return view('empresa.empresa.edit', compact('empresa'));
+      if(!Auth::user()->can('permisos', 'Editar-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
+      return view('empresa.empresa.edit', compact('empresa'));
+      
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, Empresa $empresa)
     {
-        $this->validate($request, [
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string',
-            'rubro' => 'required|string',
-            'email' => 'email|string',
-            'direccion' => 'required|string',
-            'fecha_creacion' => 'required',
-        ]);
+      if(!Auth::user()->can('permisos', 'Editar-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
 
-        $empresa = Empresa::find($id);
-        $empresa->nombre = $request->nombre;
-        $empresa->descripcion = $request->descripcion;
-        $empresa->rubro = $request->rubro;
-        $empresa->mision = $request->mision;
-        $empresa->vision = $request->vision;
-        $empresa->direccion = $request->direccion;
-        $empresa->telefono = $request->telefono;
-        $empresa->email = $request->email;
-        if($request->imagen_empresa)
-        {
-            $ext = $request->imagen_empresa->getClientOriginalExtension();
-            $fileName = str_random().'.'.$ext;
-            $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
-            $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
+      $this->validate($request, [
+          'nombre' => 'required|string',
+          'descripcion' => 'required|string',
+          'rubro' => 'required|string',
+          'nit' => 'required|integer',
+          'propietario' => 'required|string',
+          'email' => 'email|string|nullable',
+          'direccion' => 'required|string',
+          'fecha_creacion' => 'required',
+      ]);
 
-        }
-        $empresa->fecha_creacion = $request->fecha_creacion;
-        
-        $empresa->save();
+      $empresa->nombre = $request->nombre;
+      $empresa->descripcion = $request->descripcion;
+      $empresa->rubro = $request->rubro;
+      $empresa->nit = $request->nit;
+      $empresa->propietario = $request->propietario;
+      $empresa->mision = $request->mision;
+      $empresa->vision = $request->vision;
+      $empresa->direccion = $request->direccion;
+      $empresa->telefono = $request->telefono;
+      $empresa->email = $request->email;
+      if($request->imagen_empresa)
+      {
+          $ext = $request->imagen_empresa->getClientOriginalExtension();
+          $fileName = str_random().'.'.$ext;
+          $request->imagen_empresa->storeAs('archivos/empresa/', $fileName);
+          $empresa->imagen_empresa = 'archivos/empresa/'.$fileName;
 
-        return redirect('/empresas')->with('toast', $empresa->nombre.': Informacion modificada');
+      }
+      $empresa->fecha_creacion = $request->fecha_creacion;
+      
+      $empresa->save();
+
+      $bitacora = new Bitacora();
+      $bitacora->mensaje = 'Se editó la empresa';
+      $bitacora->registro_id = $empresa->id;
+      $bitacora->user_id = Auth::user()->id;
+      $bitacora->save();
+
+      cache()->flush('datos-empresa');
+
+      return redirect('/empresas')->with('toast', $empresa->nombre.': Informacion modificada');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Empresa $empresa)
     {
-        //
+      if(!Auth::user()->can('permisos', 'Eliminar-empresas') || Auth::user()->hasRole('Inactivo')) abort(403);
+      
     }
 }

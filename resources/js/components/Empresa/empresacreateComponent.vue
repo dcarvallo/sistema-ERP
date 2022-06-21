@@ -41,7 +41,7 @@
       <div class="form-group">
         <label for="nombre">Dirección*</label>
         <input type="text" class="form-control" name="direccion" placeholder="Nombre de la calle" v-model="direccion">
-        <span v-if="errors.direccion" class="text-danger">{{errors.direccion[0]}}</span>
+        <span v-if="errors.direccion" class="alert-danger">{{errors.direccion[0]}}</span>
       </div>
       <div class="form-group col-md-5 px-0">
         <label for="nombre">Teléfonos</label>
@@ -54,7 +54,7 @@
       <div class="form-group col-md-5 px-0">
         <label for="fecha_creacion">Fecha de Creación de la Empresa*</label>
         <input type="date" class="form-control" name="fecha_creacion" v-model="fecha_creacion">
-        <span v-if="errors.fecha_creacion" class="text-danger">{{errors.fecha_creacion[0]}}</span>
+        <span v-if="errors.fecha_creacion" class="alert-danger">{{errors.fecha_creacion[0]}}</span>
       </div>
       <div class="form-group col-md-5 px-0">
         <label for="fecha_creacion">Imagen de la Empresa</label>
@@ -110,8 +110,7 @@ export default {
         .then(response => {
           let datos = response.data;
           
-          toast.fire({
-                icon: 'success',
+          toastsuccess.fire({
                 title: 'Empresa creada: '+datos.nombre
             }),
          console.log(datos);
